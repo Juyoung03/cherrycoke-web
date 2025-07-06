@@ -1,8 +1,16 @@
 // src/components/MainPage/MainPage.jsx
-import Header from "../Header";
-import SearchBox from "../SearchBox/SearchBox";
+import Header     from "../Header";
+import SearchBox  from "../SearchBox/SearchBox";
+import SavedRoutes from "../SavedRoutes/SavedRoutes";
 
 export default function MainPage() {
+  // 예시 더미 데이터: 실제로는 서버/API에서 불러온 값으로 교체
+  const savedRoutesData = [
+    { id: 1, name: "홍익대학교", mode: "transit", reactions: [] },
+    { id: 2, name: "체리공원",    mode: "walk",    reactions: [] },
+    { id: 3, name: "친구네",      mode: "transit", reactions: [] },
+  ];
+
   return (
     <div className="min-h-screen bg-white flex flex-col">
       {/* 상단 헤더 */}
@@ -11,18 +19,26 @@ export default function MainPage() {
       {/* 본문 영역 */}
       <main className="flex-1 p-6">
         {/* 페이지 타이틀 */}
-        <h1 className="
-             font-medium           /* font-weight: 500 */
-             text-[24px]           /* font-size: 24px */
-             leading-[29px]        /* line-height: 29px */
-             text-[#272727]        /* color: #272727 */
-             mb-6">
+        <h1
+          className="
+            font-medium
+            text-[24px]
+            leading-[29px]
+            text-[#272727]
+            mb-6
+          "
+        >
           나만의 길을 <br/> 발견하고 저장하세요!
         </h1>
 
         {/* 검색 박스 카드 */}
         <div className="flex justify-center">
           <SearchBox />
+        </div>
+
+        {/* 저장된 경로 리스트 */}
+        <div className="mt-8">
+          <SavedRoutes data={savedRoutesData} />
         </div>
       </main>
     </div>
