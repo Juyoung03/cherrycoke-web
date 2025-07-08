@@ -1,10 +1,12 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import TransportToggle from "./TransportToggle";
 import StartInput from "./StartInput";
 import DestinationInput from "./DestinationInput";
 import SearchBar from "./SearchBar";
 
 export default function SearchBox({ onSearch }) {
+  const nav = useNavigate();                         
   // 교통수단 모드: "walk" 또는 "transit"
   const [mode, setMode] = useState("transit");
   // 도착지 입력값
@@ -18,9 +20,11 @@ export default function SearchBox({ onSearch }) {
   };
 
   const handleSearch = () => {
-    // 예: 부모에게 전달하거나, API 호출, 라우팅 등
+    // (1) 검색 로직: console.log 등
     console.log({ mode, destination });
-    if (onSearch) onSearch({ mode, destination });
+
+    // (2) 길찾기 페이지로 이동
+    nav("/routefinder", { state: { mode, destination } });
   };
 
   return (
