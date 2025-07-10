@@ -4,17 +4,35 @@ import { useNavigate } from "react-router-dom";
 
 const Info = () => {
 
-    const [userList, setUserList] = useState([]);
+    //const [userList, setUserList] = useState([]);
 
-    useEffect(()=>{
-        fetch('http://localhost:5173/data/loginData.json', {
-            method: 'GET'
-        })
-            .then(res => res.json())
-            .then(data => {
-                setUserList(data);
-            });
-    }, [])
+    const login = async (nickname, password) => {
+  const formData = new FormData();
+  formData.append("nickname", nickname);  // 서버 요구 사항 확인!
+  formData.append("password", password);
+
+  try {
+    const res = await fetch("http://3.34.123.246/api/login", {
+      method: "POST",
+      body: formData,
+      credentials: "include", // ← Refresh Token 받기용 쿠키 설정
+    });
+
+    const accessToken = res.headers.get("access");
+
+    if (res.ok) {
+      localStorage.setItem("accessToken", accessToken);
+      alert("로그인 성공!");
+      nav("/");
+    } else {
+      const error = await res.json();
+      alert(error.reason || "로그인 실패");
+    }
+  } catch (err) {
+    console.error("로그인 오류:", err);
+    alert("서버 오류가 발생했습니다.");
+  }
+};
 
     const nav = useNavigate();
 
@@ -43,18 +61,24 @@ const Info = () => {
         setActive(isActive);
     }, [id, pw]);
 
-    const goToMain = () => {
-        const checkUser = userList.find(user => user.id === id
-            && user.pw === pw
-        );
+    // const goToMain = () => {
+    //     const checkUser = userList.find(user => user.id === id
+    //         && user.pw === pw
+    //     );
 
-        if (checkUser) {
-            alert('로그인 성공');
-        }
-        else {
-            alert('로그인 실패');
-        }
-    }
+    //     if (checkUser) {
+    //         alert('로그인 성공');
+    //         nav("/");
+    //     }
+    //     else {
+    //         alert('로그인 실패');
+    //         nav("/login");
+    //     }
+    // }
+
+    const handleLogin = async () => {
+        await login(inputs.id, inputs.pw);
+    };
 
     return (
         <>
@@ -107,7 +131,7 @@ const Info = () => {
 
             <div className="footer_wrapper">
                 <button 
-                    onClick={goToMain}
+                    onClick={handleLogin}
                     disabled={!active}
                     className={!active ? 'ach_login_button' : 'rej_login_button'}
                 >
