@@ -1,34 +1,5 @@
-import { useNavigate } from "react-router-dom";
+// components/MainPage/MainPage.jsx 에서 만든 MainPage 컴포넌트를 그대로 import
+import MainPage from "../components/MainPage/MainPage.jsx";
 
-
-const MainPage = () => {
-    const nav = useNavigate();
-
-    return (
-        <>
-            <div>main Page</div>
-            <button 
-                onClick={()=>nav("login")} 
-                // style={{"padding" : 100}} 
-            >
-                login Page
-            </button>
-            <br/>
-            <button 
-                onClick={()=>nav("map")} 
-            >
-                Map Page
-            </button>
-            <br/>
-            <button 
-                onClick={()=>nav("/setting")} 
-            >
-                Setting Page
-            </button>
-        </>
-    )
-};
-
-
-
+// 그냥 가져온 컴포넌트를 export만 해주면 끝!
 export default MainPage;
