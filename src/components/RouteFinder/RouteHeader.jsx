@@ -1,43 +1,45 @@
 // src/components/RouteFinder/RouteHeader.jsx
 import { useNavigate } from "react-router-dom";
-import { FaChevronLeft } from "react-icons/fa";
+import TransportToggle from "../SearchBox/TransportToggle";
+import BackIcon from "../../icons/back.svg";
+import DestinationIcon from "../../icons/destination.svg";
 
-export default function RouteHeader({ mode, onModeChange }) {
+export default function RouteHeader({ mode, onModeChange, address }) {
   const nav = useNavigate();
 
   return (
-    <div className="flex items-center bg-white px-4 py-3 shadow-sm">
-      {/* 뒤로가기 버튼 */}
-      <button
-        onClick={() => nav(-1)}
-        className="p-2 focus:outline-none"
-        aria-label="뒤로가기"
-      >
-        <FaChevronLeft className="w-5 h-5 text-gray-600" />
-      </button>
+    <div className="bg-white shadow-sm">
+      {/* 상단: 뒤로가기 + 모드 토글 */}
+      <div className="flex items-center px-4 pt-[23px] pb-[10px]">
+        <button
+          onClick={() => nav(-1)}
+          className="p-2 focus:outline-none"
+          aria-label="뒤로가기"
+        >
+          <img src={BackIcon} alt="뒤로가기" className="w-2 h-4" />
+        </button>
 
-      {/* 걷기 / 대중교통 토글 */}
-      <div className="flex-1 flex justify-center items-center space-x-4">
-        <button
-          onClick={() => onModeChange("walk")}
-          className={`text-sm font-medium focus:outline-none ${
-            mode === "walk" ? "text-black" : "text-gray-400"
-          }`}
-        >
-          걷기
-        </button>
-        <button
-          onClick={() => onModeChange("transit")}
-          className={`text-sm font-medium focus:outline-none ${
-            mode === "transit" ? "text-black" : "text-gray-400"
-          }`}
-        >
-          대중교통
-        </button>
+        <div className="flex-1 flex justify-start items-center space-x-2">
+          <TransportToggle onChange={onModeChange} />
+        </div>
+
+        {/* 우측 정렬용 여유 공간 */}
+        <div className="w-6" />
       </div>
 
-      {/* 우측 빈 공간 (정렬용) */}
-      <div className="w-6" />
+      {/* 하단: 도착지 주소 표시 */}
+      <div className="px-4 pb-4">
+        <div
+          className="
+            bg-gray-100 rounded-full px-[27px] flex items-center gap-2 h-[48px]
+          "
+        >
+          <img src={DestinationIcon} alt="도착지 아이콘" className="w-[13.84px] h-[17px]" />
+          <span className="text-[15px] text-gray-700">
+            {address}
+          </span>
+        </div>
+      </div>
     </div>
   );
 }

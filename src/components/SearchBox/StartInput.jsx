@@ -70,7 +70,7 @@ export default function StartInput() {
     <div
       className="
         bg-gray-100 px-4 h-12 rounded-[10px] 
-        mb-[5px] flex items-center gap-2 
+        mt-[9px] mb-[5px] flex items-center gap-2 
         text-sm sm:text-base
       "
     >

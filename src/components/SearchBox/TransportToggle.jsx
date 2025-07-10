@@ -9,7 +9,7 @@ export default function TransportToggle({ onChange }) {
   };
 
   return (
-    <div className="flex gap-2 mb-[9px]">
+    <div className="flex gap-2">
       {/* 걷기 */}
       <button
         type="button"
