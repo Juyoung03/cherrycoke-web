@@ -6,7 +6,7 @@ const Step1 = ({onNext}) => {
     const {register, handleSubmit, watch} = useForm();
     const [isActive, setIsActive] = useState(false);
 
-    const nameValue = watch("name");
+    const nameValue = watch("username");
 
     useEffect(() => {
         setIsActive(!!nameValue);
@@ -19,9 +19,9 @@ const Step1 = ({onNext}) => {
 
 
     return (
-        <div>
+        <div className="w-screen">
             <StepIndicator currentStep={0}/>
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <form onSubmit={handleSubmit(onSubmit)} className="w-[358px] mx-auto">
                 <div className="font-medium font-display text-[28px] py-[10px]">
                     <p>반가워요!</p>
                     <p>먼저 이름을 입력해주세요</p>
@@ -29,7 +29,7 @@ const Step1 = ({onNext}) => {
                 <div className="py-[10px]">
                     <input 
                         placeholder="사용자의 이름을 입력해주세요" 
-                        {...register("name", {required:true})} 
+                        {...register("username", {required:true})} 
                         className="w-[358px] h-[51px] py-[16px] px-[15px] border rounded-md border-[#E6E6E6]"
                     />
                 </div>
