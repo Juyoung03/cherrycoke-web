@@ -11,7 +11,7 @@ export default function SavedRouteItem({ route }) {
     <div
       onClick={handleToggle}                         /* 카드 전체 클릭 시 토글 */
       className={`
-        bg-white p-4 rounded-lg shadow-sm border
+        bg-white p-4 rounded-[10px] border
         ${isOpen ? "border-[#FF2655]" : "border-gray-200"}
         cursor-pointer                               /* 클릭 커서 표시 */
       `}
@@ -27,17 +27,12 @@ export default function SavedRouteItem({ route }) {
           }}
       />
 
-      {/* 펼쳐졌을 때 보일 상세 정보 */}
+      {/* 펼쳐졌을 때 보일 리액션 및 날짜 */}
       {isOpen && (
-        <div className="mt-2 mb-4 text-sm text-gray-600">
-          <p>출발: {route.start || "미정"}</p>
-          <p>도착: {route.destination || "미정"}</p>
-          <p>소요 시간: {route.duration || "정보 없음"}</p>
+        <div className="mt-2 mb-4 ">
+          <RouteReactions reactions={route.reactions} />
         </div>
       )}
-
-      {/* 카드 하단: 리액션/날짜 */}
-      <RouteReactions reactions={route.reactions} />
     </div>
   );
 }
