@@ -9,13 +9,14 @@ export default function TransportToggle({ onChange }) {
   };
 
   return (
-    <div className="flex gap-2 mb-4">
+    <div className="flex gap-2 mb-[9px]">
       {/* 걷기 */}
       <button
         type="button"
         onClick={() => selectMode("walk")}
         className={`
-          px-4 py-1 rounded-full text-sm focus:outline-none transition
+          w-[52px] h-[36px] rounded-full text-[15px]
+          flex items-center justify-center transition
           ${
             mode === "walk"
               ? "bg-[#FFEBF0] border border-[#FF2655] text-[#FF2655]"
@@ -31,7 +32,8 @@ export default function TransportToggle({ onChange }) {
         type="button"
         onClick={() => selectMode("transit")}
         className={`
-          px-4 py-1 rounded-full text-sm focus:outline-none transition
+          w-[78px] h-[36px] rounded-full text-[15px]
+          flex items-center justify-center transition
           ${
             mode === "transit"
               ? "bg-[#FFEBF0] border border-[#FF2655] text-[#FF2655]"

@@ -30,7 +30,10 @@ export default function SearchBox({ onSearch }) {
   return (
     <div
       className="
-        bg-white p-4
+        bg-white
+        px-[12px]
+        pt-[9px]
+        pb-[9px]
         rounded-[10px]
         shadow-[0px_0px_9.6px_rgba(0,0,0,0.1)]
         w-full max-w-md mx-auto
