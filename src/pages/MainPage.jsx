@@ -13,6 +13,18 @@ const MainPage = () => {
             >
                 login Page
             </button>
+            <br/>
+            <button 
+                onClick={()=>nav("map")} 
+            >
+                Map Page
+            </button>
+            <br/>
+            <button 
+                onClick={()=>nav("/setting")} 
+            >
+                Setting Page
+            </button>
         </>
     )
 };

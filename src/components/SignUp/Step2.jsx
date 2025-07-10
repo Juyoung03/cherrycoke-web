@@ -10,36 +10,117 @@ const Step2 = ({onNext}) => {
         formState: {errors, isValid},
     } = useForm({mode: "onChange"});
 
+    
+    const pwValue = watch("password");
+    const nickname = watch("nickname");
+
     const [isActive, setIsActive] = useState(false);
-    const pwValue = watch("pw");
+
+    const [idValid, setIdValid] = useState(false);
+    const [checking, setChecking] = useState(false);
+    const [idError, setIdError] = useState("");
+
+    useEffect(() => {
+        setIsActive(isValid && idValid); // 아이디 중복 확인도 완료돼야 버튼 활성화
+    }, [isValid, idValid]);
+
+    const checkDuplicate = async () => {
+        if (!nickname) return;
+
+        try {
+            setChecking(true);
+            setIdError("");
+
+            
+
+            const res = await fetch(
+                `http://3.34.123.246/api/check-nickname?nickname=${encodeURIComponent(nickname)}`,
+                { 
+                    method: "GET",
+                 }
+            );
+
+            // const result = await res.json();
+
+        //     if (res.status === 200) {
+        //         setIdValid(true);
+        //         alert("사용 가능한 아이디입니다!");
+        //     } else if (res.status === 409) {
+        //         setIdValid(false);
+        //         setIdError("이미 사용 중인 아이디입니다.");
+        //     } else {
+        //         setIdValid(false);
+        //         setIdError("알 수 없는 오류")
+        //     }
+        // } catch (err) {
+        //     console.error("중복 확인 오류", err);
+        //     setIdError("오류가 발생했습니다. 다시 시도해주세요.");
+        // } finally {
+        //     setChecking(false);
+        // }
+
+        if (res.status === 200) {
+            const result = await res.json();
+            if (result.success) {
+                setIdValid(true);
+                alert("사용 가능한 아이디입니다!");
+            } else {
+                setIdValid(false);
+                setIdError("서버 응답 오류입니다.");
+            }
+        } else if (res.status === 409) {
+            // JSON 파싱 안 함! 그냥 메시지만 출력
+            setIdValid(false);
+            setIdError("이미 사용 중인 아이디입니다.");
+        } else {
+            const text = await res.text(); // 혹시 어떤 에러인지 확인
+            console.warn("예상치 못한 오류:", text);
+            setIdValid(false);
+            setIdError(`예상치 못한 오류 (code: ${res.status})`);
+        }
+    } catch (err) {
+        console.error("중복 확인 오류", err);
+        setIdError("서버 오류가 발생했습니다. 다시 시도해주세요.");
+    } finally {
+        setChecking(false);
+    }
+    };
 
     
-    
-    useEffect(() => {
-        setIsActive(isValid);
-    }, [isValid]);
-    
     const onSubmit = (data) => {
+        
         console.log(data);
         setIsActive(isActive);
         onNext(data);
     };
 
     return (
-        <div>
+        <div className="w-screen">
             <StepIndicator currentStep={1}/>
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(onSubmit)} className="w-[358px] mx-auto">
             <div className="font-medium font-display text-[28px] py-[10px]">
                 <p>아이디와 비밀번호를</p>
                 <p>입력해주세요</p>
             </div>
             <div className="mt-[37px]">
                 <p className="mb-[4px]">아이디</p>
+                <div className="relative w-[358px]">
                 <input 
                     placeholder="아이디를 입력해주세요" 
-                    {...register("id", {required:true})} 
-                    className="w-[358px] h-[51px] py-[16px] px-[15px] border rounded-md border-[#E6E6E6]"
+                    {...register("nickname", {required:true})} 
+                    className="w-full h-[51px] py-[16px] px-[15px] border rounded-md border-[#E6E6E6] relative"
                 />
+                <button
+                type="button"
+                className="absolute top-1/2 right-[10px] -translate-y-1/2 w-[58px] h-[26px] rounded-md bg-[#FF2655] text-white text-[13px]"
+                onClick={() => checkDuplicate(nickname)}
+                >
+                중복확인
+                </button>
+                {idError && (
+                    <p className="text-sm">{idError}</p>
+                )}
+                </div>
             </div>
 
             <div className="mt-[38px] fixed">
@@ -48,7 +129,7 @@ const Step2 = ({onNext}) => {
                     type="password"
                     placeholder="비밀번호를 입력해주세요" 
                     autoComplete="off"
-                    {...register("pw", {
+                    {...register("password", {
                         required:true,
                         minLength: {
                             value: 6,
@@ -61,8 +142,8 @@ const Step2 = ({onNext}) => {
                     })} 
                     className="w-[358px] h-[51px] py-[16px] px-[15px] border rounded-md border-[#E6E6E6]"
                 />
-                {errors.pw && (
-                    <p className="text-[#FF2655] text-sm">{errors.pw.message}</p>
+                {errors.password && (
+                    <p className="text-[#FF2655] text-sm">{errors.password.message}</p>
                 )
                 }
             </div>
