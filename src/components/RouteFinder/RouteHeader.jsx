@@ -20,7 +20,7 @@ export default function RouteHeader({ mode, onModeChange, address }) {
         </button>
 
         <div className="flex-1 flex justify-start items-center space-x-2">
-          <TransportToggle onChange={onModeChange} />
+          <TransportToggle onChange={onModeChange} state={mode} />
         </div>
 
         {/* 우측 정렬용 여유 공간 */}

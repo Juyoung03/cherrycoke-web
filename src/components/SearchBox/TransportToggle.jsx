@@ -1,10 +1,12 @@
 import { useState } from "react";
 
-export default function TransportToggle({ onChange }) {
-  const [mode, setMode] = useState("transit"); // "walk" or "transit"
+export default function TransportToggle({ onChange, state }) {
+  //const [mode, setMode] = useState("transit"); // "walk" or "transit"
+
+  const mode = state;
 
   const selectMode = (value) => {
-    setMode(value);
+    //setMode(value);
     if (onChange) onChange(value);
   };
 

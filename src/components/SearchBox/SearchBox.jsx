@@ -35,7 +35,7 @@ export default function SearchBox() {
     <div className="bg-white px-[12px] pt-[9px] pb-[9px] rounded-[10px]
                     shadow-[0px_0px_9.6px_rgba(0,0,0,0.1)]
                     w-full max-w-md mx-auto">
-      <TransportToggle onChange={handleModeChange} />
+      <TransportToggle onChange={handleModeChange} state={mode} />
       <StartInput />
       <DestinationInput value={destination} onChange={handleDestinationChange} />
       <SearchBar onClick={handleSearch} />
