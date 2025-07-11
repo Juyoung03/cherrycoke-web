@@ -1,5 +1,6 @@
 // src/components/RouteFinder/RouteFooter.jsx
 import React, { useState } from "react";
+import SaveModal from "./SaveModal";
 // SVG 파일 URL 임포트
 import BusIcon      from "../../icons/bus.svg";
 import WalkIcon     from "../../icons/walk.svg";
@@ -15,19 +16,37 @@ import HeartOnIcon  from "../../icons/heart-on.svg";
  * @param {string} [distance]
  * @param {() => void} onStartNavigation
  */
-export default function RouteFooter({ mode, duration, arrivalTime, distance, onStartNavigation }) {
+export default function RouteFooter({ 
+    mode, duration, arrivalTime, distance, 
+    onStartNavigation, onSaveRoute, destination, 
+    endLat, endLng }) {
   const [liked, setLiked] = useState(false);
+  const [showSaveModal, setShowSaveModal] = useState(false);
   // 아이콘 색상을 FF2655로 바꾸기 위한 CSS 필터
   const filter = "invert(25%) sepia(87%) saturate(3459%) hue-rotate(340deg)";
 
+  const handleLikeClick = () => {
+    setLiked(prev => !prev);
+    if (!liked) setShowSaveModal(true);
+  };
+
+  const handleSave = (name) => {
+    if (onSaveRoute) onSaveRoute(name);
+    setShowSaveModal(false);
+  };
+
+  console.log(endLat, endLng);
+
   // 도보 모드용 요약 카드
-  const SummaryCard = () => (
+  //const SummaryCard = () => (
+    const SummaryCard = ({ liked, onLikeClick }) => (
     <div className="bg-white border border-[#D2D2D2] rounded-lg h-[91px] px-[19px] py-[16px] mb-3">
       {/* 첫 번째 줄: 소요시간 + 하트 */}
       <div className="flex items-center justify-between h-[33px]">
         <span className="text-[28px] font-medium text-[#FF2655] leading-[33px]">{duration}분</span>
         <button
-          onClick={() => setLiked((f) => !f)}
+          //onClick={() => setLiked((f) => !f)}
+          onClick={onLikeClick}
           className="focus:outline-none"
           aria-label={liked ? "즐겨찾기 해제" : "즐겨찾기"}
         >
@@ -82,13 +101,37 @@ export default function RouteFooter({ mode, duration, arrivalTime, distance, onS
   );
 
   return (
-    <div
-      className={`fixed bottom-0 left-0 w-full bg-white px-4 pb-[52px] shadow-[0px_0px_9.6px_rgba(0,0,0,0.1)] ${
-        mode === "walk" ? "pt-[24px]" : "pt-[30px]"
-      }`}
-    >
-      {mode === "walk" && <SummaryCard />}
-      <StartButton />
-    </div>
+    <>
+      {/* 기존 footer */}
+      <div
+        className={`
+          fixed bottom-0 left-0 w-full bg-white px-4 pb-[52px]
+          shadow-[0px_0px_9.6px_rgba(0,0,0,0.1)]
+          ${mode === "walk" ? "pt-[24px]" : "pt-[30px]"}
+        `}
+      >
+        {mode === "walk" && (
+            <SummaryCard 
+            liked={liked}
+            onLikeClick={handleLikeClick}
+            />
+        )}
+        <StartButton />
+      </div>
+
+      {/* 분리된 SaveModal */}
+      <SaveModal
+        isOpen={mode === "walk" && showSaveModal}
+        onClose={() => setShowSaveModal(false)}
+        onSave={(name) => {
+          onSaveRoute?.(name);
+          setShowSaveModal(false);
+        }}
+        //defaultLabel={distance || `${duration}분 경로`}
+        defaultLabel={destination}
+        endLat={endLat}
+        endLng={endLng}
+      />
+    </>
   );
 }
