@@ -1,5 +1,5 @@
 // src/components/SearchBox/DestinationInput.jsx
-import DestIcon from "../../icons/destination.svg";  // 경로는 프로젝트 구조에 맞게 조정
+import DestIcon from "../../icons/destination.svg";
 export default function DestinationInput({
   value,
   onChange,
@@ -8,8 +8,8 @@ export default function DestinationInput({
   return (
     <div
       className="
-        bg-gray-100 px-4 py-3 rounded-md 
-        mb-4 flex items-center gap-2 
+        bg-gray-100 px-4 h-12 rounded-[10px] 
+        mb-[9px] flex items-center gap-2 
         text-sm sm:text-base text-gray-400
       "
     >

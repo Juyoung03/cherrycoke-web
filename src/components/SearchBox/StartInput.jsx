@@ -69,8 +69,8 @@ export default function StartInput() {
   return (
     <div
       className="
-        bg-gray-100 px-4 py-3 rounded-md 
-        mb-2 flex items-center gap-2 
+        bg-gray-100 px-4 h-12 rounded-[10px] 
+        mt-[9px] mb-[5px] flex items-center gap-2 
         text-sm sm:text-base
       "
     >

@@ -4,12 +4,6 @@ import SearchBox  from "../SearchBox/SearchBox";
 import SavedRoutes from "../SavedRoutes/SavedRoutes";
 
 export default function MainPage() {
-  // 예시 더미 데이터: 실제로는 서버/API에서 불러온 값으로 교체
-  const savedRoutesData = [
-    { id: 1, name: "홍익대학교", mode: "transit", reactions: [] },
-    { id: 2, name: "체리공원",    mode: "walk",    reactions: [] },
-    { id: 3, name: "친구네",      mode: "transit", reactions: [] },
-  ];
 
   return (
     <div className="min-h-screen bg-white flex flex-col">
@@ -38,7 +32,7 @@ export default function MainPage() {
 
         {/* 저장된 경로 리스트 */}
         <div className="mt-8">
-          <SavedRoutes data={savedRoutesData} />
+          <SavedRoutes providerId="CURRENT_USER_ID" />
         </div>
       </main>
     </div>

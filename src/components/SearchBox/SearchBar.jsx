@@ -5,8 +5,8 @@ export default function SearchBar({ onClick }) {
         className="
           w-full
           bg-[#FF2655] text-white
-          text-base py-3
-          rounded-lg
+          text-base h-12
+          rounded-[10px]
           hover:bg-pink-600
           transition
         "
