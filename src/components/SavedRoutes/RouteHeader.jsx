@@ -9,7 +9,7 @@ export default function RouteHeader({
   onToggle,  // 펼침/접힘 토글 콜백
 }) {
   return (
-    <div className="flex justify-between items-center mb-2">
+    <div className="flex justify-between items-center">
       {/* 제목 */}
       <h2 className="text-lg font-medium text-gray-800">
         {title}
