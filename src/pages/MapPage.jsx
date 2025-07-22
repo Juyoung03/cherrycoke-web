@@ -146,7 +146,7 @@ const MapPage = () => {
         className="w-full h-[480px]"
       ></div>
 
-      <div>
+      <div className="max-h-[80vh] overflow-y-auto">
         {mode === "walk" ? 
         ( <StepCard data={route} /> ) : 
         ( <TransitStepCard data={transitRoute} /> )
