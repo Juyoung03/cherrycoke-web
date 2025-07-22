@@ -51,7 +51,7 @@ const MapPage = () => {
       headers: {
         accept: 'application/json',
         'content-type': 'application/json',
-        appKey: 'DY5ObGPcHE9wzIuAnS2vKaqXbpDC0yqd1MrO0NmP'
+        appKey: import.meta.env.VITE_TMAP_APP_KEY
       },
       body: JSON.stringify({
         startX: 126.9244198988444,
@@ -85,7 +85,7 @@ const MapPage = () => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        appKey: 'DY5ObGPcHE9wzIuAnS2vKaqXbpDC0yqd1MrO0NmP'
+        appKey: import.meta.env.VITE_TMAP_APP_KEY
       },
       body: JSON.stringify({
         startX: "126.9821047782902",
