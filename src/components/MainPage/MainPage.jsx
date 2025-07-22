@@ -1,5 +1,5 @@
 // src/components/MainPage/MainPage.jsx
-import Header     from "../Header";
+import Header     from "./MainHeader";
 import SearchBox  from "../SearchBox/SearchBox";
 import SavedRoutes from "../SavedRoutes/SavedRoutes";
 

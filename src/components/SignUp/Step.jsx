@@ -31,7 +31,7 @@ const Step = () => {
         };
 
         try {
-            const response = await fetch("http://3.34.123.246/api/join", {
+            const response = await fetch("https://3.34.123.246/api/join", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
