@@ -25,6 +25,7 @@ export default function SaveModal({
       endLat,
       endLng,
     };
+    // console.log(endLat, endLng);
 
     try {
       setLoading(true);
