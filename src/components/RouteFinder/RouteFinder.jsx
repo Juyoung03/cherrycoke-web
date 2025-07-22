@@ -27,7 +27,7 @@ export default function RouteFinder({ onSaveRoute }) {
         mode,
         destination,
         endLat,
-        endLng
+        endLng,
         startLat,
         startLng
       }
@@ -57,9 +57,9 @@ export default function RouteFinder({ onSaveRoute }) {
       if (isTmapReady && mapRef.current) {
         console.log("지도 생성됨");
         const map = new window.Tmapv2.Map(mapRef.current, {
-          center: new window.Tmapv2.LatLng(37.570028, 126.989072),
+          center: new window.Tmapv2.LatLng(startLat, startLng),
           width: "100%",
-          height: "400px",
+          height: "500px",
           zoom: 17,
           scrollwheel: true,
           zoomControl: true,
@@ -75,6 +75,7 @@ export default function RouteFinder({ onSaveRoute }) {
         
       }
     }, [isTmapReady]);
+    console.log(window.Tmapv2);
 
   return (
     <div className="min-h-screen bg-white flex flex-col">
@@ -86,15 +87,10 @@ export default function RouteFinder({ onSaveRoute }) {
       />
 
       {/* 2) 실제 콘텐츠 영역 */}
-      <div className="flex-1 flex items-center justify-center">
-        {/* <p className="text-gray-500">
-          {mode === "walk" ? "도보 모드 콘텐츠 자리" : "대중교통 모드 콘텐츠 자리"}
-        </p> */}
-        <div
+      <div
         ref={mapRef}
-        className="border border-black w-full max-w-[600px] h-[400px]"
+        className="w-full h-[500px]"
       ></div>
-      </div>
 
       {/* 3) RouteFooter: flex-컬럼의 마지막, 고정 아래 배치 */}
       <RouteFooter

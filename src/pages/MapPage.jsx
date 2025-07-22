@@ -13,7 +13,7 @@ const MapPage = () => {
 
   console.log("받은 값들:", mode, destination, endLat, endLng, startLat, startLng);
 
-  // Tmap 스크립트 로드 감지
+  //Tmap 스크립트 로드 감지
   useEffect(() => {
     const checkInterval = setInterval(() => {
       if (window.Tmapv2) {
@@ -26,10 +26,9 @@ const MapPage = () => {
 
   // 지도 생성 및 클릭 이벤트 등록
   useEffect(() => {
-
     if (isTmapReady && mapRef.current) {
       const mapInstance = new window.Tmapv2.Map(mapRef.current, {
-        center: new window.Tmapv2.LatLng(37.504585233865086, 127.02479803562213),
+        center: new window.Tmapv2.LatLng(startLat, startLng),
         width: "100%",
         height: "480px",
         zoom: 18,
@@ -41,6 +40,9 @@ const MapPage = () => {
 
     }
   }, [isTmapReady]);
+  // console.log(window.Tmapv2);
+  // console.log("mapRef.current:", mapRef.current);
+
 
   // 3. 경로 API 호출
   useEffect(() => {
@@ -61,10 +63,9 @@ const MapPage = () => {
         endPoiId: '10001',
         endX: endLng,
         endY: endLat,
-        // passList: '126.92774822,37.55395475_126.92577620,37.55337145',
         reqCoordType: 'WGS84GEO',
-        startName: '%EC%B6%9C%EB%B0%9C',
-        endName: '%EB%8F%84%EC%B0%A9',
+        startName: '출발지',
+        endName: destination,
         searchOption: '0',
         resCoordType: 'WGS84GEO',
         sort: 'index'
@@ -76,7 +77,7 @@ const MapPage = () => {
       .then(res => setRoute(res))
       .catch(err => console.error(err));
       }, [map]);
-
+      //console.log(route);
 
   useEffect(() => {
     if (!map) return;
@@ -103,7 +104,40 @@ const MapPage = () => {
       .catch(error => console.log(error));
   }, [map]);
 
-  console.log(transitRoute);
+  //console.log(transitRoute);
+
+  useEffect(() => {
+  if (!map || !route) return;
+
+  const features = route.features;
+  const linePath = [];
+
+  for (let i = 0; i < features.length; i++) {
+    const geometry = features[i].geometry;
+
+    if (geometry.type === "LineString") {
+      const coords = geometry.coordinates;
+
+      coords.forEach(coord => {
+        // [lng, lat] -> new Tmapv2.LatLng(lat, lng)
+        const latLng = new window.Tmapv2.LatLng(coord[1], coord[0]);
+        linePath.push(latLng);
+      });
+    }
+  }
+
+  const polyline = new window.Tmapv2.Polyline({
+    path: linePath,
+    strokeColor: "#3396F4", // 파란색
+    strokeWeight: 6,
+    map: map,
+  });
+
+  return () => {
+    polyline.setMap(null); // unmount 시 제거
+  };
+}, [map, route]);
+
 
   return (
     <div className="relative flex flex-col items-center h-screen overflow-hidden">
