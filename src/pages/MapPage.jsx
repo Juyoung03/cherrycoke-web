@@ -54,8 +54,8 @@ const MapPage = () => {
         appKey: import.meta.env.VITE_TMAP_APP_KEY
       },
       body: JSON.stringify({
-        startX: 126.9244198988444,
-        startY: 37.55275314791241,
+        startX: startLng,
+        startY: startLat,
         angle: 20,
         speed: 30,
         endPoiId: '10001',
@@ -88,8 +88,8 @@ const MapPage = () => {
         appKey: import.meta.env.VITE_TMAP_APP_KEY
       },
       body: JSON.stringify({
-        startX: "126.9821047782902",
-        startY: "37.56594302281828",
+        startX: startLng,
+        startY: startLat,
         endX: endLng,
         endY: endLat,
         format: "json",

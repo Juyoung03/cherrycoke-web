@@ -50,6 +50,11 @@ export default function SearchBox() {
       setEndLng(lng);
     };
     //console.log(endLat, endLng);
+
+    const handleStart = () => {
+      setStartLat(startLat);
+      setStartLng(startLng);
+    }
   
     const handleSearch = () => {
       if (endLat == null || endLng == null) {
@@ -73,7 +78,7 @@ export default function SearchBox() {
                     shadow-[0px_0px_9.6px_rgba(0,0,0,0.1)]
                     w-full max-w-md mx-auto">
       <TransportToggle onChange={handleModeChange} state={mode} />
-      <StartInput setStartLat={setStartLat} setStartLng={setStartLng} />
+      <StartInput setStartLat={setStartLat} setStartLng={setStartLng} onChange={handleStart} />
       <DestinationInput
       value={destination}
       onChange={handleDestinationChange}
