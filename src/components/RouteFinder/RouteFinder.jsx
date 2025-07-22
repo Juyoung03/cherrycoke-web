@@ -9,6 +9,8 @@ export default function RouteFinder({ onSaveRoute }) {
   const { state } = useLocation();
   const [mode, setMode] = useState(state?.mode ?? "transit");
   const [destination]  = useState(state?.destination ?? "");
+  const [startLat, setStartLat] = useState(state?.startLat ?? null);
+  const [startLng, setStartLng] = useState(state?.startLng ?? null);
 
   // 예시용: 대중교통 39분, 오후 12:30 / 도보 12분, 오전 11:45, 거리 1.2km
   const duration    = mode === "walk" ? 12 : 39;
@@ -24,6 +26,8 @@ export default function RouteFinder({ onSaveRoute }) {
         destination,
         endLat: clickedCoord.lat,
         endLng: clickedCoord.lng,
+        startLat,
+        startLng
       }
     });
   };

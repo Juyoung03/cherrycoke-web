@@ -9,7 +9,7 @@ export default function StartInput({ setStartLat, setStartLng }) {
   // 1) 위치 가져와서 address 상태 설정
   useEffect(() => {
     if (!navigator.geolocation) {
-      setAddress("Geolocation을 지원하지 않는 환경입니다.");
+      setAddress("위치 정보를 사용할 수 없습니다.");
       setLoading(false);
       return;
     }
@@ -19,35 +19,40 @@ export default function StartInput({ setStartLat, setStartLng }) {
         const { latitude, longitude } = position.coords;
         setStartLat(latitude);
         setStartLng(longitude);
-        try {
-          const res = await fetch(
-            `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`
-          );
-          const data = await res.json();
+        // console.log(latitude, longitude);
+        // try {
+        //   const res = await fetch(
+        //     `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`
+        //   );
+        //   const data = await res.json();
 
-          if (data.display_name) {
-            const parts = data.display_name.split(",");
-            const primary = parts[0].trim();
-            const reversed = parts
-              .slice(1, 4)
-              .map((s) => s.trim())
-              .reverse()
-              .join(" ");
+        //   if (data.display_name) {
+        //     const parts = data.display_name.split(",");
+        //     const primary = parts[0].trim();
+        //     const reversed = parts
+        //       .slice(1, 4)
+        //       .map((s) => s.trim())
+        //       .reverse()
+        //       .join(" ");
 
-            setAddress(`${primary} (${reversed})`);
-          } else {
-            setAddress("주소를 가져올 수 없습니다.");
-          }
-        } catch (err) {
-          console.error(err);
-          setAddress("주소 변환 중 오류가 발생했습니다.");
-        } finally {
-          setLoading(false);
-        }
+        //     setAddress(`${primary} (${reversed})`);
+        //   } else {
+        //     setAddress("주소를 가져올 수 없습니다.");
+        //   }
+        // } catch (err) {
+        //   console.error(err);
+        //   setAddress("주소 변환 중 오류가 발생했습니다.");
+        // } finally {
+        //   setLoading(false);
+        // }
+
+        // 위치 획득이 완료되면 ‘내 위치’ 로 표시
+       setAddress("내 위치");
+       setLoading(false);
       },
       (error) => {
         console.error(error);
-        setAddress("위치 정보를 가져오는 데 실패했습니다.");
+        setAddress("위치 접근을 허용해 주세요.");
         setLoading(false);
       },
       { enableHighAccuracy: true, timeout: 5000 }
@@ -59,7 +64,7 @@ export default function StartInput({ setStartLat, setStartLng }) {
     if (loading) return;
     if (!window.speechSynthesis) return;
 
-    const utter = new SpeechSynthesisUtterance(address);
+    const utter = new SpeechSynthesisUtterance("내 위치");
     utter.lang = "ko-KR";
     utter.rate = 1;   // 속도: 0.1 ~ 10
     utter.pitch = 1;  // 음높이: 0 ~ 2
@@ -67,6 +72,18 @@ export default function StartInput({ setStartLat, setStartLng }) {
     window.speechSynthesis.cancel();
     window.speechSynthesis.speak(utter);
   }, [address, loading]);
+
+    // 에러 메시지 목록
+  const errorMessages = [
+    "위치 정보를 사용할 수 없습니다.",
+    "위치 접근을 허용해 주세요."
+  ];
+  // 상태별 텍스트 클래스 결정
+  const textClass = loading
+    ? "text-gray-500"
+    : errorMessages.includes(address)
+      ? "text-blue-800"
+      : "text-black";
 
   return (
     <div
@@ -81,7 +98,7 @@ export default function StartInput({ setStartLat, setStartLng }) {
         alt="start location"
         className="flex-shrink-0 w-[14px] h-[14px]"
       />
-      <span className={loading ? "text-gray-500" : "text-black"}>
+      <span className={textClass}>
         {address}
       </span>
     </div>
