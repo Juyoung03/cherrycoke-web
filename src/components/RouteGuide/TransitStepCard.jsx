@@ -69,7 +69,7 @@ const TransitStepCard = ({ data }) => {
             <div className="h-[31px] bg-[#FFC7D3] rounded-t-[5px] text-[15px] text-white flex items-center px-[19px] justify-between">
               <div>{String(currentStep + 1).padStart(2, '0')}</div>
               
-              <div className="cursor-pointer">
+              <div className="cursor-pointer flex gap-2">
                     {currentStep > 0 && (
                       <button 
                         onClick={handlePrev}
@@ -107,7 +107,7 @@ const TransitStepCard = ({ data }) => {
             >
               <div>{String(currentStep + 1).padStart(2, '0')}</div>
               
-              <div className="cursor-pointer">
+              <div className="cursor-pointer flex gap-2">
                     {currentStep > 0 && (
                       <button 
                         onClick={handlePrev}
@@ -170,7 +170,7 @@ const TransitStepCard = ({ data }) => {
             >
               <div>{String(currentStep + 1).padStart(2, '0')}</div>
               
-              <div className="cursor-pointer">
+              <div className="cursor-pointer flex gap-2">
                     {currentStep > 0 && (
                       <button 
                         onClick={handlePrev}
