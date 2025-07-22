@@ -34,7 +34,7 @@ const Step2 = ({onNext}) => {
             
 
             const res = await fetch(
-                `http://3.34.123.246/api/check-nickname?nickname=${encodeURIComponent(nickname)}`,
+                `https://3.34.123.246/api/check-nickname?nickname=${encodeURIComponent(nickname)}`,
                 { 
                     method: "GET",
                  }
