@@ -14,15 +14,17 @@ export default function Header() {
         shadow-md           /* 그림자 */
       "
     >
-      {/* 회색 박스 로고 플레이스홀더 */}
-      <div
-        className="
-          w-[46px] h-[46px]    /* 46×46px */
-          bg-gray-300          /* 회색 배경 */
-          rounded-md           /* 모서리 둥글게 */
-          flex-shrink-0
-        "
-      />
+
+     {/* 실제 로고 이미지 */}
+     <img
+       src="/cherry-favicon.png" 
+       alt="Cherry Logo"
+       className="
+         w-[46px] h-[46px]
+         rounded-md
+         flex-shrink-0
+       "
+     />
 
       {/* 우측 로그인 버튼 (필요시 교체) */}
       <button
