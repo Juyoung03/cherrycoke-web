@@ -29,7 +29,7 @@ export default function SaveModal({
     try {
       setLoading(true);
       // 1) /dev/token 호출해서 테스트용 JWT 받아오기
-      const tokenRes = await fetch("http://3.34.123.246/dev/token", {
+      const tokenRes = await fetch("https://3.34.123.246/dev/token", {
         method: "POST"
       });
       if (!tokenRes.ok) throw new Error(`토큰 발급 실패 ${tokenRes.status}`);
