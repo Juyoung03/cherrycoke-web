@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 
 const TOKEN = "eyJhbGciOiJIUzUxMiJ9.eyJjYXRlZ29yeSI6ImFjY2VzcyIsIm1lbWJlcklkIjoiMSIsInJvbGUiOiJST0xFX0FETUlOIiwiaWF0IjoxNzUzMjA5Mzk1LCJleHAiOjE3NTMyOTU3OTV9.TmZXRpzepRMd3j43s03nzJmOCUM_2w3stYswargPK6qFIVCudohVW3s0Kg-ToBrvbBxcb72sWfNkh9EalJaY0w";
-const BACKEND = "https://3.34.123.246";
+const BACKEND = "https://cherrymap.click";
 
 export default function SaveModal({  
   isOpen,          // 모달 열림 여부  

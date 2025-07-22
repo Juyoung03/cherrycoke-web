@@ -6,7 +6,7 @@
 //   const token = localStorage.getItem("token") 
 //     || "eyJhbGciOiJIUzUxMiJ9.eyJjYXRlZ29yeSI6ImFjY2VzcyIsIm1lbWJlcklkIjoiNCIsInJvbGUiOiJST0xFX0FETUlOIiwiaWF0IjoxNzUyMjI0MDE4LCJleHAiOjE3NTIyMjQ2MTh9.80JVR-9jEdyAaDCKjjYnn03y_6614LIPQb6MWMA5rEWXP0crqf1y0OIVTFV3qDT6F5M63YmdVo0e0i_KK6spmg";
 
-  const BACKEND = "https://3.34.123.246";
+  const BACKEND = "https://cherrymap.click";
   const TOKEN = "eyJhbGciOiJIUzUxMiJ9.eyJjYXRlZ29yeSI6ImFjY2VzcyIsIm1lbWJlcklkIjoiMSIsInJvbGUiOiJST0xFX0FETUlOIiwiaWF0IjoxNzUzMjA5Mzk1LCJleHAiOjE3NTMyOTU3OTV9.TmZXRpzepRMd3j43s03nzJmOCUM_2w3stYswargPK6qFIVCudohVW3s0Kg-ToBrvbBxcb72sWfNkh9EalJaY0w";
 
    // ① 토큰 가져오기: localStorage → 없으면 /dev/token 호출

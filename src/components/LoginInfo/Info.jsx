@@ -12,7 +12,7 @@ const Info = () => {
   formData.append("password", password);
 
   try {
-    const res = await fetch("https://3.34.123.246/api/login", {
+    const res = await fetch("https://cherrymap.click/api/login", {
       method: "POST",
       body: formData,
       credentials: "include", // ← Refresh Token 받기용 쿠키 설정
