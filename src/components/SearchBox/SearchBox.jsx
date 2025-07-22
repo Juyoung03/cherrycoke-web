@@ -13,6 +13,8 @@ export default function SearchBox() {
   const saved = localStorage.getItem("searchMode");
   const [mode, setMode] = useState(saved ?? "transit");
   const [destination, setDestination] = useState("");
+  const [endLat, setEndLat] = useState(null);
+  const [endLng, setEndLng] = useState(null);
 
   // 2) mode가 바뀔 때마다 로컬스토리지에 기록
   useEffect(() => {
@@ -23,13 +25,38 @@ export default function SearchBox() {
     setMode(value);
   };
 
-  const handleDestinationChange = (e) => {
-    setDestination(e.target.value);
-  };
+  // const handleDestinationChange = (e) => {
+  //   setDestination(e.target.value);
+  // };
 
-  const handleSearch = () => {
-    nav("/routefinder", { state: { mode, destination } });
-  };
+  // const handleSearch = () => {
+  //   nav("/routefinder", { state: { mode, destination } });
+  // };
+
+    // 사용자가 직접 입력할 때: 좌표 초기화
+    const handleDestinationChange = (e) => {
+      setDestination(e.target.value);
+      setEndLat(null);
+      setEndLng(null);
+    };
+  
+    // 자동완성 목록에서 장소를 고른 경우
+    const handleDestinationSelect = ({ name, lat, lng }) => {
+      setDestination(name);
+      setEndLat(lat);
+      setEndLng(lng);
+    };
+  
+    const handleSearch = () => {
+      if (endLat == null || endLng == null) {
+        alert("목적지를 리스트에서 선택해 주세요!");
+        return;
+      }
+      nav("/routefinder", {
+        state: { mode, destination, endLat, endLng },   // ★ 좌표 전달
+      });
+    };
+
 
   return (
     <div className="bg-white px-[12px] pt-[9px] pb-[9px] rounded-[10px]
@@ -37,7 +64,11 @@ export default function SearchBox() {
                     w-full max-w-md mx-auto">
       <TransportToggle onChange={handleModeChange} state={mode} />
       <StartInput />
-      <DestinationInput value={destination} onChange={handleDestinationChange} />
+      <DestinationInput
+      value={destination}
+      onChange={handleDestinationChange}
+      onSelect={handleDestinationSelect}
+       />
       <SearchBar onClick={handleSearch} />
     </div>
   );
