@@ -7,7 +7,7 @@ import { sendSavedRoute } from "../../api/routes";
 
 export default function SavedRouteItem({ route }) {
   const [isOpen, setIsOpen] = useState(false);
-  const handleToggle = () => setIsOpen((p) => !p);
+  const toggle = () => setIsOpen((p) => !p);
   const navigate = useNavigate();
 
 /** 바로 안내 시작 → /map 이동 */
@@ -53,40 +53,46 @@ const handleStart = async (e) => {
 };
 
 
-  return (
-    <div
-      onClick={handleToggle}
-      className={`
-        bg-white p-4 rounded-[10px] border
-        ${isOpen ? "border-[#FF2655]" : "border-gray-200"}
-        cursor-pointer
-      `}
-    >
+return (
+  <div
+    onClick={toggle}
+    className={`
+      bg-white rounded-[10px] border
+      ${isOpen ? "border-[#FF2655]" : "border-gray-200"}
+      cursor-pointer select-none             /* 드래그 금지 */
+      flex flex-col                          /* ⬅︎ 상·하를 세로로 쌓기 */
+    `}
+  >
+    {/* ───── 상단 영역 ───── */}
+    <div className="px-4 pt-4 pb-4">
       <RouteHeader
-        title={route.routeName ?? route.name}
+        title={route.routeName || route.name}
         mode={route.mode}
         isOpen={isOpen}
-        onToggle={(e) => {
-          e.stopPropagation();
-          handleToggle();
-        }}
+        onToggle={(e) => { e.stopPropagation(); toggle(); }}
       />
 
       {isOpen && (
-        <div className="mt-2 mb-4">
+        <div className="mt-2 mb-3">
           <RouteReactions reactions={route.reactions} />
+          {/* 필요하다면 삭제 버튼 등… */}
         </div>
       )}
-
-      <button
-        onClick={handleStart}
-        className="
-          w-full px-4 py-3 text-center text-[#FF2655] font-medium
-          border-t border-gray-200 hover:bg-gray-50 transition
-        "
-      >
-        바로 출발하기
-      </button>
     </div>
-  );
+
+    {/* 얇은 구분선 */}
+    <div className="border-t border-gray-200 w-full" />
+
+    {/* ───── 하단 버튼 영역 ───── */}
+    <button
+      onClick={(e) => { e.stopPropagation(); onSend?.(route); }}
+      className="
+        w-full py-3 text-center text-[#FF2655] font-medium
+        hover:bg-gray-50 transition rounded-b-[10px]
+      "
+    >
+      바로 출발하기
+    </button>
+  </div>
+);
 }
