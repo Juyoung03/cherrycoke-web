@@ -33,7 +33,7 @@ export default function RouteFinder({ onSaveRoute }) {
       }
     });
   };
-  //console.log(endLat, endLng);
+  console.log(endLat, endLng);
 
   const mapRef = useRef(null);
     const [isTmapReady, setIsTmapReady] = useState(false);
@@ -100,8 +100,8 @@ export default function RouteFinder({ onSaveRoute }) {
         distance={distance}
         onStartNavigation={handleStart}
         destination={destination}
-        endLat={clickedCoord.lat}
-        endLng={clickedCoord.lng}
+        endLat={endLat}
+        endLng={endLng}
         onSaveRoute={onSaveRoute}
       />
     </div>
