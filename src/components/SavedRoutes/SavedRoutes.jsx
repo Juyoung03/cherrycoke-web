@@ -2,13 +2,17 @@
 import React, { useState, useEffect } from "react";
 import SavedRouteItem from "./SavedRouteItem";
 import { FaChevronDown } from "react-icons/fa";
-import { getSavedRoutes, deleteSavedRoute } from "../../api/routes";
+import { getSavedRoutes, deleteSavedRoute} from "../../api/routes";
 
 export default function SavedRoutes() {
   // 로딩 / 에러 / 원본 데이터 상태
   const [routes, setRoutes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  // const [endLat, setEndLat] = useState(null);
+  // const [endLng, setEndLng] = useState(null);
+  // const [endName, setEndName] = useState(null);
 
   // 정렬 상태: "latest" 또는 "oldest"
   const [sortOrder, setSortOrder] = useState("latest");
@@ -50,6 +54,18 @@ export default function SavedRoutes() {
     }
   };
 
+  // const handleStart = async (id) => {
+  //   try {
+  //     const data = await sendSavedRoute(id);
+  //     setEndName(data.endName);
+  //     setEndLat(data.endLat);
+  //     setEndLng(data.endLng);
+  //   } catch (e) {
+  //   console.error("경로 시작 실패", e);
+  //   alert("경로 시작에 실패했습니다.");
+  //   }
+  // }
+// console.log(endName, endLat, endLng);
   return (
     <section className="mt-8">
       <h2 className="text-xl font-medium text-gray-800">저장된 길</h2>
@@ -68,6 +84,7 @@ export default function SavedRoutes() {
             key={route.id}
             route={route}
             onDelete={() => handleDelete(route.id)}
+            // onClick={() => handleStart(route.id)}
           />
         ))}
       </div>

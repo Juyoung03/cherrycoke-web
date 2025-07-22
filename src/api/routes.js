@@ -41,11 +41,11 @@
   const json = await res.json();
   // 서버 반환 스키마: { success, status, timeStamp, data: [ { id, displayName, mode, ... } ] }
   return json.data.map((item) => ({
-    id: item.id,
-    name: item.displayName,
+    id: item.routeId,
+    name: item.routeName,
     mode: item.mode === "도보" ? "walk" : "transit",
     date: new Date(json.timeStamp).getTime(),
-    destination: item.displayName,
+    destination: item.routeName,
     reactions: item.reactions || [],
   }));
 }
@@ -64,4 +64,35 @@ export async function deleteSavedRoute(routeId) {
     throw new Error(`Failed to delete route: ${res.status}`);
   }
   return await res.json();
+}
+
+// 저장된 경로 목적지 받아오기
+export async function sendSavedRoute(routeId) {
+  const res = await fetch(`${BACKEND}/api/routes/${routeId}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${TOKEN}`,
+    },
+  });
+  if (!res.ok) {
+    throw new Error(`Failed to get route: ${res.status}`);
+  }
+
+  // const { data } = await res.json();
+  // return {
+  //      destination: data.endName,
+  //      endLat:      data.endLat,
+  //      endLng:      data.endLng,
+  //    };
+
+   const json = await res.json();
+  // data가 배열인지 객체인지 자동 분기
+  const d = Array.isArray(json.data) ? json.data[0] : json.data;
+  return {
+    destination: d.endName,  // 백엔드 필드명 그대로
+    endLat:      d.endLat,
+    endLng:      d.endLng,
+  };
+     
 }
