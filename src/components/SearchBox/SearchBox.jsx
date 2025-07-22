@@ -39,8 +39,8 @@ export default function SearchBox() {
     // 사용자가 직접 입력할 때: 좌표 초기화
     const handleDestinationChange = (e) => {
       setDestination(e.target.value);
-      setEndLat(null);
-      setEndLng(null);
+      setEndLat(endLat);
+      setEndLng(endLng);
     };
   
     // 자동완성 목록에서 장소를 고른 경우
@@ -49,6 +49,7 @@ export default function SearchBox() {
       setEndLat(lat);
       setEndLng(lng);
     };
+    //console.log(endLat, endLng);
   
     const handleSearch = () => {
       if (endLat == null || endLng == null) {
@@ -61,6 +62,8 @@ export default function SearchBox() {
         destination,
         startLat,
         startLng,
+        endLat,
+        endLng
       } 
     });
     };
