@@ -13,6 +13,8 @@ export default function SearchBox() {
   const saved = localStorage.getItem("searchMode");
   const [mode, setMode] = useState(saved ?? "transit");
   const [destination, setDestination] = useState("");
+  const [startLng, setStartLng] = useState(0);
+  const [startLat, setStartLat] = useState(0);
 
   // 2) mode가 바뀔 때마다 로컬스토리지에 기록
   useEffect(() => {
@@ -28,7 +30,14 @@ export default function SearchBox() {
   };
 
   const handleSearch = () => {
-    nav("/routefinder", { state: { mode, destination } });
+    nav("/routefinder", { 
+      state: { 
+        mode, 
+        destination,
+        startLat,
+        startLng,
+      } 
+    });
   };
 
   return (
@@ -36,7 +45,7 @@ export default function SearchBox() {
                     shadow-[0px_0px_9.6px_rgba(0,0,0,0.1)]
                     w-full max-w-md mx-auto">
       <TransportToggle onChange={handleModeChange} state={mode} />
-      <StartInput />
+      <StartInput setStartLat={setStartLat} setStartLng={setStartLng} />
       <DestinationInput value={destination} onChange={handleDestinationChange} />
       <SearchBar onClick={handleSearch} />
     </div>

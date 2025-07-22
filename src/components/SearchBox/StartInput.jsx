@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import StartIcon from "../../icons/start.svg";
 
-export default function StartInput() {
+export default function StartInput({ setStartLat, setStartLng }) {
   const [address, setAddress] = useState("주소를 불러오는 중...");
   const [loading, setLoading] = useState(true);
 
@@ -17,6 +17,8 @@ export default function StartInput() {
     navigator.geolocation.getCurrentPosition(
       async (position) => {
         const { latitude, longitude } = position.coords;
+        setStartLat(latitude);
+        setStartLng(longitude);
         try {
           const res = await fetch(
             `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`
