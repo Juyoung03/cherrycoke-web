@@ -35,7 +35,8 @@ export default function RouteFooter({
     setShowSaveModal(false);
   };
 
-  console.log(endLat, endLng);
+  //console.log(endLat, endLng);
+  //console.log(mode);
 
   // 도보 모드용 요약 카드
   //const SummaryCard = () => (
@@ -131,6 +132,7 @@ export default function RouteFooter({
         defaultLabel={destination}
         endLat={endLat}
         endLng={endLng}
+        mode={mode}
       />
     </>
   );

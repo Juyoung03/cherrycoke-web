@@ -33,7 +33,7 @@ export default function RouteFinder({ onSaveRoute }) {
       }
     });
   };
-  console.log(endLat, endLng);
+  //console.log(endLat, endLng);
 
   const mapRef = useRef(null);
     const [isTmapReady, setIsTmapReady] = useState(false);
