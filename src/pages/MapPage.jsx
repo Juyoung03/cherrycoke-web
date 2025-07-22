@@ -86,7 +86,7 @@ const MapPage = () => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        appKey: import.meta.env.VITE_TMAP_APP_KEY
+        appKey: import.meta.env.VITE_TRANSIT_APP_KEY
       },
       body: JSON.stringify({
         startX: startLng,
