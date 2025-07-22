@@ -1,11 +1,23 @@
 // src/components/SavedRoutes/SavedRouteItem.jsx
 import React, { useState } from "react";
-import RouteHeader from "./RouteHeader";
-import RouteReactions from "./RouteReactions";
+import { useNavigate }     from "react-router-dom";
+import RouteHeader         from "./RouteHeader";
+import RouteReactions      from "./RouteReactions";
 
 export default function SavedRouteItem({ route }) {
   const [isOpen, setIsOpen] = useState(false);
   const handleToggle = () => setIsOpen(prev => !prev);
+  const navigate = useNavigate();
+
+  // “바로 안내시작” 버튼 클릭 핸들러
+  const handleStart = (e) => {
+      e.stopPropagation(); // 카드 클릭 토글과 겹치지 않도록
+      if (route.mode === "walk") {
+        navigate(`/routeguide/walk/${route.id}`);
+      } else {
+        navigate(`/routeguide/transit/${route.id}`);
+      }
+    };
 
   return (
     <div
@@ -33,6 +45,21 @@ export default function SavedRouteItem({ route }) {
           <RouteReactions reactions={route.reactions} />
         </div>
       )}
+
+      {/* 바로 안내시작 버튼 */}
+      <button
+        onClick={handleStart}
+        className={`
+          w-full 
+          px-4 py-3
+          text-center text-[#FF2655] font-medium
+          border-t border-gray-200
+          hover:bg-gray-50 
+          transition
+        `}
+      >
+        바로 안내 시작
+      </button>
     </div>
   );
 }
