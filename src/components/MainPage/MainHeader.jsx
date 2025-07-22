@@ -17,7 +17,7 @@ export default function Header() {
 
      {/* 실제 로고 이미지 */}
      <img
-       src="/cherry-favicon.png" 
+       src="/cherry-favicon.svg" 
        alt="Cherry Logo"
        className="
          w-[46px] h-[46px]

@@ -60,18 +60,18 @@ export default function StartInput({ setStartLat, setStartLng }) {
   }, []);
 
   // 2) address가 바뀌고 loading이 false가 되면 음성으로 안내
-  useEffect(() => {
-    if (loading) return;
-    if (!window.speechSynthesis) return;
+  // useEffect(() => {
+  //   if (loading) return;
+  //   if (!window.speechSynthesis) return;
 
-    const utter = new SpeechSynthesisUtterance("내 위치");
-    utter.lang = "ko-KR";
-    utter.rate = 1;   // 속도: 0.1 ~ 10
-    utter.pitch = 1;  // 음높이: 0 ~ 2
-    // 이전 안내 중단
-    window.speechSynthesis.cancel();
-    window.speechSynthesis.speak(utter);
-  }, [address, loading]);
+  //   const utter = new SpeechSynthesisUtterance("내 위치");
+  //   utter.lang = "ko-KR";
+  //   utter.rate = 1;   // 속도: 0.1 ~ 10
+  //   utter.pitch = 1;  // 음높이: 0 ~ 2
+  //   // 이전 안내 중단
+  //   window.speechSynthesis.cancel();
+  //   window.speechSynthesis.speak(utter);
+  // }, [address, loading]);
 
     // 에러 메시지 목록
   const errorMessages = [
