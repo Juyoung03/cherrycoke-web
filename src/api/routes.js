@@ -2,11 +2,31 @@
 // 실제 API와 연동하여 저장된 경로 목록 조회 및 삭제를 수행합니다.
 
 // 저장된 경로 목록 조회
-export async function getSavedRoutes() {
-  const token = localStorage.getItem("token") 
-    || "eyJhbGciOiJIUzUxMiJ9.eyJjYXRlZ29yeSI6ImFjY2VzcyIsIm1lbWJlcklkIjoiNCIsInJvbGUiOiJST0xFX0FETUlOIiwiaWF0IjoxNzUyMjI0MDE4LCJleHAiOjE3NTIyMjQ2MTh9.80JVR-9jEdyAaDCKjjYnn03y_6614LIPQb6MWMA5rEWXP0crqf1y0OIVTFV3qDT6F5M63YmdVo0e0i_KK6spmg";
+// export async function getSavedRoutes() {
+//   const token = localStorage.getItem("token") 
+//     || "eyJhbGciOiJIUzUxMiJ9.eyJjYXRlZ29yeSI6ImFjY2VzcyIsIm1lbWJlcklkIjoiNCIsInJvbGUiOiJST0xFX0FETUlOIiwiaWF0IjoxNzUyMjI0MDE4LCJleHAiOjE3NTIyMjQ2MTh9.80JVR-9jEdyAaDCKjjYnn03y_6614LIPQb6MWMA5rEWXP0crqf1y0OIVTFV3qDT6F5M63YmdVo0e0i_KK6spmg";
 
-  const res = await fetch("http://3.34.123.246/api/routes/list", {
+  const BACKEND = "http://3.34.123.246";
+
+   // ① 토큰 가져오기: localStorage → 없으면 /dev/token 호출
+ async function getToken() {
+   let token = localStorage.getItem("token");
+   if (token) return token;
+
+   const res = await fetch(`${BACKEND}/dev/token`, { method: "POST" });
+   if (!res.ok) throw new Error(`토큰 발급 실패 ${res.status}`);
+
+   // Swagger 응답이 "토큰문자열" 형식일 수 있어 따옴표 제거
+   let raw = await res.text();
+   token = raw.replace(/^"(.*)"$/, "$1");
+   localStorage.setItem("token", token);   // 캐시
+   return token;
+ }
+
+ // 저장된 경로 목록 조회
+ export async function getSavedRoutes() {
+  const token = await getToken();
+  const res = await fetch(`${BACKEND}/api/routes/list`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -31,8 +51,8 @@ export async function getSavedRoutes() {
 
 // 특정 저장 경로 삭제
 export async function deleteSavedRoute(routeId) {
-  const token = localStorage.getItem("token");
-  const res = await fetch(`http://3.34.123.246/api/routes/${routeId}`, {
+  const token = await getToken();
+  const res = await fetch(`${BACKEND}/api/routes/${routeId}`, {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",

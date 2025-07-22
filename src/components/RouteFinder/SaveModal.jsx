@@ -28,7 +28,16 @@ export default function SaveModal({
 
     try {
       setLoading(true);
-      const token = "eyJhbGciOiJIUzUxMiJ9.eyJjYXRlZ29yeSI6ImFjY2VzcyIsIm1lbWJlcklkIjoiNCIsInJvbGUiOiJST0xFX0FETUlOIiwiaWF0IjoxNzUyMjI0MDE4LCJleHAiOjE3NTIyMjQ2MTh9.80JVR-9jEdyAaDCKjjYnn03y_6614LIPQb6MWMA5rEWXP0crqf1y0OIVTFV3qDT6F5M63YmdVo0e0i_KK6spmg";
+      // 1) /dev/token 호출해서 테스트용 JWT 받아오기
+      const tokenRes = await fetch("http://3.34.123.246/dev/token", {
+        method: "POST"
+      });
+      if (!tokenRes.ok) throw new Error(`토큰 발급 실패 ${tokenRes.status}`);
+      // Swagger UI가 응답을 "토큰문자열" 형태로 줄 수 있어서,
+      // 따옴표를 제거해 줍니다
+      let raw = await tokenRes.text();
+      const token = raw.replace(/^"(.*)"$/, "$1");
+      
       const res = await fetch("http://3.34.123.246/api/routes", {
         method: "POST",
         headers: { "Content-Type": "application/json",
