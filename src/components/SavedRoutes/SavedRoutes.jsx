@@ -67,7 +67,8 @@ export default function SavedRoutes() {
           <SavedRouteItem
             key={route.id}
             route={route}
-            onDelete={() => handleDelete(route.id)}
+            onDelete={() => handleDelete(route.id)
+            }
           />
         ))}
       </div>

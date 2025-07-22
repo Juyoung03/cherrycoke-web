@@ -9,7 +9,7 @@ export default function SavedRouteItem({ route }) {
   const handleToggle = () => setIsOpen(prev => !prev);
   const navigate = useNavigate();
 
-  // “바로 안내시작” 버튼 클릭 핸들러
+  //“바로 안내시작” 버튼 클릭 핸들러
   const handleStart = (e) => {
       e.stopPropagation(); // 카드 클릭 토글과 겹치지 않도록
       if (route.mode === "walk") {
@@ -18,6 +18,7 @@ export default function SavedRouteItem({ route }) {
         navigate(`/routeguide/transit/${route.id}`);
       }
     };
+
 
   return (
     <div
