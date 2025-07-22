@@ -143,7 +143,7 @@ const MapPage = () => {
     <div className="relative flex flex-col items-center h-screen overflow-hidden">
       <div
         ref={mapRef}
-        className="w-full h-[480px]"
+        className="w-full h-[480px] mb-[15px]"
       ></div>
 
       <div className="max-h-[80vh] overflow-y-auto">

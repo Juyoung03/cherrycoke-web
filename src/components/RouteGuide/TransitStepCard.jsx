@@ -4,9 +4,22 @@ import { useState } from "react";
 const TransitStepCard = ({ data }) => {
   const nav = useNavigate(); // ✅ 반드시 최상단에서 실행
   const [currentStep, setCurrentStep] = useState(0); // ✅ 최상단
+  const [currentStationIndex, setCurrentStationIndex] = useState(0);
 
   const plan = data?.metaData?.plan?.itineraries?.[0];
-  if (!plan) return <div>로딩 중</div>;
+  if (!plan) return (
+    <div className="w-[358px] rounded-md flex flex-col items-center justify-center">
+      <p>경로가 없습니다.</p> 
+      <p>걷기로 다시 시도해주세요.</p>
+      <div className="border border-[#A1A1A1] w-[358px] h-[43px] flex justify-center mt-[9px] rounded-[5px]">
+            <button
+                className="text-[#272727]"
+                onClick={() => nav("/")}
+            >
+                홈으로
+            </button>
+        </div>
+    </div>);
 
   const RouteSteps = [];
 
@@ -43,22 +56,39 @@ const TransitStepCard = ({ data }) => {
   });
 
   const handleNext = () => {
+    const step = RouteSteps[currentStep];
+
+    if ((step.type === "bus" || step.type === "subway") && step.stations.length > 1) {
+      if (currentStationIndex < step.stations.length - 1) {
+        setCurrentStationIndex((prev) => prev + 1);
+        return;
+      }
+    }
     setCurrentStep((prev) => Math.min(prev + 1, RouteSteps.length));
+    setCurrentStationIndex(0);
   };
 
   const handlePrev = () => {
-    setCurrentStep((prev) => Math.max(prev - 1, 0));
-  };
-
-  if (currentStep >= RouteSteps.length) {
-    return (
-      <div className="w-[358px] rounded-md text-center text-gray-700">
-        경로 안내 완료
-      </div>
-    );
+    if (currentStationIndex > 0) {
+    setCurrentStationIndex((prev) => prev - 1);
+    return;
   }
 
-  const step = RouteSteps[currentStep];
+  if (currentStep > 0) {
+    const prevStep = RouteSteps[currentStep - 1];
+    setCurrentStep((prev) => prev - 1);
+
+    // 이전 단계가 정거장 여러 개면 맨 끝 정거장으로
+    if ((prevStep.type === "bus" || prevStep.type === "subway") && prevStep.stations.length > 0) {
+      setCurrentStationIndex(prevStep.stations.length - 1);
+    } else {
+      setCurrentStationIndex(0);
+    }
+  }
+  };
+
+  const step = RouteSteps[Math.min(currentStep, RouteSteps.length - 1)];
+
   
 
   return (
@@ -75,15 +105,24 @@ const TransitStepCard = ({ data }) => {
                         onClick={handlePrev}
                         className="text-white border border-white rounded-sm"
                       >
-                        이전
+                        이전 단계
                       </button>
                     )}
-                    <button 
-                      onClick={handleNext} 
-                      className="text-white border border-white rounded-sm"
-                    >
-                        다음
-                    </button>
+                    {currentStep < RouteSteps.length - 1 ? (
+                      <button 
+                        onClick={handleNext} 
+                        className="text-white border border-white rounded-sm"
+                      >
+                        다음 단계
+                      </button>
+                    ) : (
+                      <button 
+                        onClick={() => nav("/")} 
+                        className="text-white border border-white rounded-sm"
+                      >
+                        홈으로
+                      </button>
+                    )}
                 </div>
             </div>
 
@@ -102,6 +141,29 @@ const TransitStepCard = ({ data }) => {
 
         {step.type === "bus" && (
           <>
+            {currentStationIndex === 0 && (
+              <>
+                <div className="border border-black rounded-md h-[48px] flex items-center justify-center mb-[9px]">
+                  다음에 오는 <strong className="ml-[4px]">{step.route.match(/\d+/g)}</strong>번 버스를 타세요.
+                </div>
+              </>
+            )}
+            {currentStationIndex === step.stations.length - 2 && (
+              <>
+                <div className="border border-black rounded-md h-[48px] flex items-center justify-center mb-[9px]">
+                  다음 정류장에서 내려야 해요!
+                </div>
+              </>
+            )}
+            {currentStationIndex === step.stations.length - 1 && (
+              <>
+                <div className="border border-black rounded-md h-[48px] flex items-center justify-center mb-[9px]">
+                  곧 도착해요! 버스벨을 눌러주세요.
+                </div>
+              </>
+            )}
+              
+            
             <div
               className="h-[31px] bg-[#38416C] rounded-t-[5px] text-[15px] text-white flex items-center px-[19px] justify-between"
             >
@@ -113,15 +175,24 @@ const TransitStepCard = ({ data }) => {
                         onClick={handlePrev}
                         className="text-white border border-white rounded-sm"
                       >
-                        이전
+                        이전 단계
                       </button>
                     )}
-                    <button 
-                      onClick={handleNext} 
-                      className="text-white border border-white rounded-sm"
-                    >
-                        다음
-                    </button>
+                    {currentStep < RouteSteps.length - 1 ? (
+                      <button 
+                        onClick={handleNext} 
+                        className="text-white border border-white rounded-sm"
+                      >
+                        다음 단계
+                      </button>
+                    ) : (
+                      <button 
+                        onClick={() => nav("/")} 
+                        className="text-white border border-white rounded-sm"
+                      >
+                        홈으로
+                      </button>
+                    )}
                 </div>
             </div>
             <div className="border border-[#E1E1E1] border-t-0 rounded-b-[5px] p-[10px]">
@@ -151,9 +222,10 @@ const TransitStepCard = ({ data }) => {
                 <div className="w-[320px] flex mx-auto mt-1">
                     
                     <ul>
-                        {step.stations.map((station, index) => (
-                            <li key={index} className="text-[18px] text-[#959595]">{station.stationName}</li>
-                        ))}
+                        <li className="text-[15px] flex flex-row gap-[5px]">
+                          <p>현재 정류장 : </p>
+                          {step.stations[currentStationIndex]?.stationName}
+                        </li>
                     </ul>
                 </div>
               
@@ -164,6 +236,27 @@ const TransitStepCard = ({ data }) => {
 
         {step.type === "subway" && (
           <>
+          {currentStationIndex === 0 && (
+              <>
+                <div className="border border-black rounded-md h-[48px] flex items-center justify-center mb-[9px]">
+                  다음에 오는 지하철을 타세요.
+                </div>
+              </>
+            )}
+            {currentStationIndex === step.stations.length - 2 && (
+              <>
+                <div className="border border-black rounded-md h-[48px] flex items-center justify-center mb-[9px]">
+                  다음 역에서 내려야 해요!
+                </div>
+              </>
+            )}
+            {currentStationIndex === step.stations.length - 1 && (
+              <>
+                <div className="border border-black rounded-md h-[48px] flex items-center justify-center mb-[9px]">
+                  곧 도착해요! 지하철이 멈추면 내려주세요.
+                </div>
+              </>
+            )}
             <div
               className="h-[31px] rounded-t-[5px] text-[15px] text-white flex items-center px-[19px] justify-between"
               style={{backgroundColor : `#${step.subwayColor}`}}
@@ -176,33 +269,42 @@ const TransitStepCard = ({ data }) => {
                         onClick={handlePrev}
                         className="text-white border border-white rounded-sm"
                       >
-                        이전
+                        이전 단계
                       </button>
                     )}
-                    <button 
-                      onClick={handleNext} 
-                      className="text-white border border-white rounded-sm"
-                    >
-                        다음
-                    </button>
+                    {currentStep < RouteSteps.length - 1 ? (
+                      <button 
+                        onClick={handleNext} 
+                        className="text-white border border-white rounded-sm"
+                      >
+                        다음 단계
+                      </button>
+                    ) : (
+                      <button 
+                        onClick={() => nav("/")} 
+                        className="text-white border border-white rounded-sm"
+                      >
+                        홈으로
+                      </button>
+                    )}
                 </div>
             </div>
             <div className="border border-[#E1E1E1] border-t-0 rounded-b-[5px] p-[10px]">
-                <div className="w-[320px] flex mx-auto mb-1 flex-col">
-                    <p className="text-[22px]">{step.stations[0]?.stationName}역에서 타기</p>
+                <div className="w-[320px] flex mx-auto mb-1 flex-row text-[18px] gap-[5px]">
+                    <p style={{color : `#${step.subwayColor}`}}>{step.route}</p>
+                    <p>{step.stations[0]?.stationName}역에서 타기</p>
                     
                 </div>
                 <hr className="w-[320px] flex mx-auto border-[#DDDDDD]" />
                 <div className="w-[320px] flex mx-auto mt-1">
                     
                     <ul>
-                        {step.stations.map((station, index) => (
-                            <li key={index} className="text-[18px] text-[#959595]">{station.stationName}</li>
-                        ))}
+                        <li className="text-[15px] flex flex-row gap-[5px]">
+                          <p>현재역: </p>
+                          {step.stations[currentStationIndex]?.stationName}
+                        </li>
                     </ul>
                 </div>
-              
-              
             </div>
           </>
         )}
