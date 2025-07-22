@@ -38,7 +38,7 @@ export default function SaveModal({
       let raw = await tokenRes.text();
       const token = raw.replace(/^"(.*)"$/, "$1");
       
-      const res = await fetch("http://3.34.123.246/api/routes", {
+      const res = await fetch("https://3.34.123.246/api/routes", {
         method: "POST",
         headers: { "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
