@@ -94,18 +94,31 @@ const StepCard = ({data}) => {
                 <div>
                     {String(pointIndex + 1).padStart(2, '0')}
                 </div>
-                <div className="cursor-pointer">
-                    <button
-                        onClick={() => {
-                            if (isLastStep) {
-                                nav("/");
-                            } else {
-                                setCurrentStepIndex(prev => prev + 1);
-                            }
-                        }}
-                    >
-                        {isLastStep ? <></> : "다음 단계"}
-                    </button>
+                <div className="cursor-pointer flex gap-2">
+                    {currentStepIndex > 0 && (
+                        <button
+                            onClick={() => setCurrentStepIndex(prev => prev - 1)}
+                            className="text-white border border-white rounded-sm"
+                        >
+                            이전 단계
+                        </button>
+                        )}
+                        {!isLastStep && (
+                        <button
+                            onClick={() => setCurrentStepIndex(prev => prev + 1)}
+                            className="text-white border border-white rounded-sm"
+                        >
+                            다음 단계
+                        </button>
+                        )}
+                        {isLastStep && (
+                        <button
+                            onClick={() => nav("/")}
+                            className="text-white"
+                        >
+                            홈으로
+                        </button>
+                        )}
                 </div>
             </div>
             <div className="border border-[#E1E1E1] border-t-0 rounded-b-[5px] p-[10px]">

@@ -46,6 +46,10 @@ const TransitStepCard = ({ data }) => {
     setCurrentStep((prev) => Math.min(prev + 1, RouteSteps.length));
   };
 
+  const handlePrev = () => {
+    setCurrentStep((prev) => Math.max(prev - 1, 0));
+  };
+
   if (currentStep >= RouteSteps.length) {
     return (
       <div className="w-[358px] rounded-md text-center text-gray-700">
@@ -66,7 +70,18 @@ const TransitStepCard = ({ data }) => {
               <div>{String(currentStep + 1).padStart(2, '0')}</div>
               
               <div className="cursor-pointer">
-                    <button onClick={handleNext}>
+                    {currentStep > 0 && (
+                      <button 
+                        onClick={handlePrev}
+                        className="text-white border border-white rounded-sm"
+                      >
+                        이전
+                      </button>
+                    )}
+                    <button 
+                      onClick={handleNext} 
+                      className="text-white border border-white rounded-sm"
+                    >
                         다음
                     </button>
                 </div>
@@ -93,7 +108,18 @@ const TransitStepCard = ({ data }) => {
               <div>{String(currentStep + 1).padStart(2, '0')}</div>
               
               <div className="cursor-pointer">
-                    <button onClick={handleNext}>
+                    {currentStep > 0 && (
+                      <button 
+                        onClick={handlePrev}
+                        className="text-white border border-white rounded-sm"
+                      >
+                        이전
+                      </button>
+                    )}
+                    <button 
+                      onClick={handleNext} 
+                      className="text-white border border-white rounded-sm"
+                    >
                         다음
                     </button>
                 </div>
@@ -145,7 +171,18 @@ const TransitStepCard = ({ data }) => {
               <div>{String(currentStep + 1).padStart(2, '0')}</div>
               
               <div className="cursor-pointer">
-                    <button onClick={handleNext}>
+                    {currentStep > 0 && (
+                      <button 
+                        onClick={handlePrev}
+                        className="text-white border border-white rounded-sm"
+                      >
+                        이전
+                      </button>
+                    )}
+                    <button 
+                      onClick={handleNext} 
+                      className="text-white border border-white rounded-sm"
+                    >
                         다음
                     </button>
                 </div>
