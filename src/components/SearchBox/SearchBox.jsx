@@ -13,6 +13,9 @@ export default function SearchBox() {
   const saved = localStorage.getItem("searchMode");
   const [mode, setMode] = useState(saved ?? "transit");
   const [destination, setDestination] = useState("");
+  const [startLng, setStartLng] = useState(0);
+  const [startLat, setStartLat] = useState(0);
+
   const [endLat, setEndLat] = useState(null);
   const [endLng, setEndLng] = useState(null);
 
@@ -53,17 +56,21 @@ export default function SearchBox() {
         return;
       }
       nav("/routefinder", {
-        state: { mode, destination, endLat, endLng },   // ★ 좌표 전달
-      });
+        state: { 
+        mode, 
+        destination,
+        startLat,
+        startLng,
+      } 
+    });
     };
-
 
   return (
     <div className="bg-white px-[12px] pt-[9px] pb-[9px] rounded-[10px]
                     shadow-[0px_0px_9.6px_rgba(0,0,0,0.1)]
                     w-full max-w-md mx-auto">
       <TransportToggle onChange={handleModeChange} state={mode} />
-      <StartInput />
+      <StartInput setStartLat={setStartLat} setStartLng={setStartLng} />
       <DestinationInput
       value={destination}
       onChange={handleDestinationChange}

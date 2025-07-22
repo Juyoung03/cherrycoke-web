@@ -1,10 +1,11 @@
 // src/components/RouteFinder/RouteFinder.jsx
 import { useState, useEffect, useRef }      from "react";
-import { useLocation }   from "react-router-dom";
+import { useLocation, useNavigate }   from "react-router-dom";
 import RouteHeader       from "./RouteHeader";
 import RouteFooter       from "./RouteFooter";  // ① RouteFooter 임포트
 
 export default function RouteFinder({ onSaveRoute }) {
+  const nav = useNavigate();
   const { state } = useLocation();
   const [mode, setMode] = useState(state?.mode ?? "transit");
   const [destination]  = useState(state?.destination ?? "");
@@ -17,6 +18,14 @@ export default function RouteFinder({ onSaveRoute }) {
   const handleStart = () => {
     // 안내 시작 눌렀을 때 로직
     console.log("안내 시작!", { mode, destination });
+    nav("/map", {
+      state: {
+        mode,
+        destination,
+        endLat: clickedCoord.lat,
+        endLng: clickedCoord.lng,
+      }
+    });
   };
 
   const mapRef = useRef(null);
