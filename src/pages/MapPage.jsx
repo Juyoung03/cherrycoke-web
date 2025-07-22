@@ -40,8 +40,8 @@ const MapPage = () => {
 
     }
   }, [isTmapReady]);
-  // console.log(window.Tmapv2);
-  // console.log("mapRef.current:", mapRef.current);
+  console.log(window.Tmapv2);
+  console.log("mapRef.current:", mapRef.current);
 
 
   // 3. 경로 API 호출
