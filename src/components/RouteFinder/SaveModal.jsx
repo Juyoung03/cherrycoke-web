@@ -1,6 +1,9 @@
 // src/components/RouteFinder/SaveModal.jsx
 import React, { useState } from "react";
 
+const TOKEN = "eyJhbGciOiJIUzUxMiJ9.eyJjYXRlZ29yeSI6ImFjY2VzcyIsIm1lbWJlcklkIjoiMSIsInJvbGUiOiJST0xFX0FETUlOIiwiaWF0IjoxNzUzMjA5Mzk1LCJleHAiOjE3NTMyOTU3OTV9.TmZXRpzepRMd3j43s03nzJmOCUM_2w3stYswargPK6qFIVCudohVW3s0Kg-ToBrvbBxcb72sWfNkh9EalJaY0w";
+const BACKEND = "https://3.34.123.246";
+
 export default function SaveModal({  
   isOpen,          // 모달 열림 여부  
   onClose,         // 닫기 핸들러  
@@ -31,19 +34,19 @@ export default function SaveModal({
     try {
       setLoading(true);
       // 1) /dev/token 호출해서 테스트용 JWT 받아오기
-      const tokenRes = await fetch("https://3.34.123.246/dev/token", {
-        method: "POST"
-      });
-      if (!tokenRes.ok) throw new Error(`토큰 발급 실패 ${tokenRes.status}`);
+      // const tokenRes = await fetch("https://3.34.123.246/dev/token", {
+      //   method: "POST"
+      // });
+      // if (!tokenRes.ok) throw new Error(`토큰 발급 실패 ${tokenRes.status}`);
       // Swagger UI가 응답을 "토큰문자열" 형태로 줄 수 있어서,
       // 따옴표를 제거해 줍니다
-      let raw = await tokenRes.text();
-      const token = raw.replace(/^"(.*)"$/, "$1");
+      // let raw = await tokenRes.text();
+      // const token = raw.replace(/^"(.*)"$/, "$1");
       
-      const res = await fetch("https://3.34.123.246/api/routes", {
+      const res = await fetch(`${BACKEND}/api/routes`, {
         method: "POST",
         headers: { "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${TOKEN}`,
          },
         body: JSON.stringify(payload),
       });
