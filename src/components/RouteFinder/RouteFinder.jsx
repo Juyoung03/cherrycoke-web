@@ -9,6 +9,8 @@ export default function RouteFinder({ onSaveRoute }) {
   const { state } = useLocation();
   const [mode, setMode] = useState(state?.mode ?? "transit");
   const [destination]  = useState(state?.destination ?? "");
+  const [endLat, setEndLat] = useState(state?.endLat ?? null);
+  const [endLng, setEndLng] = useState(state?.endLng ?? null);
   const [startLat, setStartLat] = useState(state?.startLat ?? null);
   const [startLng, setStartLng] = useState(state?.startLng ?? null);
 
@@ -19,18 +21,19 @@ export default function RouteFinder({ onSaveRoute }) {
 
   const handleStart = () => {
     // 안내 시작 눌렀을 때 로직
-    console.log("안내 시작!", { mode, destination });
+    console.log("안내 시작!", { mode, destination, endLat, endLng });
     nav("/map", {
       state: {
         mode,
         destination,
-        endLat: clickedCoord.lat,
-        endLng: clickedCoord.lng,
+        endLat,
+        endLng
         startLat,
         startLng
       }
     });
   };
+  //console.log(endLat, endLng);
 
   const mapRef = useRef(null);
     const [isTmapReady, setIsTmapReady] = useState(false);
@@ -67,17 +70,8 @@ export default function RouteFinder({ onSaveRoute }) {
           const lat = evt.latLng.lat();
           const lon = evt.latLng.lng();
           console.log("클릭된 좌표:", lon, lat);
-          //setClickedCoord(`${lon}, ${lat}`);
           setClickedCoord({lat, lng: lon});
         });
-        // Tmapv2 전용 클릭 리스너로 교체
-      //  window.Tmapv2.EventListener.addListener(map, "click", (evt) => {
-      //      const lat = evt.latLng.getLatitude();
-      //      const lng = evt.latLng.getLongitude();
-      //      // **객체** 형태로 저장해야 props.endLat/endLng 가 제대로 넘어갑니다
-      //      setClickedCoord({ lat, lng });
-      //    });
-  
         
       }
     }, [isTmapReady]);
