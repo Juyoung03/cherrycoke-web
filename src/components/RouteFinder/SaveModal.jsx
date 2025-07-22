@@ -21,7 +21,7 @@ export default function SaveModal({
     const payload = {
       routeName: name,
       mode: modeString,
-      endName: "test",
+      endName: defaultLabel,
       endLat,
       endLng,
     };
