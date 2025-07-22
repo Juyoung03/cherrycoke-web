@@ -10,6 +10,8 @@ export default function DestinationInput({
   const [suggestions, setSuggestions] = useState([]);
   const [open, setOpen]               = useState(false);
   const timer                         = useRef(null);
+  const justPicked = useRef(false);
+
 
   // — 공통으로 쓰일 POI fetch 함수
   const fetchSuggestions = async () => {
@@ -41,6 +43,11 @@ export default function DestinationInput({
 
   /* ---------- value 변화 시 디바운스 자동완성 ---------- */
   useEffect(() => {
+    if (justPicked.current) {
+      justPicked.current = false; 
+      return;
+    }
+
     if (!value.trim()) {
       setSuggestions([]);
       setOpen(false);
@@ -69,7 +76,8 @@ export default function DestinationInput({
 
   /* ---------- 항목 선택 시 ---------- */
   const handlePick = (item) => {
-    onSelect(item);     // 부모(SearchBox)에 {name,lat,lng} 전달
+    justPicked.current = true;
+    onSelect(item);     // 부모(SearchBox)에 {name,lat,lng} 전달   
     setOpen(false);     // 리스트만 닫기 (suggestions는 남겨둠)
   };
 
@@ -84,6 +92,7 @@ export default function DestinationInput({
           type="text"
           value={value}
           onChange={onChange}
+          onBlur={() => setOpen(false)}
           onFocus={() => {             // 입력 칸 클릭·포커스 시 리스트 다시 열기
               if (suggestions.length > 0) setOpen(true);
              }}              // ← 추가

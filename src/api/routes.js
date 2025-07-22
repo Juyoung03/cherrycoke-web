@@ -39,6 +39,7 @@
     throw new Error(`Failed to fetch saved routes: ${res.status}`);
   }
   const json = await res.json();
+  console.log(json.data);
   // 서버 반환 스키마: { success, status, timeStamp, data: [ { id, displayName, mode, ... } ] }
   return json.data.map((item) => ({
     id: item.routeId,
