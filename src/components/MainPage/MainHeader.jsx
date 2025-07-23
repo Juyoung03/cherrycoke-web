@@ -1,7 +1,10 @@
 // src/components/MainPage/Header.jsx
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function Header() {
+  const navigate = useNavigate();    
+
   return (
     <header
       className="
@@ -26,9 +29,9 @@ export default function Header() {
        "
      />
 
-      {/* 우측 로그인 버튼 (필요시 교체) */}
+      {/* 우측 로그인 버튼 */}
       <button
-        onClick={() => {/* 로그인 페이지 이동 로직 */}}
+        onClick={() => navigate("/login")}
         className="
           px-3 py-1
           text-sm font-medium
