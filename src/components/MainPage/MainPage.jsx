@@ -6,7 +6,7 @@ import SavedRoutes from "../SavedRoutes/SavedRoutes";
 export default function MainPage() {
 
   return (
-    <div className="min-h-screen bg-white flex flex-col">
+    <div className="min-h-screen bg-white flex flex-col pt-[88px]">
       {/* 상단 헤더 */}
       <Header />
 

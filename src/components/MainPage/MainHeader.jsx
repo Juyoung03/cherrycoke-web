@@ -8,13 +8,13 @@ export default function Header() {
   return (
     <header
       className="
+        fixed top-0 z-50
         h-[88px]            /* 높이 88px */
         w-full
         flex items-center   /* 세로 중앙 정렬 */
         justify-between     /* 좌우 요소 간격 */
         px-6                /* 좌우 패딩 */
         bg-white            /* 배경 흰색 */
-        shadow-md           /* 그림자 */
       "
     >
 
