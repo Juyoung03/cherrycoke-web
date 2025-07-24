@@ -79,10 +79,10 @@ export default function SavedRoutes() {
   >
     <img
       src={EditIcon}
-      alt="수정하기"
+      alt="삭제하기"
       className="w-[12px] h-[11.18px]"
     />
-    <span className="text-[15px] text-[#939393]">수정하기</span>
+    <span className="text-[15px] text-[#939393]">삭제하기</span>
   </button>
 </div>
       {/* ───────────────────── 카운트 & 정렬 ───────────────────── */}
