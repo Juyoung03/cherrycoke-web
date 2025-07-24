@@ -73,16 +73,16 @@ export default function SavedRoutes() {
   </div>
 
   <button
-    type="button"
-    onClick={() => navigate("/edit")}
-    className="flex items-center gap-1 focus:outline-none"
-  >
+   type="button"
+   onClick={() => navigate("/edit", { state: { sortOrder } })}
+   className="flex items-center gap-1 focus:outline-none"
+ >
     <img
       src={EditIcon}
       alt="삭제하기"
       className="w-[12px] h-[11.18px]"
     />
-    <span className="text-[15px] text-[#939393]">삭제하기</span>
+    <span className="text-[15px] text-[#939393]">길 지우기</span>
   </button>
 </div>
       {/* ───────────────────── 카운트 & 정렬 ───────────────────── */}

@@ -1,6 +1,6 @@
 // src/pages/EditPage.jsx
 import React, { useState, useEffect } from "react";
-import { useNavigate }               from "react-router-dom";
+import { useNavigate, useLocation }               from "react-router-dom";
 import EditHeader                    from "../components/SavedRoutesEdit/EditHeader";
 import EditList                      from "../components/SavedRoutesEdit/EditList";
 import EditFooter                    from "../components/SavedRoutesEdit/EditFooter";
@@ -8,6 +8,8 @@ import { getSavedRoutes, deleteSavedRoute } from "../api/routes";
 
 export default function EditPage() {
   const navigate = useNavigate();
+  const { state } = useLocation();
+  const sortOrder = state?.sortOrder ?? "latest";
   const [routes, setRoutes]       = useState([]);
   const [loading, setLoading]     = useState(true);
   const [removedIds, setRemovedIds] = useState([]);  // ① 삭제 예정 ID 목록
@@ -18,6 +20,13 @@ export default function EditPage() {
       .catch(console.error)
       .finally(() => setLoading(false));
   }, []);
+
+  // 메인에서 받은 sortOrder대로 routes를 정렬한 배열
+   const sortedRoutes = React.useMemo(() => {
+     return [...routes].sort((a, b) =>
+       sortOrder === "latest" ? b.id - a.id : a.id - b.id
+     );
+   }, [routes, sortOrder]);
 
   // 삭제 버튼 누르면 로컬에서만 제거
   const handleDelete = (id) => {
@@ -47,7 +56,7 @@ export default function EditPage() {
         {loading ? (
           <p className="text-center text-gray-500">로딩 중...</p>
         ) : (
-          <EditList routes={routes} onDelete={handleDelete} />
+          <EditList routes={sortedRoutes} onDelete={handleDelete} />
         )}
       </main>
 

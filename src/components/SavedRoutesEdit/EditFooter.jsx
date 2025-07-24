@@ -15,7 +15,7 @@ export default function EditFooter({ onSave, hasChanges }) {
             : "bg-[#F0F0F0] text-[#C7C7C7] cursor-not-allowed"}
         `}
       >
-        삭제완료
+        길 지우기 완료
       </button>
     </footer>
   );

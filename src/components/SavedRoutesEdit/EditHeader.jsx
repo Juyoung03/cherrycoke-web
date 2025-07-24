@@ -20,7 +20,7 @@ export default function EditHeader({ onBack }) {
         />
       </button>
       <h1 className="flex-1 text-center text-lg font-medium text-gray-800">
-        삭제하기
+        길 지우기
       </h1>
       {/* 오른쪽 빈 공간: 균형용 */}
       <div className="w-8" />
