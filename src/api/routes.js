@@ -80,13 +80,6 @@ export async function sendSavedRoute(routeId) {
     throw new Error(`Failed to get route: ${res.status}`);
   }
 
-  // const { data } = await res.json();
-  // return {
-  //      destination: data.endName,
-  //      endLat:      data.endLat,
-  //      endLng:      data.endLng,
-  //    };
-
    const json = await res.json();
   // data가 배열인지 객체인지 자동 분기
   const d = Array.isArray(json.data) ? json.data[0] : json.data;
