@@ -43,7 +43,7 @@ export default function EditPage() {
     <div className="min-h-screen flex flex-col bg-white">
       <EditHeader onBack={() => navigate(-1)} />
 
-      <main className="flex-1 overflow-auto p-4">
+      <main className="flex-1 overflow-auto p-4 pt-[88px]">
         {loading ? (
           <p className="text-center text-gray-500">로딩 중...</p>
         ) : (
