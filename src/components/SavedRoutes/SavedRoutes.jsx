@@ -1,10 +1,13 @@
 // src/components/SavedRoutes/SavedRoutes.jsx
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import EditIcon from "../../icons/edit.svg";
 import SavedRouteItem from "./SavedRouteItem";
 import { FaChevronDown } from "react-icons/fa";
 import { getSavedRoutes, deleteSavedRoute} from "../../api/routes";
 
 export default function SavedRoutes() {
+  const navigate = useNavigate();
   // 로딩 / 에러 / 원본 데이터 상태
   const [routes, setRoutes] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -37,11 +40,12 @@ export default function SavedRoutes() {
   if (error)   return <div className="py-4 text-center text-red-500">{error}</div>;
 
   // 정렬 로직 (date 필드 기준)
-  const sortedData = [...routes].sort((a, b) =>
-    sortOrder === "latest"
-      ? (b.date || 0) - (a.date || 0)
-      : (a.date || 0) - (b.date || 0)
-  );
+  // 최신순: id 내림차순, 오래된순: id 오름차순
+   const sortedData = [...routes].sort((a, b) => {
+     return sortOrder === "latest"
+       ? b.id - a.id
+       : a.id - b.id;
+   });
 
   // 삭제 핸들러
   const handleDelete = async (id) => {
@@ -54,22 +58,34 @@ export default function SavedRoutes() {
     }
   };
 
-  // const handleStart = async (id) => {
-  //   try {
-  //     const data = await sendSavedRoute(id);
-  //     setEndName(data.endName);
-  //     setEndLat(data.endLat);
-  //     setEndLng(data.endLng);
-  //   } catch (e) {
-  //   console.error("경로 시작 실패", e);
-  //   alert("경로 시작에 실패했습니다.");
-  //   }
-  // }
-// console.log(endName, endLat, endLng);
   return (
     <section className="mt-8">
-      <h2 className="text-xl font-medium text-gray-800">저장된 길</h2>
+    {/* ───────────────────── 헤더 ───────────────────── */}
+    <div className="flex items-center justify-start mb-2">
+  <h2 className="text-[20px] font-medium text-[#272727]">저장된 길</h2>
 
+  {/* 세로 구분선 (양옆 9px 패딩) */}
+  <div className="px-[9px]">
+    <span
+      className="block w-[1px] h-[13px] bg-[#DBDBDB]"
+      aria-hidden="true"
+    />
+  </div>
+
+  <button
+   type="button"
+   onClick={() => navigate("/edit", { state: { sortOrder } })}
+   className="flex items-center gap-1 focus:outline-none"
+ >
+    <img
+      src={EditIcon}
+      alt="삭제하기"
+      className="w-[12px] h-[11.18px]"
+    />
+    <span className="text-[15px] text-[#939393]">길 지우기</span>
+  </button>
+</div>
+      {/* ───────────────────── 카운트 & 정렬 ───────────────────── */}
       <div className="flex items-center justify-between text-[15px] text-gray-600 mb-4">
         <span>{routes.length}개</span>
         <button onClick={toggleSort} className="flex items-center gap-1 focus:outline-none">
@@ -78,6 +94,7 @@ export default function SavedRoutes() {
         </button>
       </div>
 
+     {/* ───────────────────── 리스트 ───────────────────── */}
       <div className="space-y-4">
         {sortedData.map((route) => (
           <SavedRouteItem
