@@ -5,9 +5,11 @@ const TransitStepCard = ({ data }) => {
   const nav = useNavigate(); // ✅ 반드시 최상단에서 실행
   const [currentStep, setCurrentStep] = useState(0); // ✅ 최상단
   const [currentStationIndex, setCurrentStationIndex] = useState(0);
-
-  const plan = data?.metaData?.plan?.itineraries?.[0];
-  if (!plan) return (
+  
+  const plan = data;
+  
+  //const plan = data?.metaData?.plan?.itineraries?.[0];
+  if (!data) return (
     <div className="w-[358px] rounded-md flex flex-col items-center justify-center">
       <p>경로가 없습니다.</p> 
       <p>걷기로 다시 시도해주세요.</p>
@@ -25,14 +27,16 @@ const TransitStepCard = ({ data }) => {
 
   plan.legs.forEach((leg) => {
     if (leg.mode === "WALK") {
-        const end = leg.end.name;
-      leg.steps.forEach((step) => {
-        RouteSteps.push({
-          type: "walk",
-          description: step.description,
-          destination: end,
+        const end = leg.end.name || "";
+        if (leg.steps) {
+          leg.steps.forEach((step) => {
+            RouteSteps.push({
+              type: "walk",
+              description: step.description,
+              destination: end,
         });
       });
+    }
     } else if (leg.mode === "BUS") {
       const stations = leg.passStopList?.stationList || [];
       RouteSteps.push({
