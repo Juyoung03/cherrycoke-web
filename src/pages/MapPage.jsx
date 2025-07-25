@@ -108,39 +108,73 @@ const MapPage = () => {
       .catch(error => console.log(error));
   }, [map]);
 
-  //console.log(transitRoute);
-
   useEffect(() => {
-  if (!map || !route) return;
+    if (!map) return;
 
-  const features = route.features;
-  const linePath = [];
+    let polyline = null;
 
-  for (let i = 0; i < features.length; i++) {
-    const geometry = features[i].geometry;
+    if (mode === "walk" && route?.features) {
+      // 🚶‍♂️ 도보 경로 그리기
+      const linePath = [];
 
-    if (geometry.type === "LineString") {
-      const coords = geometry.coordinates;
+      for (let i = 0; i < route.features.length; i++) {
+        const geometry = route.features[i].geometry;
+        if (geometry?.type === "LineString") {
+          geometry.coordinates.forEach(coord => {
+            const latLng = new window.Tmapv2.LatLng(coord[1], coord[0]);
+            linePath.push(latLng);
+          });
+        }
+      }
 
-      coords.forEach(coord => {
-        // [lng, lat] -> new Tmapv2.LatLng(lat, lng)
-        const latLng = new window.Tmapv2.LatLng(coord[1], coord[0]);
-        linePath.push(latLng);
+      polyline = new window.Tmapv2.Polyline({
+        path: linePath,
+        strokeColor: "#3396F4",
+        strokeWeight: 6,
+        map,
+      });
+
+    } else if (mode === "transit" && transitRoute?.legs) {
+      const linePath = [];
+
+      transitRoute.legs.forEach((leg, idx) => {
+      const shape = leg.passShape;
+
+      if (Array.isArray(shape)) {
+        // 배열 형식인 경우 (거의 없음)
+        shape.forEach(coord => {
+          const latLng = new window.Tmapv2.LatLng(coord.latitude, coord.longitude);
+          linePath.push(latLng);
+        });
+
+      } else if (shape?.linestring) {
+        // linestring 문자열 형태인 경우 (대중교통 경로)
+        const coords = shape.linestring.split(" ");
+        coords.forEach(coordStr => {
+          const [lng, lat] = coordStr.split(",").map(Number);
+          if (!isNaN(lat) && !isNaN(lng)) {
+            const latLng = new window.Tmapv2.LatLng(lat, lng);
+            linePath.push(latLng);
+          }
+        });
+      } else {
+        console.log(`leg[${idx}]에 경로 정보 없음 또는 도보 구간`);
+      }
+    });
+      
+
+      polyline = new window.Tmapv2.Polyline({
+        path: linePath,
+        strokeColor: "#3396F4", // 같은 색으로 표시
+        strokeWeight: 6,
+        map,
       });
     }
-  }
 
-  const polyline = new window.Tmapv2.Polyline({
-    path: linePath,
-    strokeColor: "#3396F4", // 파란색
-    strokeWeight: 6,
-    map: map,
-  });
-
-  return () => {
-    polyline.setMap(null); // unmount 시 제거
-  };
-}, [map, route]);
+    return () => {
+      if (polyline) polyline.setMap(null);
+    };
+  }, [map, route, transitRoute, mode]);
 
 
   return (
