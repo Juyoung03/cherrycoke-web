@@ -5,6 +5,7 @@ import MainPage from "./pages/MainPage";
 import RouteFinderPage from "./pages/RouteFinderPage";
 import MapPage from "./pages/MapPage";
 import SettingPage from "./pages/SettingPage";
+import ChatbotPage from "./pages/ChatbotPage";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         <Route path="/routefinder" element={<RouteFinderPage />} />
         <Route path="/map" element={<MapPage />} />
         <Route path="/setting" element={<SettingPage />} />
+        <Route path="/chatbot" element={<ChatbotPage />} />
       </Routes>
     </BrowserRouter>
   );

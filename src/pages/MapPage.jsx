@@ -11,7 +11,7 @@ const MapPage = () => {
   const [transitRoute, setTransitRoute] = useState(null);
   const { mode, destination, endLat, endLng, startLat, startLng } = useLocation().state || {};
 
-  console.log("받은 값들:", mode, destination, endLat, endLng, startLat, startLng);
+  //console.log("받은 값들:", mode, destination, endLat, endLng, startLat, startLng);
 
   //Tmap 스크립트 로드 감지
   useEffect(() => {
@@ -40,8 +40,8 @@ const MapPage = () => {
 
     }
   }, [isTmapReady]);
-  console.log(window.Tmapv2);
-  console.log("mapRef.current:", mapRef.current);
+  // console.log(window.Tmapv2);
+  // console.log("mapRef.current:", mapRef.current);
 
 
   // 3. 경로 API 호출
@@ -94,13 +94,17 @@ const MapPage = () => {
         endX: endLng,
         endY: endLat,
         format: "json",
-        count: 1
+        count: 10
       })
     };
 
     fetch('https://apis.openapi.sk.com/transit/routes', options)
       .then(res => res.json())
-      .then(res => setTransitRoute(res))
+      .then(res => {
+        const minTransfer = res.metaData.plan.itineraries.reduce((min, current) => {
+          return current.transferCount < min.transferCount ? current : min;
+        });
+        setTransitRoute(minTransfer)})
       .catch(error => console.log(error));
   }, [map]);
 
