@@ -1,9 +1,41 @@
 // src/components/MainPage/Header.jsx
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import CallIcon from "../../icons/call.svg";
 
 export default function Header() {
   const navigate = useNavigate();    
+  
+  const handleEmergencyClick = async () => {
+    const userId = localStorage.getItem("userId");
+    if (!userId) {
+      // 로그인 되어 있지 않으면 로그인 페이지로
+      return navigate("/login");
+    }
+
+    try {
+      // 1) 비상연락처 조회 API 호출
+      const res = await fetch(
+        `https://cherrymap.click/api/${userId}/phone`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      // swagger 예시가 "string" 형태이므로 res.json() 으로 파싱하면 문자열이 나옵니다.
+      const phone = await res.json(); 
+
+      // 2) tel: URL 열기
+      window.location.href = `tel:${phone}`;
+    } catch (err) {
+      console.error("비상연락처 조회 실패", err);
+      alert("비상연락처를 가져오는 데 실패했습니다.");
+    }
+  };
 
   return (
     <header
@@ -29,18 +61,16 @@ export default function Header() {
        "
      />
 
-      {/* 우측 로그인 버튼 */}
       <button
-        onClick={() => navigate("/login")}
-        className="
-          px-3 py-1
-          text-sm font-medium
-          text-gray-600
-          hover:text-gray-800
-          transition
-        "
+        onClick={handleEmergencyClick}
+        className="p-0 focus:outline-none"
+        aria-label="비상연락망"
       >
-        로그인
+        <img
+          src={CallIcon}
+          alt="비상연락망"
+          className="w-[26px] h-[32px]"
+        />
       </button>
     </header>
   );
