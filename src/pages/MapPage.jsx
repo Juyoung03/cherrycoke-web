@@ -30,7 +30,7 @@ const MapPage = () => {
       const mapInstance = new window.Tmapv2.Map(mapRef.current, {
         center: new window.Tmapv2.LatLng(startLat, startLng),
         width: "100%",
-        height: "480px",
+        height: "550px",
         zoom: 18,
         scrollwheel: false,
         zoomControl: false,
@@ -161,7 +161,6 @@ const MapPage = () => {
         console.log(`leg[${idx}]에 경로 정보 없음 또는 도보 구간`);
       }
     });
-      
 
       polyline = new window.Tmapv2.Polyline({
         path: linePath,
@@ -181,10 +180,10 @@ const MapPage = () => {
     <div className="relative flex flex-col items-center h-screen overflow-hidden">
       <div
         ref={mapRef}
-        className="w-full h-[480px] mb-[15px]"
+        className="w-full h-[550px] mb-[15px]"
       ></div>
 
-      <div className="max-h-[80vh] overflow-y-auto">
+      <div className="max-h-[80vh] overflow-y-auto mt-[38px]">
         {mode === "walk" ? 
         ( <StepCard data={route} /> ) : 
         ( <TransitStepCard data={transitRoute} /> )
