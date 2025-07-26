@@ -12,7 +12,13 @@ const ChatbotPage = () => {
         <div className="relative flex flex-col items-center h-screen overflow-hidden">
             <Header left_img={backImg} text={"체리봇"} onClick={onPrev} />
             <div>
-                chat
+                <div className="flex flex-row ">
+                    <img src="/cherry-favicon.svg" alt="" />
+                    <div className="bg-[#F2F3F5] rounded-tl-[5px] rounded-[20px] text-[16px] px-[17px] py-[12px]">
+                        <p>반가워요! 무엇이 궁금하신가요?</p>
+                        <p>궁금한 내용을 아래에서 선택해보세요.</p>
+                    </div>
+                </div>
             </div>
         </div>
     )
