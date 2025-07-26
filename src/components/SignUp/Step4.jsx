@@ -86,7 +86,7 @@ const Step4 = ({onNext}) => {
                             }}
                         />
 
-                        <label htmlFor="all" className="cursor-pointer">약관 전체 동의</label>
+                        <label htmlFor="all" className="cursor-pointer">체리맵이 위치를 기억해도 될까요?</label>
                     </article>
                     <ul>
                         <li className="border border-box border-none w-[358px] h-[25px] rounded-md text-[#5C5C5C] px-[19px] my-[12px]">
