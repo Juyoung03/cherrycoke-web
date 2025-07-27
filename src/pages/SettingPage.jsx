@@ -1,12 +1,16 @@
 // src/pages/SettingPage.jsx
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import prevImg from "../icons/prevImg.svg";
 import Setting from "../components/SettingPage/Setting";
+import EmergencyContactEdit from "../components/SettingPage/EmergencyContactEdit";
 import Footer  from "../components/MainPage/Footer";
 
 export default function SettingPage() {
   const navigate = useNavigate();
+  const [view, setView] = useState("main");
+
+  const title = view === "main" ? "설정" : "비상 연락처";
 
   // ① 로그아웃 처리 함수
   const handleLogout = async () => {
@@ -55,16 +59,19 @@ export default function SettingPage() {
       >
         {/* 뒤로가기 */}
         <button
-          onClick={() => navigate(-1)}
+          onClick={() => {
+            if (view === "phone") {
+              setView("main");
+            } else {
+              navigate(-1);
+            }
+          }}
           className="focus:outline-none"
           aria-label="뒤로가기"
         >
-          <img
-            src={prevImg}
-            alt="뒤로가기"
-            className="w-[10px] h-[18px]"
-          />
+          <img src={prevImg} alt="뒤로가기" className="w-[10px] h-[18px]" />
         </button>
+        
         {/* 중앙 타이틀 */}
         <h1 className="flex-1 text-center text-[18px] font-medium text-gray-800">
           설정
@@ -75,8 +82,15 @@ export default function SettingPage() {
       </header>
 
       {/* ─────────── 메인 컨텐츠 ─────────── */}
-      <main className="flex-1 pt-[88px] pb-[49px]">
-        <Setting />
+      <main className="flex-1 pt-[88px] pb-[49px] overflow-auto">
+        {view === "main" && (
+          <Setting onEditPhone={() => setView("phone")} />
+        )}
+        {view === "phone" && (
+          <EmergencyContactEdit
+            onDone={() => setView("main")}
+          />
+        )}
       </main>
 
       {/* 로그아웃 버튼 */}
