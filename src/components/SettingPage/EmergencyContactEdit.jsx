@@ -30,6 +30,7 @@ export default function EmergencyContactEdit({ onDone }) {
             await updateEmergencyContact(phone);
             // 성공 시 로컬에도 저장
             localStorage.setItem("emergencyPhone", phone);
+            alert("✅ 비상연락처가 저장되었습니다.");
             onDone();
     } catch (e) {
       setError("010-1234-5678 형태로 입력해주세요.");
@@ -41,6 +42,7 @@ export default function EmergencyContactEdit({ onDone }) {
         try {
           await deleteEmergencyContact();
           localStorage.removeItem("emergencyPhone");
+          alert("✅ 비상연락처가 삭제되었습니다.");
           onDone();
         } catch {
           setError("삭제에 실패했습니다.");

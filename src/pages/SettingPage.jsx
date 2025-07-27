@@ -57,20 +57,23 @@ export default function SettingPage() {
           px-4
         "
       >
-        {/* 뒤로가기 */}
-        <button
-          onClick={() => {
-            if (view === "phone") {
-              setView("main");
-            } else {
-              navigate(-1);
-            }
-          }}
-          className="focus:outline-none"
-          aria-label="뒤로가기"
-        >
-          <img src={prevImg} alt="뒤로가기" className="w-[10px] h-[18px]" />
-        </button>
+        {/* ← 이전 버튼: view === "phone" 일 때만 보여줌 */}
+        {view === "phone" ? (
+          <button
+            onClick={() => setView("main")}
+            className="focus:outline-none"
+            aria-label="뒤로가기"
+          >
+            <img
+              src={prevImg}
+              alt="뒤로가기"
+              className="w-[10px] h-[18px]"
+            />
+          </button>
+        ) : (
+          // main 뷰일 땐 동일한 크기의 빈 블록으로 자리만 차지
+          <div className="w-[10px] h-[18px]" />
+        )}
         
         {/* 중앙 타이틀 */}
         <h1 className="flex-1 text-center text-[18px] font-medium text-gray-800">
