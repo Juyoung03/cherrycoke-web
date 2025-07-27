@@ -1,20 +1,19 @@
 import React, { useState, useEffect } from "react";
-import { getEmergencyPhone } from "../api/user";
+import { getEmergencyContact } from "../../api/member";
 
 export default function EmergencyContact() {
   const [phone, setPhone] = useState(null);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    // 회원가입 시 로컬스토리지에 저장해둔 userId 가정
-    const userId = localStorage.getItem("userId");
-    if (!userId) {
-      setError("사용자 정보가 없습니다. 다시 로그인 해주세요.");
-      return;
-    }
-
-    getEmergencyPhone(userId)
-      .then((num) => setPhone(num))
+    getEmergencyContact()
+      .then((data) => {
+        console.log("🔔 emergency data:", data);
+        if (!data.phoneNumber) {
+            throw new Error("저장된 번호가 없습니다.");
+          }
+        setPhone(data.phoneNumber);
+  })
       .catch((err) => {
         console.error(err);
         setError(err.message);

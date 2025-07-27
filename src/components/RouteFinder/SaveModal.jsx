@@ -1,7 +1,8 @@
 // src/components/RouteFinder/SaveModal.jsx
 import React, { useState } from "react";
+import { getToken } from "../../api/member"
 
-const TOKEN = "eyJhbGciOiJIUzUxMiJ9.eyJjYXRlZ29yeSI6ImFjY2VzcyIsIm1lbWJlcklkIjoiMSIsInJvbGUiOiJST0xFX0FETUlOIiwiaWF0IjoxNzUzMjgzMjE5LCJleHAiOjE3NTM5NzQ0MTl9.hGqO2t9_ErxMy36CU5HIbGHsCQsTsKuDe6U_dlpIsPrMGum-RNnMzs7bZrJSGpgfqnIr4BlCoKl2mjsuR6hAqQ";
+// const TOKEN = "eyJhbGciOiJIUzUxMiJ9.eyJjYXRlZ29yeSI6ImFjY2VzcyIsIm1lbWJlcklkIjoiMSIsInJvbGUiOiJST0xFX0FETUlOIiwiaWF0IjoxNzUzMjgzMjE5LCJleHAiOjE3NTM5NzQ0MTl9.hGqO2t9_ErxMy36CU5HIbGHsCQsTsKuDe6U_dlpIsPrMGum-RNnMzs7bZrJSGpgfqnIr4BlCoKl2mjsuR6hAqQ";
 const BACKEND = "https://cherrymap.click";
 
 export default function SaveModal({  
@@ -33,20 +34,12 @@ export default function SaveModal({
 
     try {
       setLoading(true);
-      // 1) /dev/token 호출해서 테스트용 JWT 받아오기
-      // const tokenRes = await fetch("https://3.34.123.246/dev/token", {
-      //   method: "POST"
-      // });
-      // if (!tokenRes.ok) throw new Error(`토큰 발급 실패 ${tokenRes.status}`);
-      // Swagger UI가 응답을 "토큰문자열" 형태로 줄 수 있어서,
-      // 따옴표를 제거해 줍니다
-      // let raw = await tokenRes.text();
-      // const token = raw.replace(/^"(.*)"$/, "$1");
-      
+      const token = getToken();  // 로컬스토리지에서 꺼내서 없으면 에러 던짐
+      console.log("🛡️ saveModal sending with token:", token);
       const res = await fetch(`${BACKEND}/api/routes`, {
         method: "POST",
         headers: { "Content-Type": "application/json",
-            Authorization: `Bearer ${TOKEN}`,
+            Authorization: `Bearer ${token}`,
          },
         body: JSON.stringify(payload),
       });
