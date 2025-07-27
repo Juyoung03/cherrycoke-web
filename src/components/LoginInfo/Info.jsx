@@ -6,7 +6,7 @@ const Info = () => {
 
     //const [userList, setUserList] = useState([]);
 
-    const login = async (nickname, password) => {
+const login = async (nickname, password) => {
   const formData = new FormData();
   formData.append("nickname", nickname);  // 서버 요구 사항 확인!
   formData.append("password", password);
@@ -20,8 +20,19 @@ const Info = () => {
 
     const accessToken = res.headers.get("access");
 
-    if (res.ok) {
+    if (res.ok && accessToken) {
+      // 1) 토큰 저장
+      localStorage.removeItem("emergencyPhone");
       localStorage.setItem("accessToken", accessToken);
+
+      // 2) 비상연락처 API 호출 후 저장
+      try {
+        const { phoneNumber } = await getEmergencyContact();
+        localStorage.setItem("emergencyPhone", phoneNumber);
+      } catch (err) {
+        console.warn("비상연락망 저장 실패:", err);
+      }
+
       alert("로그인 성공!");
       nav("/");
     } else {
