@@ -1,23 +1,52 @@
 // src/components/SettingPage/Setting.jsx
-import React from "react";
+import React, { useEffect, useState } from "react";
 import nextImg from "../../icons/nextImg.svg";
 import { useNavigate } from "react-router-dom";
+import { getMemberInfo } from "../../api/member";
 
 export default function Setting() {
   const navigate = useNavigate();
+
+  // ① 회원 정보 상태
+  const [member, setMember] = useState({
+    memberId: "",
+    username: "",
+    nickname: "",
+  });
+  const [error, setError] = useState(null);
+
+  // ② 마운트 시 한 번만 호출
+  useEffect(() => {
+    getMemberInfo()
+      .then((data) => {
+        setMember(data);
+      })
+      .catch((err) => {
+        console.error("회원 정보 조회 실패:", err);
+        setError("회원 정보를 불러올 수 없습니다.");
+      });
+  }, []);
 
   return (
     <main className="relative flex-1 w-full flex flex-col items-center pt-0 px-4">
       {/* 프로필 */}
       <div className="flex w-full h-[52px] justify-between items-center mt-[34px]">
         <div>
-          <p className="text-[24px]">OOO님</p>
-          <p className="text-[#979797] text-[15px]">id</p>
+          {/* ③ 불러온 닉네임과 아이디를 화면에 출력 */}
+          <p className="text-[24px]">
+            {member.nickname ? `${member.nickname}님` : "로딩 중..."}
+          </p>
+          <p className="text-[#979797] text-[15px]">
+            {member.username ? `ID: ${member.username}` : ""}
+          </p>
+          {error && (
+            <p className="text-red-500 text-sm mt-1">{error}</p>
+          )}
         </div>
         <img src={nextImg} alt="more info" className="w-[10px]" />
       </div>
 
-      {/* 내 정보 섹션 */}
+      {/* 아래 섹션들은 그대로 */}
       <section className="w-full mt-[43px]">
         <p className="text-[#909090] mb-[15px]">내 정보</p>
         <div className="flex w-full h-[21px] justify-between items-center mb-[13px]">
@@ -31,7 +60,6 @@ export default function Setting() {
         </div>
       </section>
 
-      {/* 음성 지원 섹션 */}
       <section className="w-full mt-[43px]">
         <p className="text-[#909090] mb-[15px]">음성 지원</p>
         <div className="flex w-full h-[21px] justify-between items-center mb-[13px]">
@@ -47,7 +75,6 @@ export default function Setting() {
           </div>
         </div>
       </section>
-
     </main>
   );
 }
