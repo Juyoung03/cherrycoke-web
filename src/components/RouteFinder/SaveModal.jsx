@@ -1,6 +1,6 @@
 // src/components/RouteFinder/SaveModal.jsx
 import React, { useState } from "react";
-import { getToken } from "../../api/member"
+import { getToken } from "../../api/auth";
 
 // const TOKEN = "eyJhbGciOiJIUzUxMiJ9.eyJjYXRlZ29yeSI6ImFjY2VzcyIsIm1lbWJlcklkIjoiMSIsInJvbGUiOiJST0xFX0FETUlOIiwiaWF0IjoxNzUzMjgzMjE5LCJleHAiOjE3NTM5NzQ0MTl9.hGqO2t9_ErxMy36CU5HIbGHsCQsTsKuDe6U_dlpIsPrMGum-RNnMzs7bZrJSGpgfqnIr4BlCoKl2mjsuR6hAqQ";
 const BACKEND = "https://cherrymap.click";
@@ -34,7 +34,7 @@ export default function SaveModal({
 
     try {
       setLoading(true);
-      const token = getToken();  // 로컬스토리지에서 꺼내서 없으면 에러 던짐
+      const token = await getToken();  // 로컬스토리지에서 꺼내서 없으면 에러 던짐
       console.log("🛡️ saveModal sending with token:", token);
       const res = await fetch(`${BACKEND}/api/routes`, {
         method: "POST",

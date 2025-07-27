@@ -30,9 +30,9 @@ const StepResult = ({data}) => {
                 <div className="absolute bottom-[34px] left-1/2 -translate-x-1/2">
                     <button 
                         className={"border border-box border-none w-[358px] h-[56px] rounded-md gap-[10px] text-lg bg-[#FF2655] text-white"}
-                        onClick={() => nav("/")}
+                        onClick={() => nav("/login")}
                     >
-                        시작하기
+                        로그인 하고 시작하기
                     </button>
                 </div>
             </form>
