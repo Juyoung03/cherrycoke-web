@@ -10,13 +10,14 @@ export default function Setting() {
   // ① 회원 정보 상태
   const [member, setMember] = useState({
     memberId: "",
-    username: "",
     nickname: "",
+    username: "",
   });
   const [error, setError] = useState(null);
 
   // ② 마운트 시 한 번만 호출
   useEffect(() => {
+    console.log("🔍 member state:", member);
     getMemberInfo()
       .then((data) => {
         setMember(data);
@@ -34,10 +35,10 @@ export default function Setting() {
         <div>
           {/* ③ 불러온 닉네임과 아이디를 화면에 출력 */}
           <p className="text-[24px]">
-            {member.nickname ? `${member.nickname}님` : "로딩 중..."}
+            {member.nickname ? `${member.username}님` : "로딩 중..."}
           </p>
           <p className="text-[#979797] text-[15px]">
-            {member.username ? `ID: ${member.username}` : ""}
+            {member.username ? `ID: ${member.nickname}` : ""}
           </p>
           {error && (
             <p className="text-red-500 text-sm mt-1">{error}</p>
@@ -46,7 +47,6 @@ export default function Setting() {
         <img src={nextImg} alt="more info" className="w-[10px]" />
       </div>
 
-      {/* 아래 섹션들은 그대로 */}
       <section className="w-full mt-[43px]">
         <p className="text-[#909090] mb-[15px]">내 정보</p>
         <div className="flex w-full h-[21px] justify-between items-center mb-[13px]">
