@@ -2,11 +2,12 @@
 import Header     from "./MainHeader";
 import SearchBox  from "../SearchBox/SearchBox";
 import SavedRoutes from "../SavedRoutes/SavedRoutes";
+import Footer      from "./Footer";
 
 export default function MainPage() {
 
   return (
-    <div className="min-h-screen bg-white flex flex-col pt-[88px]">
+    <div className="min-h-screen bg-white flex flex-col pt-[88px] pb-[57px]">
       {/* 상단 헤더 */}
       <Header />
 
@@ -35,6 +36,8 @@ export default function MainPage() {
           <SavedRoutes providerId="CURRENT_USER_ID" />
         </div>
       </main>
+
+      <Footer />
     </div>
   );
 }

@@ -1,61 +1,66 @@
-import Header from "../components/Header";
-import prevImg from "../icons/prevImg.svg";
-import nextImg from "../icons/nextImg.svg";
+// src/pages/SettingPage.jsx
+import React from "react";
 import { useNavigate } from "react-router-dom";
+import prevImg from "../icons/prevImg.svg";
+import Setting from "../components/SettingPage/Setting";
+import Footer  from "../components/MainPage/Footer";
 
-const SettingPage = () => {
-    const nav = useNavigate();
+export default function SettingPage() {
+  const navigate = useNavigate();
 
-    return (
-        <div className="relative flex flex-col items-center h-screen overflow-hidden">
-            <Header 
-                left_img={prevImg}
-                text={"설정"}
-                onClick={()=>nav("/")} 
-            />
+  return (
+    <div className="flex flex-col min-h-screen bg-white pb-[57px]">
+      {/* ─────────── 헤더 (직접 그리기) ─────────── */}
+      <header
+        className="
+          fixed top-0 z-50
+          w-full h-[88px]
+          flex items-center justify-between
+          bg-white
+          px-4
+        "
+      >
+        {/* 뒤로가기 */}
+        <button
+          onClick={() => navigate(-1)}
+          className="focus:outline-none"
+          aria-label="뒤로가기"
+        >
+          <img
+            src={prevImg}
+            alt="뒤로가기"
+            className="w-[10px] h-[18px]"
+          />
+        </button>
+        {/* 중앙 타이틀 */}
+        <h1 className="flex-1 text-center text-[18px] font-medium text-gray-800">
+          설정
+        </h1>
 
-            <div className="flex flex-row w-[358px] h-[52px] justify-between mt-[34px]">
-               <div className="">
-                    <p className="text-[24px]">OOO님</p>
-                    <p className="text-[#979797] text-[15px]">id</p>
-               </div>
-               <img src={nextImg} alt="more info" className="w-[10px]" />
-            </div>
+        {/* 오른쪽 빈 공간 (왼쪽 버튼과 같은 크기) */}
+        <div className="w-[10px] h-[18px]" />
+      </header>
 
-            <div className="w-[358px] h-[102px] mt-[43px]">
-                <div className="text-[#909090] mb-[15px]">내 정보</div>
-                <div className="flex flex-row mb-[13px] w-full h-[21px] justify-between items-center">
-                    <p className="text-lg">비밀번호</p>
-                    <img src={nextImg} alt="more info" className="w-[10px]" />
-                </div>
-                <hr className="border-[#ECECEC]" />
-                <div className="flex flex-row mt-[13px] w-full h-[21px] justify-between items-center">
-                    <p className="text-lg">비상 연락처</p>
-                    <img src={nextImg} alt="more info" className="w-[10px]" />
-                </div>
-            </div>
+      {/* ─────────── 메인 컨텐츠 ─────────── */}
+      <main className="flex-1 pt-[88px] pb-[49px]">
+        <Setting />
+      </main>
 
-            <div className="w-[358px] h-[102px] mt-[43px]">
-                <div className="text-[#909090] mb-[15px]">음성 지원</div>
-                <div className="flex flex-row mb-[13px] w-full h-[21px] justify-between items-center">
-                    <p className="text-lg">안내 음성</p>
-                    <img src={nextImg} alt="more info" className="w-[10px]" />
-                </div>
-                <hr className="border-[#ECECEC]" />
-                <div className="flex flex-row mt-[13px] w-full h-[21px] justify-between items-center">
-                    <p className="text-lg">음성 크기 조절</p>
-                    <div className="flex flex-row">
-                        <p className="text-[17px] text-[#909090] mr-[5px]">크게</p>
-                        <img src={nextImg} alt="more info" className="w-[10px]" />
-                    </div>
-                </div>
-            </div>
+      {/* 로그아웃 버튼 */}
+      <div className="absolute bottom-[67px] right-[31px]">
+        <button
+          onClick={() => {
+            localStorage.clear();
+            navigate("/login");
+          }}
+          className="w-[72px] h-[29px] border border-[#E7E7E7] rounded-md text-[#767676] text-[13px]"
+        >
+          로그아웃
+        </button>
+      </div>
 
-            <div className="absolute bottom-[34px] right-[30px]">
-                <button className="w-[72px] h-[29px] border border-[#E7E7E7] rounded-md text-[#767676] text-[13px]">로그아웃</button>
-            </div>
-        </div>
-    )
+      {/* ─────────── 푸터 ─────────── */}
+      <Footer />
+    </div>
+  );
 }
-
-export default SettingPage;
