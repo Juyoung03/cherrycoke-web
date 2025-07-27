@@ -9,7 +9,7 @@
  */
 function getToken() {
     const token = localStorage.getItem("accessToken");
-    if (!token) throw new Error("로그인이 필요합니다. accessToken 없음");
+    if (!token) throw new Error("로그인이 필요합니다.\n오른쪽 위 전화 버튼을 클릭해 로그인하세요.");
     return token;
   }
    // ① 토큰 가져오기: localStorage → 없으면 /dev/token 호출
