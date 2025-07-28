@@ -1,7 +1,7 @@
 // src/api/routes.js
 import { getToken } from "./auth";
 // 실제 API와 연동하여 저장된 경로 목록 조회 및 삭제를 수행합니다.
-  const BACKEND = "https://cherrymap.click";
+const BACKEND = import.meta.env.VITE_BACKEND_URL;
 
 /**
  * localStorage → `accessToken`을 꺼내온다.

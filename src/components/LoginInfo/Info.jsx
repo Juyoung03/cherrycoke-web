@@ -5,6 +5,8 @@ import { getEmergencyContact } from "../../api/member";
 
 const Info = () => {
 
+    const BACKEND = import.meta.env.VITE_BACKEND_URL;
+
     //const [userList, setUserList] = useState([]);
 
 const login = async (nickname, password) => {
@@ -13,7 +15,7 @@ const login = async (nickname, password) => {
   formData.append("password", password);
 
   try {
-    const res = await fetch("https://cherrymap.click/api/login", {
+    const res = await fetch(`${BACKEND}/api/login`, {
       method: "POST",
       body: formData,
       credentials: "include", // ← Refresh Token 받기용 쿠키 설정
