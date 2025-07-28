@@ -37,7 +37,7 @@ export default function SavedRoutes() {
 
   // 로딩/에러 표시
   if (loading) return <div className="py-4 text-center text-gray-500">로딩 중...</div>;
-  if (error)   return <div className="py-4 text-center text-red-500">{error}</div>;
+  if (error)   return <div className="py-4 text-center text-red-500">로그인 해주세요.</div>;
 
   // 정렬 로직 (date 필드 기준)
   // 최신순: id 내림차순, 오래된순: id 오름차순
