@@ -1,3 +1,5 @@
+// src/components/MainPage/EmergencyContact.jsx
+
 import React, { useState, useEffect } from "react";
 import { getEmergencyContact } from "../../api/member";
 

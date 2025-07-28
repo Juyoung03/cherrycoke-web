@@ -3,6 +3,7 @@ import StepCard from "../components/RouteGuide/StepCard";
 import TransitStepCard from "../components/RouteGuide/TransitStepCard";
 import { useLocation, useNavigate } from "react-router-dom";
 import glassImg from "../icons/glass.svg";
+import { getEmergencyContact } from "../api/member";
 
 const MapPage = () => {
   const mapRef = useRef(null);
@@ -12,6 +13,30 @@ const MapPage = () => {
   const [route, setRoute] = useState(null);
   const [transitRoute, setTransitRoute] = useState(null);
   const { mode, destination, endLat, endLng, startLat, startLng } = useLocation().state || {};
+
+  // 헤더와 동일한 비상연락 함수
+  const handleEmergencyCall = async () => {
+    const token = localStorage.getItem("accessToken");
+    if (!token) {
+      return nav("/login");
+    }
+
+    // 로컬저장소에 번호가 있으면 쓰고, 없으면 API 호출
+    let phone = localStorage.getItem("emergencyPhone");
+    if (!phone) {
+      try {
+        const data = await getEmergencyContact();
+        phone = data.phoneNumber;
+        if (phone) localStorage.setItem("emergencyPhone", phone);
+      } catch (err) {
+        console.error("비상연락망 조회 실패:", err);
+        return alert("저장된 번호가 없습니다.");
+      }
+    }
+
+    // 실제 전화 걸기
+    window.location.href = `tel:${phone}`;
+  };
 
   //Tmap 스크립트 로드 감지
   useEffect(() => {
@@ -195,7 +220,12 @@ const MapPage = () => {
           <img src={glassImg} alt="chatbot" className="w-[27px]" />
           <p>AI 챗봇</p>
         </button>
-        <button className="bg-white rounded-[5px] px-[11px] border border-[#FFBCCA] cursor-pointer">비상 연락</button>
+        <button
+         className="bg-[#FEF8F9] rounded-[5px] px-[11px] border border-[#FFBCCA] cursor-pointer"
+         onClick={handleEmergencyCall}
+         >
+          비상 연락
+          </button>
       </div>
 
       <div className="max-h-[80vh] overflow-y-auto mt-[30px]">
