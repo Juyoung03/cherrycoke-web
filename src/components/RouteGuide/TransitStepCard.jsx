@@ -1,3 +1,4 @@
+// src/components/RouteGuide/TransitStepCard.jsx
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import StepNavigation from "./StepNavigation";
@@ -93,7 +94,7 @@ const TransitStepCard = ({ data }) => {
   };
 
   const step = RouteSteps[Math.min(currentStep, RouteSteps.length - 1)];
-
+  const finalDestination = RouteSteps[RouteSteps.length - 1]?.destination || "";
   
 
   return (
@@ -268,7 +269,11 @@ const TransitStepCard = ({ data }) => {
           <div className="border border-[#A1A1A1] bg-[#FF2655] flex justify-center w-full text-center rounded-[5px] cursor-pointer">
               <button
                   className="text-white cursor-pointer"
-                  onClick={() => nav("/records")}
+                  onClick={() => {
+                    // RouteSteps 배열에 넣은 마지막 destination을 꺼내서 넘겨줍니다.
+                    const finalDestination = RouteSteps[RouteSteps.length - 1]?.destination || "";
+                    nav("/records", { state: { destination: finalDestination } });
+                  }}
               >
                   기록하기
               </button>

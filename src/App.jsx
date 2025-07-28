@@ -7,6 +7,7 @@ import MapPage from "./pages/MapPage";
 import SettingPage from "./pages/SettingPage";
 import ChatbotPage from "./pages/ChatbotPage";
 import EditPage from "./pages/EditPage";
+import RecordsPage from "./pages/RecordsPage";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
         <Route path="/setting" element={<SettingPage />} />
         <Route path="/chatbot" element={<ChatbotPage />} />
         <Route path="/edit" element={<EditPage />} />
+        <Route path="/records" element={<RecordsPage />} />
       </Routes>
     </BrowserRouter>
   );

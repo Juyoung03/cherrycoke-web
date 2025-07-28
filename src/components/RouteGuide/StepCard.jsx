@@ -141,7 +141,9 @@ const StepCard = ({data}) => {
                 <div className="border border-[#A1A1A1] bg-[#FF2655] flex justify-center w-full text-center rounded-[5px] cursor-pointer">
                     <button
                         className="text-white cursor-pointer"
-                        onClick={() => nav("/records")}
+                        onClick={() => {
+                            nav("/records", { state: { destination: "도착지" } });
+                        }}
                     >
                         기록하기
                     </button>
