@@ -1,17 +1,17 @@
 import { useEffect, useRef, useState } from "react";
 import StepCard from "../components/RouteGuide/StepCard";
 import TransitStepCard from "../components/RouteGuide/TransitStepCard";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import glassImg from "../icons/glass.svg";
 
 const MapPage = () => {
   const mapRef = useRef(null);
+  const nav = useNavigate();
   const [isTmapReady, setIsTmapReady] = useState(false);
   const [map, setMap] = useState(null);
   const [route, setRoute] = useState(null);
   const [transitRoute, setTransitRoute] = useState(null);
   const { mode, destination, endLat, endLng, startLat, startLng } = useLocation().state || {};
-
-  //console.log("받은 값들:", mode, destination, endLat, endLng, startLat, startLng);
 
   //Tmap 스크립트 로드 감지
   useEffect(() => {
@@ -30,7 +30,7 @@ const MapPage = () => {
       const mapInstance = new window.Tmapv2.Map(mapRef.current, {
         center: new window.Tmapv2.LatLng(startLat, startLng),
         width: "100%",
-        height: "550px",
+        height: "480px",
         zoom: 18,
         scrollwheel: false,
         zoomControl: false,
@@ -40,8 +40,6 @@ const MapPage = () => {
 
     }
   }, [isTmapReady]);
-  // console.log(window.Tmapv2);
-  // console.log("mapRef.current:", mapRef.current);
 
 
   // 3. 경로 API 호출
@@ -175,15 +173,32 @@ const MapPage = () => {
     };
   }, [map, route, transitRoute, mode]);
 
+  const handleClick = () => {
+    nav("/chatbot", {state: {
+      destination: destination, 
+      mode: mode,
+    }})
+  }
+
 
   return (
     <div className="relative flex flex-col items-center h-screen overflow-hidden">
       <div
         ref={mapRef}
-        className="w-full h-[550px] mb-[15px]"
-      ></div>
+        className="w-full h-[480px] mb-[15px] relative"
+      />
+      <div className="absolute h-[35px] top-[50px] left-[16px] z-10 flex flex-row gap-[8px]">
+        <button 
+          className="bg-white rounded-[5px] px-[11px] flex flex-row items-center gap-[6px] cursor-pointer"
+          onClick={handleClick}
+        >
+          <img src={glassImg} alt="chatbot" className="w-[27px]" />
+          <p>AI 챗봇</p>
+        </button>
+        <button className="bg-white rounded-[5px] px-[11px] border border-[#FFBCCA] cursor-pointer">비상 연락</button>
+      </div>
 
-      <div className="max-h-[80vh] overflow-y-auto mt-[38px]">
+      <div className="max-h-[80vh] overflow-y-auto mt-[30px]">
         {mode === "walk" ? 
         ( <StepCard data={route} /> ) : 
         ( <TransitStepCard data={transitRoute} /> )

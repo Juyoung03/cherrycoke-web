@@ -1,14 +1,19 @@
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Header from "../components/Header";
 import backImg from "../icons/back.svg";
 import ChoiceButton from "../components/Chatbot/ChoiceButton";
-import { useLayoutEffect, useRef, useState } from "react";
+import { useLayoutEffect, useRef, useState, useEffect } from "react";
 
 const ChatbotPage = () => {
+    const BACKEND = import.meta.env.VITE_BACKEND_URL;
     const nav = useNavigate();
-    const [isOverflow, setIsOverflow] = useState(false);
     const [que, setQue] = useState(null);
     const scrollRef = useRef(null);
+    const [loading, setLoading] = useState(true);
+    const [lat, setLat] = useState(0);
+    const [lng, setLng] = useState(0);
+    const location = useLocation();
+    const receivedData = location.state;
 
     const onPrev = () => {
         nav("/");
@@ -23,31 +28,67 @@ const ChatbotPage = () => {
         {text: ["여기가 어딘지", "모르겠어요"]},
     ];
 
-    const handleScrollLeft = () => {
-        if (scrollRef.current) {
-            scrollRef.current.scrollLeft -= 150;
+    useEffect(() => {
+        if (!navigator.geolocation) {
+          setLoading(false);
+          return;
         }
-    };
+    
+        navigator.geolocation.getCurrentPosition(
+          async (position) => {
+            const { latitude, longitude } = position.coords;
+            setLat(latitude);
+            setLng(longitude);
+            setLoading(false);
+          },
+          (error) => {
+            console.error(error);
+            setLoading(false);
+          },
+          { enableHighAccuracy: true, timeout: 5000 }
+        );
+      }, []);
+      console.log(lat,lng);
 
-    const handleScrollRight = () => {
-        if (scrollRef.current) {
-            scrollRef.current.scrollLeft += 150;
+      const submitToBackend = async (selectedText) => {
+        const payload = {
+            message: selectedText,
+            location: {
+                latitude: lat, 
+                longitude: lng
+            },
+            destination_address: receivedData.destination,
+            mode: receivedData.mode,
+            user_context: selectedText,
         }
-    };
 
-    useLayoutEffect(() => {
-        const el = scrollRef.current;
-        if (el) {
-            const isOverflowing = el.scrollWidth > el.clientWidth;
-            setIsOverflow(isOverflowing);
+        try {
+            const response = await fetch(`${BACKEND}/api/v1/chat`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(payload),
+            });
+            const result = await response.json();
+
+            if (result.success) {
+                alert("연결");
+            }
+            else {
+                alert("실패");
+            }
+
+        } catch (error) {
+            console.log(error);
+            alert("에러 발생");
         }
-    }, []);
-
+      }
 
     return (
         <div className="relative flex flex-col items-center h-screen overflow-hidden">
             <Header left_img={backImg} text={"체리봇"} onClick={onPrev} />
-            <div className="mt-[47px] ml-[16px]">
+            <div className="mt-[47px] ml-[16px] w-[100%] relative">
                 <div className="flex flex-row gap-[5px] items-start">
                     <img src="/cherry-favicon.svg" alt="챗봇" />
                     <div>
@@ -56,21 +97,25 @@ const ChatbotPage = () => {
                             <p>궁금한 내용을 아래에서 선택해보세요.</p>
                         </div>
 
-                        <div className="relative w-full overflow-hidden">
-                            <button onClick={handleScrollLeft}>prev</button>
+                        <div className="relative overflow-hidden w-full">
+                            <button>prev</button>
                             <div 
-                                className="mt-[15px] flex overflow-x-auto scroll-smooth border border-black" 
+                                className="mt-[15px] w-[100%] flex overflow-x-auto scroll-smooth flex-nowrap border border-black" 
                                 ref={scrollRef}
                             >
                                 {choice.map((button, index) => (
                                     <ChoiceButton 
                                         key={index} 
                                         text={button.text} 
-                                        onClick={() => setQue(button.text.join(" "))}
+                                        onClick={() => {
+                                            const selectedText = button.text.join(" ");
+                                            setQue(selectedText);
+                                            submitToBackend(selectedText);
+                                        }}
                                     />
                                 ))}
                             </div>
-                            <button onClick={handleScrollRight}>next</button>
+                            <button>next</button>
                         </div>
                     </div>
                 </div>

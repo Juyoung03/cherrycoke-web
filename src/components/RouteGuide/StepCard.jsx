@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import StepNavigation from "./StepNavigation";
 
 const StepCard = ({data}) => {
     const nav = useNavigate();
     const [currentStepIndex, setCurrentStepIndex] = useState(0);
+    const [isFinished, setIsFinished] = useState(false);
 
     const MainInstruction = (feature) => {
         
@@ -86,60 +88,77 @@ const StepCard = ({data}) => {
     const timeInSeconds = matchingLine?.properties?.time || 0;
     const timeInMinutes = Math.ceil(timeInSeconds / 60);
 
-    const isLastStep = currentStepIndex === steps.length - 1;
-
     return (
         <div className="w-[358px] rounded-md">
-            <div className="h-[31px] bg-[#FFC7D3] rounded-t-[5px] text-[15px] text-white flex items-center px-[19px] justify-between">
-                <div>
-                    {String(pointIndex + 1).padStart(2, '0')}
+            <div>
+            {!isFinished ? ( 
+            <>
+                <div className="h-[31px] bg-[#FFC7D3] rounded-t-[5px] text-[15px] text-white flex items-center px-[19px] justify-between">
+                    <div>
+                        {String(pointIndex + 1).padStart(2, '0')}
+                    </div>
+                    
                 </div>
-                <div className="cursor-pointer flex gap-2">
-                    {currentStepIndex > 0 && (
-                        <button
-                            onClick={() => setCurrentStepIndex(prev => prev - 1)}
-                            className="text-white border border-white rounded-sm"
-                        >
-                            이전 단계
-                        </button>
-                        )}
-                        {!isLastStep && (
-                        <button
-                            onClick={() => setCurrentStepIndex(prev => prev + 1)}
-                            className="text-white border border-white rounded-sm"
-                        >
-                            다음 단계
-                        </button>
-                        )}
-                        {isLastStep && (
-                        <button
-                            onClick={() => nav("/")}
-                            className="text-white"
-                        >
-                            홈으로
-                        </button>
-                        )}
+                <div className="border border-[#E1E1E1] border-t-0 rounded-b-[5px] p-[10px]">
+                    <div className="w-[320px] flex mx-auto mb-1 justify-between">
+                        <p>{MainInstruction(currentStep)}</p>
+                        <p>{timeInMinutes}분</p>
+                    </div>
+                    <hr className="w-[320px] flex mx-auto border-[#DDDDDD]" />
+                    <div className="w-[320px] flex mx-auto mt-1">
+                        <p>{simplifyInstruction(currentStep)}</p>
+                    </div>
                 </div>
-            </div>
-            <div className="border border-[#E1E1E1] border-t-0 rounded-b-[5px] p-[10px]">
-                <div className="w-[320px] flex mx-auto mb-1 justify-between">
-                    <p>{MainInstruction(currentStep)}</p>
-                    <p>{timeInMinutes}분</p>
+            </>
+            ) : (
+            <>
+                <div className="w-[358px] border border-[#E1E1E1] rounded-md py-[22px] pl-[19px]">
+                    <p className="text-[20px]">오늘도 안전하게 도착했어요.</p>
+                    <p className="text-[#434343]">다음 여정도 기대해주세요.</p>
                 </div>
-                <hr className="w-[320px] flex mx-auto border-[#DDDDDD]" />
-                <div className="w-[320px] flex mx-auto mt-1">
-                    <p>{simplifyInstruction(currentStep)}</p>
+            </>
+            )}
+        </div>
+            
+            <StepNavigation 
+                currentStep={currentStepIndex}
+                totalSteps={steps.length}
+                onPrev={() => setCurrentStepIndex((prev) => prev - 1)}
+                onNext={() => setCurrentStepIndex((prev) => prev + 1)}
+                isFinished={isFinished}
+                onFinish={() => setIsFinished(true)}
+            />
+            {isFinished ? (
+                <div className="flex flex-row h-[43px] justify-between mt-[7px] gap-[6px]">
+                <div className="border border-[#A1A1A1] flex justify-center w-full text-center rounded-[5px] cursor-pointer">
+                    <button
+                        className="text-[#272727] cursor-pointer"
+                        onClick={() => nav("/")}
+                    >
+                        안내를 종료하기
+                    </button>
                 </div>
-            </div>
-
-            <div className="border border-[#A1A1A1] h-[43px] flex justify-center mt-[9px] rounded-[5px]">
-                <button
-                    className="text-[#272727]"
-                    onClick={() => nav("/")}
-                >
-                    안내를 종료할까요?
-                </button>
-            </div>
+                <div className="border border-[#A1A1A1] bg-[#FF2655] flex justify-center w-full text-center rounded-[5px] cursor-pointer">
+                    <button
+                        className="text-white cursor-pointer"
+                        onClick={() => nav("/records")}
+                    >
+                        기록하기
+                    </button>
+                </div>
+                </div>
+            ) : (
+                <>
+                <div className="border border-[#A1A1A1] h-[43px] flex justify-center mt-[9px] rounded-[5px]">
+                    <button
+                        className="text-[#272727]"
+                        onClick={() => nav("/")}
+                    >
+                        안내를 종료할까요?
+                    </button>
+                </div>
+                </>
+            )}
         </div>
     )
 }

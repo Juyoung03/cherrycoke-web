@@ -1,11 +1,12 @@
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import StepNavigation from "./StepNavigation";
 
 const TransitStepCard = ({ data }) => {
   const nav = useNavigate(); // ✅ 반드시 최상단에서 실행
   const [currentStep, setCurrentStep] = useState(0); // ✅ 최상단
   const [currentStationIndex, setCurrentStationIndex] = useState(0);
-  
+  const [isFinished, setIsFinished] = useState(false);
   const plan = data;
   
   //const plan = data?.metaData?.plan?.itineraries?.[0];
@@ -98,36 +99,12 @@ const TransitStepCard = ({ data }) => {
   return (
     <div className="w-[358px] rounded-md">
       <div>
+        {!isFinished ? ( 
+        <>
         {step.type === "walk" && (
           <>
             <div className="h-[31px] bg-[#FFC7D3] rounded-t-[5px] text-[15px] text-white flex items-center px-[19px] justify-between">
               <div>{String(currentStep + 1).padStart(2, '0')}</div>
-              
-              <div className="cursor-pointer flex gap-2">
-                    {currentStep > 0 && (
-                      <button 
-                        onClick={handlePrev}
-                        className="text-white border border-white rounded-sm"
-                      >
-                        이전 단계
-                      </button>
-                    )}
-                    {currentStep < RouteSteps.length - 1 ? (
-                      <button 
-                        onClick={handleNext} 
-                        className="text-white border border-white rounded-sm"
-                      >
-                        다음 단계
-                      </button>
-                    ) : (
-                      <button 
-                        onClick={() => nav("/")} 
-                        className="text-white border border-white rounded-sm"
-                      >
-                        홈으로
-                      </button>
-                    )}
-                </div>
             </div>
 
             <div className="border border-[#E1E1E1] border-t-0 rounded-b-[5px] p-[10px]">
@@ -137,7 +114,7 @@ const TransitStepCard = ({ data }) => {
                 <hr className="w-[320px] flex mx-auto border-[#DDDDDD]" />
                 <div className="w-[320px] flex mx-auto mt-1 text-[18px]">
                     {step.description}하세요
-                </div>           
+                </div>
             </div>
 
           </>
@@ -172,32 +149,6 @@ const TransitStepCard = ({ data }) => {
               className="h-[31px] bg-[#38416C] rounded-t-[5px] text-[15px] text-white flex items-center px-[19px] justify-between"
             >
               <div>{String(currentStep + 1).padStart(2, '0')}</div>
-              
-              <div className="cursor-pointer flex gap-2">
-                    {currentStep > 0 && (
-                      <button 
-                        onClick={handlePrev}
-                        className="text-white border border-white rounded-sm"
-                      >
-                        이전 단계
-                      </button>
-                    )}
-                    {currentStep < RouteSteps.length - 1 ? (
-                      <button 
-                        onClick={handleNext} 
-                        className="text-white border border-white rounded-sm"
-                      >
-                        다음 단계
-                      </button>
-                    ) : (
-                      <button 
-                        onClick={() => nav("/")} 
-                        className="text-white border border-white rounded-sm"
-                      >
-                        홈으로
-                      </button>
-                    )}
-                </div>
             </div>
             <div className="border border-[#E1E1E1] border-t-0 rounded-b-[5px] p-[10px]">
                 <div className="w-[320px] flex mx-auto mb-1 flex-col">
@@ -232,8 +183,6 @@ const TransitStepCard = ({ data }) => {
                         </li>
                     </ul>
                 </div>
-              
-              
             </div>
           </>
         )}
@@ -266,32 +215,6 @@ const TransitStepCard = ({ data }) => {
               style={{backgroundColor : `#${step.subwayColor}`}}
             >
               <div>{String(currentStep + 1).padStart(2, '0')}</div>
-              
-              <div className="cursor-pointer flex gap-2">
-                    {currentStep > 0 && (
-                      <button 
-                        onClick={handlePrev}
-                        className="text-white border border-white rounded-sm"
-                      >
-                        이전 단계
-                      </button>
-                    )}
-                    {currentStep < RouteSteps.length - 1 ? (
-                      <button 
-                        onClick={handleNext} 
-                        className="text-white border border-white rounded-sm"
-                      >
-                        다음 단계
-                      </button>
-                    ) : (
-                      <button 
-                        onClick={() => nav("/")} 
-                        className="text-white border border-white rounded-sm"
-                      >
-                        홈으로
-                      </button>
-                    )}
-                </div>
             </div>
             <div className="border border-[#E1E1E1] border-t-0 rounded-b-[5px] p-[10px]">
                 <div className="w-[320px] flex mx-auto mb-1 flex-row text-[18px] gap-[5px]">
@@ -312,16 +235,58 @@ const TransitStepCard = ({ data }) => {
             </div>
           </>
         )}
+        </>
+      ) : (
+        <>
+          <div className="w-[358px] border border-[#E1E1E1] rounded-md py-[22px] pl-[19px]">
+            <p className="text-[20px]">오늘도 안전하게 도착했어요.</p>
+            <p className="text-[#434343]">다음 여정도 기대해주세요.</p>
+          </div>
+        </>
+      )}
       </div>
 
-      <div className="border border-[#A1A1A1] h-[43px] flex justify-center mt-[9px] rounded-[5px]">
+      <StepNavigation
+        currentStep={currentStep}
+        totalSteps={RouteSteps.length}
+        onPrev={handlePrev}
+        onNext={handleNext}
+        isFinished={isFinished}
+        onFinish={() => setIsFinished(true)}
+      />
+      
+      {isFinished ? (
+        <div className="flex flex-row h-[43px] justify-between mt-[7px] gap-[6px]">
+          <div className="border border-[#A1A1A1] flex justify-center w-full text-center rounded-[5px] cursor-pointer">
             <button
-                className="text-[#272727]"
+                className="text-[#272727] cursor-pointer"
                 onClick={() => nav("/")}
             >
-                안내를 종료할까요?
+                안내를 종료하기
             </button>
+          </div>
+          <div className="border border-[#A1A1A1] bg-[#FF2655] flex justify-center w-full text-center rounded-[5px] cursor-pointer">
+              <button
+                  className="text-white cursor-pointer"
+                  onClick={() => nav("/records")}
+              >
+                  기록하기
+              </button>
+          </div>
         </div>
+      ) : (
+        <>
+          <div className="border border-[#A1A1A1] h-[43px] flex justify-center mt-[9px] rounded-[5px]">
+              <button
+                  className="text-[#272727]"
+                  onClick={() => nav("/")}
+              >
+                  안내를 종료할까요?
+              </button>
+          </div>
+        </>
+      )}
+      
     </div>
   );
 };
