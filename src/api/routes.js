@@ -39,7 +39,7 @@ import { getToken } from "./auth";
 
 // 특정 저장 경로 삭제
 export async function deleteSavedRoute(routeId) {
- const token = getToken();
+ const token = await getToken();
   const res = await fetch(`${BACKEND}/api/routes/${routeId}`, {
     method: "DELETE",
     headers: {
