@@ -11,6 +11,7 @@ import closeImg from "../../icons/close.svg";
 import prevImg from "../../icons/prevImg.svg";
 
 const Step = () => {
+    const BACKEND = import.meta.env.VITE_BACKEND_URL;
     const nav = useNavigate();
     const [step, setStep] = useState(1);
     const [formData, setFormData] = useState({
@@ -31,7 +32,7 @@ const Step = () => {
         };
 
         try {
-            const response = await fetch("https://cherrymap.click/api/join", {
+            const response = await fetch(`${BACKEND}/api/join`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

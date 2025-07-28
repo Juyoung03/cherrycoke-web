@@ -1,6 +1,6 @@
 // src/api/member.js
 import { getToken } from "./auth";
-const BACKEND = "https://cherrymap.click";
+const BACKEND = import.meta.env.VITE_BACKEND_URL;
 
 async function fetchWithAuth(path) {
   const token = await getToken();

@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import {useForm} from "react-hook-form";
 import StepIndicator from "./StepIndicator";
 
+const BACKEND = import.meta.env.VITE_BACKEND_URL;
+
 const Step2 = ({onNext}) => {
     const {
         register, 
@@ -31,10 +33,8 @@ const Step2 = ({onNext}) => {
             setChecking(true);
             setIdError("");
 
-            
-
             const res = await fetch(
-                `https://cherrymap.click/api/check-nickname?nickname=${encodeURIComponent(nickname)}`,
+                `${BACKEND}/api/check-nickname?nickname=${encodeURIComponent(nickname)}`,
                 { 
                     method: "GET",
                  }
