@@ -1,6 +1,6 @@
 // src/components/SavedRoutes/SavedRoutes.jsx
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Navigate } from "react-router-dom";
 import EditIcon from "../../icons/edit.svg";
 import SavedRouteItem from "./SavedRouteItem";
 import { FaChevronDown } from "react-icons/fa";
@@ -36,8 +36,11 @@ export default function SavedRoutes() {
   }, []);
 
   // 로딩/에러 표시
-  if (loading) return <div className="py-4 text-center text-gray-500">로딩 중...</div>;
-  if (error)   return <div className="py-4 text-center text-red-500">로그인 해주세요.</div>;
+  if (loading) return <div className="py-4 text-center text-gray-500">잠시만 기다려주세요...</div>;
+  if (error) {
+    // 에러가 났으면 로그인 페이지로 보내기
+    return <Navigate to="/login" replace />;
+  }
 
   // 정렬 로직 (date 필드 기준)
   // 최신순: id 내림차순, 오래된순: id 오름차순

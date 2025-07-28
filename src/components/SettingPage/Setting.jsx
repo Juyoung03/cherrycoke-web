@@ -1,11 +1,16 @@
 // src/components/SettingPage/Setting.jsx
 import React, { useEffect, useState } from "react";
 import nextImg from "../../icons/nextImg.svg";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Navigate } from "react-router-dom";
 import { getMemberInfo } from "../../api/member";
 
 export default function Setting({ onEditPhone }) {
   const navigate = useNavigate();
+  const token = localStorage.getItem("accessToken");
+  // 토큰이 없으면 곧바로 로그인으로 리다이렉트
+  if (!token) {
+    return <Navigate to="/login" replace />;
+  }
 
   // ① 회원 정보 상태
   const [member, setMember] = useState({
@@ -26,7 +31,7 @@ export default function Setting({ onEditPhone }) {
         // 토큰이 없어서 에러가 날 경우 err.message 에 "accessToken 없음" 이 담겨있습니다.
         if (err.message.includes("accessToken 없음")) {
           // ① 로그인 페이지로 리디렉트
-          return navigate("/login");
+          return navigate("/login", { replace: true });
           // 또는
           // setError("로그인이 필요합니다. 로그인 후 다시 시도해 주세요.");
         }
