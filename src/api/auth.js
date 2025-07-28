@@ -1,18 +1,12 @@
 // src/api/auth.js
-const BACKEND = "https://cherrymap.click";
-
 /**
- * ① localStorage에 accessToken이 있으면 바로 리턴
- * ② 없으면 /dev/token 호출 → 저장 → 리턴
+ * localStorage에 저장된 accessToken을 반환합니다.
+ * 없으면 곧바로 에러를 던져 로그인 필수 상태로 만듭니다.
  */
-export async function getToken() {
-  let token = localStorage.getItem("accessToken");
-  if (token) return token;
-
-  const res = await fetch(`${BACKEND}/dev/token`, { method: "POST" });
-  if (!res.ok) throw new Error(`토큰 발급 실패 (${res.status})`);
-  let raw = await res.text();
-  token = raw.replace(/^"(.*)"$/, "$1");
-  localStorage.setItem("accessToken", token);
-  return token;
-}
+export function getToken() {
+    const token = localStorage.getItem("accessToken");
+    if (!token) {
+      throw new Error("로그인이 필요합니다.");
+    }
+    return token;
+  }

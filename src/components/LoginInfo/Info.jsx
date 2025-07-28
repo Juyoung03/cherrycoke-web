@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import "./Info.css";
 import { useNavigate } from "react-router-dom";
+import { getEmergencyContact } from "../../api/member";
 
 const Info = () => {
 
