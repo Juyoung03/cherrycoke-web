@@ -204,7 +204,7 @@ const MapPage = () => {
       mode: mode,
     }})
   }
-
+console.log(transitRoute);
 
   return (
     <div className="relative flex flex-col items-center h-screen overflow-hidden">
