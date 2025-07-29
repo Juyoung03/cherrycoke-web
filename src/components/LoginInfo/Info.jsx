@@ -67,28 +67,12 @@ const login = async (nickname, password) => {
             [name] : value,
         }
         setInputs(nextInputs);
-        console.log(inputs);
     };
 
     useEffect(()=>{
         const isActive = id && pw;
         setActive(isActive);
     }, [id, pw]);
-
-    // const goToMain = () => {
-    //     const checkUser = userList.find(user => user.id === id
-    //         && user.pw === pw
-    //     );
-
-    //     if (checkUser) {
-    //         alert('로그인 성공');
-    //         nav("/");
-    //     }
-    //     else {
-    //         alert('로그인 실패');
-    //         nav("/login");
-    //     }
-    // }
 
     const handleLogin = async () => {
         await login(inputs.id, inputs.pw);
