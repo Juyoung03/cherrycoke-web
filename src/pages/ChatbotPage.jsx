@@ -4,6 +4,8 @@ import backImg from "../icons/back.svg";
 import ChoiceButton from "../components/Chatbot/ChoiceButton";
 import { useRef, useState, useEffect } from "react";
 import { sendChatMessage } from "../api/chatbot";
+import nextImg from "../icons/nextImg.svg";
+import prevImg from "../icons/prevImg.svg";
 
 const ChatbotPage = () => {
     const nav = useNavigate();
@@ -15,6 +17,7 @@ const ChatbotPage = () => {
     const location = useLocation();
     const receivedData = location.state || [];
     const scrollByAmount = 150;
+    const [answer, setAnswer] = useState(null);
 
     const onPrev = () => {
         nav("/");
@@ -49,6 +52,7 @@ const ChatbotPage = () => {
           { enableHighAccuracy: true, timeout: 5000 }
         );
       }, []);
+      console.log(lat, lng);
 
       const submitToBackend = async (selectedText) => {
 
@@ -60,9 +64,12 @@ const ChatbotPage = () => {
                 destination: receivedData.destination,
                 mode: receivedData.mode,
             });
+            console.log(result);
 
-            if (result.success) {
+            if (result && result.response) {
                 alert("연결");
+                setAnswer(result.response);
+                
             }
             else {
                 alert("실패");
@@ -95,63 +102,73 @@ const ChatbotPage = () => {
     return (
         <div className="relative flex flex-col items-center h-screen overflow-hidden">
             <Header left_img={backImg} text={"체리봇"} onClick={onPrev} />
-            <div className="mt-[47px] ml-[16px] w-[100%] relative">
-                <div className="flex flex-row gap-[5px] items-start">
-                    <img src="/cherry-favicon.svg" alt="챗봇" />
-                    <div>
+            <div className="mt-[47px] ml-[16px] w-full relative">
+                <div className="flex flex-col gap-y-[15px]">
+                    <div className="flex flex-row gap-[5px] items-start justify-start max-w-[355px]">
+                        <img src="/cherry-favicon.svg" alt="챗봇" />
                         <div className="bg-[#F2F3F5] rounded-tl-[5px] rounded-[20px] text-[16px] px-[17px] py-[12px] inline-block">
                             <p>반가워요! 무엇이 궁금하신가요?</p>
                             <p>궁금한 내용을 아래에서 선택해보세요.</p>
                         </div>
+                    </div>
 
-                        <div className="relative overflow-hidden w-full">
-                            <button
-                                onClick={handleScrollPrev}
-                            >
-                                prev
-                            </button>
-                            <div 
-                                className="mt-[15px] w-full overflow-x-auto scroll-smooth" 
-                                ref={scrollRef}
-                                style={{
-                                    maxWidth: "340px", // 모바일 기기처럼 제한
-                                    whiteSpace: "nowrap",
-                                }}
-                            >
-                                <div className="flex flex-nowrap w-max">
-                                {choice.map((button, index) => (
-                                    <ChoiceButton 
-                                        key={index} 
-                                        text={button.text} 
-                                        onClick={() => {
-                                            const selectedText = button.text.join(" ");
-                                            setQue(selectedText);
-                                            submitToBackend(selectedText);
-                                        }}
-                                    />
-                                ))}
-                                </div>
+                    <div className="relative overflow-hidden w-full flex gap-[10px] ml-[16px]">
+                        <button
+                            onClick={handleScrollPrev}
+                        >
+                            <img src={prevImg} alt="prev" className="scale-180"/>
+                        </button>
+                        <div 
+                            className="mt-[15px] w-full overflow-x-auto scroll-smooth" 
+                            ref={scrollRef}
+                            style={{
+                                maxWidth: "355px", // 모바일 기기처럼 제한
+                                whiteSpace: "nowrap",
+                            }}
+                        >
+                            <div className="flex flex-nowrap w-max">
+                            {choice.map((button, index) => (
+                                <ChoiceButton 
+                                    key={index} 
+                                    text={button.text} 
+                                    onClick={() => {
+                                        if (loading) {
+                                            alert("위치 정보를 불러오는 중입니다. 잠시만 기다려주세요.");
+                                            return;
+                                        }
+                                        const selectedText = button.text.join(" ");
+                                        setQue(selectedText);
+                                        submitToBackend(selectedText);
+                                    }}
+                                />
+                            ))}
                             </div>
-                            <button
-                                onClick={handleScrollNext}
-                                className="left-[100px]"
-                            >
-                                next
-                            </button>
                         </div>
+                        <button
+                            onClick={handleScrollNext}
+                            
+                        >
+                            <img src={prevImg} alt="next" className="-scale-180"/>
+                        </button>
                     </div>
-                </div>
 
-                <div className="mt-[15px] flex absolute right-[16px]">
-                {que ? (
-                    <div className="bg-[#FFE9EE] px-[17px] py-[12px] rounded-tr-[5px] rounded-[20px] text-[#2F2B2C]">
-                        {que}
-                    </div>
-                    ) : 
-                    <></>
-                }
-            </div>
-                
+                    {que && (
+                        <div className="flex justify-end">
+                            <div className="mr-[16px] bg-[#FFE9EE] px-[17px] py-[12px] rounded-tr-[5px] rounded-[20px] text-[#2F2B2C]">
+                                {que}
+                            </div>
+                        </div>
+                    )}
+                    
+                    {answer && (
+                        <div className="flex flex-row gap-[5px] items-start max-w-[355px]">
+                            <img src="/cherry-favicon.svg" alt="챗봇" />
+                            <div className="bg-[#F2F3F5] rounded-tl-[5px] rounded-[20px] px-[17px] py-[12px] inline-block">
+                                <p>{answer}</p> 
+                            </div>
+                        </div>
+                    )}
+                </div>
             </div>
         </div>
     )

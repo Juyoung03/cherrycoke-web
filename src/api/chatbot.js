@@ -16,6 +16,7 @@ export async function sendChatMessage({
         mode: mode || "홈",
         user_context: message,
     };
+    console.log(payload);
 
     const res = await fetch(`${BACKEND}/api/v1/chat`, {
         method: "POST",
