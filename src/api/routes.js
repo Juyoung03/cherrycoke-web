@@ -11,7 +11,7 @@ const BACKEND = import.meta.env.VITE_BACKEND_URL;
  // 저장된 경로 목록 조회
  export async function getSavedRoutes() {
   const token = await getToken();
-  console.log("🛡️ Sending request with token:", token);
+  //console.log("🛡️ Sending request with token:", token);
   const res = await fetch(`${BACKEND}/api/routes/list`, {
     method: "GET",
     headers: {

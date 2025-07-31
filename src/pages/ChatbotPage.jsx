@@ -18,6 +18,7 @@ const ChatbotPage = () => {
     const receivedData = location.state || [];
     const scrollByAmount = 150;
     const [answer, setAnswer] = useState(null);
+    const [mode, setMode] = useState("");
 
     const onPrev = () => {
         nav("/");
@@ -55,6 +56,11 @@ const ChatbotPage = () => {
       console.log(lat, lng);
 
       const submitToBackend = async (selectedText) => {
+        if (receivedData.mode === "walk") {
+            setMode("도보");
+        } else if (receivedData.mode === "transit") {
+            setMode("대중교통");
+        }
 
         try {
             const result = await sendChatMessage({
@@ -62,12 +68,12 @@ const ChatbotPage = () => {
                 lat,
                 lng,
                 destination: receivedData.destination,
-                mode: receivedData.mode,
+                mode: mode,
             });
             console.log(result);
 
             if (result && result.response) {
-                alert("연결");
+                //alert("연결");
                 setAnswer(result.response);
                 
             }
