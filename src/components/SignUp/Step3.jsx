@@ -5,6 +5,14 @@ const Step3 = ({onNext}) => {
     const {register, handleSubmit} = useForm();
     
     const onSubmit = (data) => {
+        const rawNumber = data.phoneNumber?.replace(/\D/g, ""); // 숫자만 추출
+        if (rawNumber?.length === 11) {
+            data.phoneNumber = rawNumber.replace(/(\d{3})(\d{4})(\d{4})/, "$1-$2-$3");
+        }
+        else if (rawNumber?.length != 0) {
+            alert("전화번호를 다시 확인해주세요.");
+            return;
+        }
         console.log(data);
         onNext(data);
     };
