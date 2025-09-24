@@ -4,6 +4,7 @@ import TransitStepCard from "../components/RouteGuide/TransitStepCard";
 import { useLocation, useNavigate } from "react-router-dom";
 import glassImg from "../icons/glass.svg";
 import { getEmergencyContact } from "../api/member";
+import pinImg from "../icons/pinsmall.svg";
 
 const MapPage = () => {
   const mapRef = useRef(null);
@@ -13,6 +14,7 @@ const MapPage = () => {
   const [route, setRoute] = useState(null);
   const [transitRoute, setTransitRoute] = useState(null);
   const { mode, destination, endLat, endLng, startLat, startLng } = useLocation().state || {};
+
 
   // 헤더와 동일한 비상연락 함수
   const handleEmergencyCall = async () => {
@@ -197,6 +199,44 @@ const MapPage = () => {
       if (polyline) polyline.setMap(null);
     };
   }, [map, route, transitRoute, mode]);
+
+  useEffect(() => {
+    if (!map || !navigator.geolocation) return;
+
+    let marker = null;
+
+    const watchId = navigator.geolocation.watchPosition(
+      (position) => {
+        const {latitude, longitude} = position.coords;
+        const latLng = new window.Tmapv2.LatLng(latitude, longitude);
+
+        if (!marker) {
+          marker = new window.Tmapv2.Marker({
+            position: latLng,
+            map,
+            icon: pinImg
+          });
+        } else {
+          marker.setPosition(latLng);
+        }
+
+        map.setCenter(latLng);
+      }, 
+      (error) => {console.log(error)},
+      {enableHighAccuracy: true, timeout: 5000, maximumAge: 0}
+    );
+
+    return () => {
+      navigator.geolocation.clearWatch(watchId);
+      if (marker) marker.setMap(null);
+    }
+
+  }, [map]);
+
+  
+
+  // console.log(curLat, curLng);
+  // console.log(startLat, startLng);
 
   const handleClick = () => {
     nav("/chatbot", {state: {
