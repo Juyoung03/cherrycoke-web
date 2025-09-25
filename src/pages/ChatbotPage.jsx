@@ -111,7 +111,7 @@ const ChatbotPage = () => {
             <div className="mt-[47px] ml-[16px] w-full relative">
                 <div className="flex flex-col gap-y-[15px]">
                     <div className="flex flex-row gap-[5px] items-start justify-start max-w-[355px]">
-                        <img src="/cherry-favicon.svg" alt="챗봇" />
+                        <img src="/cherry-favicon.svg" alt="챗봇" className="w-[35px] h-[35px]"/>
                         <div className="bg-[#F2F3F5] rounded-tl-[5px] rounded-[20px] text-[16px] px-[17px] py-[12px] inline-block">
                             <p>반가워요! 무엇이 궁금하신가요?</p>
                             <p>궁금한 내용을 아래에서 선택해보세요.</p>
