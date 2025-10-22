@@ -1,6 +1,6 @@
 const StepIndicator = ({ currentStep }) => {
     return (
-        <div className="flex justify-center pt-[18px] pb-[36px]">
+        <div className="flex justify-center pt-[27px] pb-[36px]">
         <div className="flex items-center">
             {[0, 1, 2, 3].map((step, index) => (
                 <div key={index} className="flex items-center"> 
@@ -16,7 +16,7 @@ const StepIndicator = ({ currentStep }) => {
                     
                     {index < 3 && (
                         <div 
-                            className={`w-6 h-[2px]
+                            className={`w-6 h-[1px]
                                 ${currentStep > step ? 'bg-[#FF2655]' : 'bg-[#C7C7C7]'}`}
                         />
                     )}
