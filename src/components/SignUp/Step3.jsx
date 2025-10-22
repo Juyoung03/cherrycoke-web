@@ -25,7 +25,7 @@ const Step3 = ({onNext}) => {
                     <div className="font-medium font-display text-[28px] py-[10px]">
                         <p>비상 연락처(선택)</p>
                     </div>
-                    <div className="font-light font-display text-[14px]">
+                    <div className="font-regular text-[16px] text-gray-600">
                         <p>예기치 못한 상황 발생 시, 신속한 연락을 위해 사용돼요.</p>
                         <p>입력하지 않으셔도 회원가입이 가능해요.</p>
                     </div>
@@ -39,7 +39,7 @@ const Step3 = ({onNext}) => {
                     </div>
                 </div>
 
-                <div className="absolute bottom-[34px] left-1/2 -translate-x-1/2">
+                <div className="absolute bottom-[42px] left-1/2 -translate-x-1/2">
                     <button 
                         className={"border border-box border-none w-[358px] h-[56px] rounded-md gap-[10px] text-lg bg-[#FF2655] text-white"}
                     >

@@ -1,5 +1,5 @@
 import "./Step.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {useNavigate} from "react-router-dom";
 import Header from "../Header";
 import Step1 from "./Step1";
@@ -22,6 +22,14 @@ const Step = () => {
         pw_valid: "",
         service_agree: true,
     });
+
+    // 스크롤 완전 차단
+    useEffect(() => {
+        document.body.style.overflow = 'hidden';
+        return () => {
+            document.body.style.overflow = 'unset';
+        };
+    }, []);
 
     const submitToBackend = async (data) => {
         const payload = {
@@ -77,7 +85,7 @@ const Step = () => {
     const currentFuntion = step === 1 ? closeFunction : prevFuntion;
 
     return (
-        <div>
+        <div className="h-screen overflow-hidden">
             <Header text={headerText} left_img={currentImg} onClick={currentFuntion} />
 
             {step === 1 && <Step1 onNext={updateFromData} />}

@@ -4,9 +4,9 @@ const StepIndicator = ({ currentStep }) => {
         <div className="flex items-center">
             {[0, 1, 2, 3].map((step, index) => (
                 <div key={index} className="flex items-center"> 
-                    <div className="relative w-2 h-">
+                    <div className="relative w-2 h-2">
                         {currentStep === step && (
-                            <div className="absolute inset-[-8px] bg-[#FFEAEF] rounded-full z-0"/>
+                            <div className="absolute inset-[-8px] bg-[#FFEAEF] rounded-full z-[-1]"/>
                         )}
                         <div 
                             className={`relative w-2 h-2 rounded-full z-10

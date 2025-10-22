@@ -62,8 +62,18 @@ const Step4 = ({onNext}) => {
                 </div>
         
                 <div className="absolute bottom-[117px] left-1/2 -translate-x-1/2">
-                    <article className={`border border-box w-[358px] h-[60px] rounded-md text-lg px-[19px] flex flex-row-reverse items-center justify-between
-                                        ${!allChecked ? 'border-[#E6E6E6]' : 'text-[#FF2655] border-[#FF2655]'}`}>
+                    <article 
+                        className={`border border-box w-[358px] h-[60px] rounded-md text-lg px-[19px] flex flex-row-reverse items-center justify-between cursor-pointer
+                                        ${!allChecked ? 'border-[#E6E6E6]' : 'text-[#FF2655] border-[#FF2655]'}`}
+                        onClick={() => {
+                            const newValue = !allChecked;
+                            setAllChecked(newValue);
+                            setCheckboxes({
+                                option1: newValue,
+                                option2: newValue,
+                            });
+                        }}
+                    >
                         <input 
                             type="checkbox"
                             checked={allChecked}
@@ -76,14 +86,6 @@ const Step4 = ({onNext}) => {
                             src={allChecked ? checkImg : noCheckImg}
                             alt={allChecked ? "checked" : "not checked"}
                             className="w-5 h-5"
-                            onClick={() => {
-                                const newValue = !checkboxes.option1;
-                                setAllChecked(newValue);
-                                setCheckboxes({
-                                    option1: newValue,
-                                    option2: newValue,
-                                });
-                            }}
                         />
 
                         <label htmlFor="all" className="cursor-pointer">체리맵이 위치를 기억해도 될까요?</label>
@@ -136,7 +138,7 @@ const Step4 = ({onNext}) => {
                     </ul>
                 </div>
 
-                <div className="absolute bottom-[34px] left-1/2 -translate-x-1/2">
+                <div className="absolute bottom-[42px] left-1/2 -translate-x-1/2">
                     <button 
                         type="submit"
                         disabled={!allChecked}

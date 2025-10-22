@@ -34,7 +34,7 @@ const Step1 = ({onNext}) => {
                     />
                 </div>
 
-                <div className="absolute bottom-[34px]">
+                <div className="absolute bottom-[42px]">
                     <button 
                         type="submit"
                         disabled={!isActive}

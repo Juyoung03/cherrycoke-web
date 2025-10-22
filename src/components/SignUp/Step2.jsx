@@ -21,6 +21,7 @@ const Step2 = ({onNext}) => {
     const [idValid, setIdValid] = useState(false);
     const [checking, setChecking] = useState(false);
     const [idError, setIdError] = useState("");
+    const [idSuccess, setIdSuccess] = useState("");
 
     useEffect(() => {
         setIsActive(isValid && idValid); // 아이디 중복 확인도 완료돼야 버튼 활성화
@@ -32,6 +33,7 @@ const Step2 = ({onNext}) => {
         try {
             setChecking(true);
             setIdError("");
+            setIdSuccess("");
 
             const res = await fetch(
                 `${BACKEND}/api/check-nickname?nickname=${encodeURIComponent(nickname)}`,
@@ -63,7 +65,7 @@ const Step2 = ({onNext}) => {
             const result = await res.json();
             if (result.success) {
                 setIdValid(true);
-                alert("사용 가능한 아이디입니다!");
+                setIdSuccess("사용 가능한 아이디입니다.");
             } else {
                 setIdValid(false);
                 setIdError("서버 응답 오류입니다.");
@@ -112,14 +114,19 @@ const Step2 = ({onNext}) => {
                 />
                 <button
                 type="button"
-                className="absolute top-1/2 right-[10px] -translate-y-1/2 w-[58px] h-[26px] rounded-md bg-[#FF2655] text-white text-[13px]"
+                className="absolute top-[12px] right-[10px] w-[58px] h-[26px] rounded-md bg-[#FF2655] text-white text-[13px]"
                 onClick={() => checkDuplicate(nickname)}
                 >
                 중복확인
                 </button>
-                {idError && (
-                    <p className="text-sm">{idError}</p>
-                )}
+                <div className="mt-1 h-5">
+                    {idError && (
+                        <p className="text-sm text-[#FF2655]">{idError}</p>
+                    )}
+                    {idSuccess && (
+                        <p className="text-sm text-[#26C629]">{idSuccess}</p>
+                    )}
+                </div>
                 </div>
             </div>
 
@@ -165,7 +172,7 @@ const Step2 = ({onNext}) => {
                 )}
             </div>
 
-            <div className="absolute bottom-[34px]">
+            <div className="absolute bottom-[42px]">
                 <button 
                     type="submit"
                     disabled={!isActive}
