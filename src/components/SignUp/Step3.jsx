@@ -5,6 +5,7 @@ const Step3 = ({onNext}) => {
     const {register, handleSubmit} = useForm();
     
     const onSubmit = (data) => {
+        //console.log("전화번호", data);
         const rawNumber = data.phoneNumber?.replace(/\D/g, ""); // 숫자만 추출
         if (rawNumber?.length === 11) {
             data.phoneNumber = rawNumber.replace(/(\d{3})(\d{4})(\d{4})/, "$1-$2-$3");

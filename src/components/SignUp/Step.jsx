@@ -38,6 +38,7 @@ const Step = () => {
             nickname: data.nickname,
             password: data.password,
         };
+        console.log(payload);
 
         try {
             const response = await fetch(`${BACKEND}/api/join`, {

@@ -102,7 +102,7 @@ const MapPage = () => {
       .then(res => setRoute(res))
       .catch(err => console.error(err));
       }, [map]);
-      //console.log(route);
+      console.log(route);
 
   useEffect(() => {
     if (!map) return;
