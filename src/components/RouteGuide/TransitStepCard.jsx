@@ -9,6 +9,7 @@ const TransitStepCard = ({ data }) => {
   const [currentStationIndex, setCurrentStationIndex] = useState(0);
   const [isFinished, setIsFinished] = useState(false);
   const plan = data;
+  console.log(plan);
   
   //const plan = data?.metaData?.plan?.itineraries?.[0];
   if (!data) return (
@@ -50,7 +51,7 @@ const TransitStepCard = ({ data }) => {
         busColor: leg.routeColor,
       });
     } else if (leg.mode === "SUBWAY") {
-        const stations = leg.passStopList?.stationList || [];
+        const stations = leg.passStopList?.stations || [];
         RouteSteps.push({
             type: "subway",
             route: leg.route,
