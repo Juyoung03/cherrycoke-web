@@ -109,19 +109,19 @@ const login = async (nickname, password) => {
                     </form>
                 </div>
 
-                <div className="check_wrapper">
+                {/* <div className="check_wrapper">
                     
                     <input type="checkbox" className="login_checkbox"/>
                     <div className="label_box">
                         <label htmlFor="" className="check_text">로그인 상태 유지</label>
                     </div>
                     
-                </div>
+                </div> */}
             </div>
 
                 <div className="buttons_wrapper">
-                    <button>아이디 찾기</button> |
-                    <button>비밀번호 찾기</button> |
+                    {/* <button>아이디 찾기</button> |
+                    <button>비밀번호 찾기</button> | */}
                     <button onClick={() => nav("/signup")}>회원가입</button>
                 </div>
 

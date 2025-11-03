@@ -57,9 +57,9 @@ const MapPage = () => {
       const mapInstance = new window.Tmapv2.Map(mapRef.current, {
         center: new window.Tmapv2.LatLng(startLat, startLng),
         width: "100%",
-        height: "480px",
+        height: "430px",
         zoom: 18,
-        scrollwheel: false,
+        // scrollwheel: false, // 확대 축소 가능하게
         zoomControl: false,
         draggable: true,
       });
@@ -249,7 +249,7 @@ const MapPage = () => {
     <div className="relative flex flex-col items-center h-screen overflow-hidden">
       <div
         ref={mapRef}
-        className="w-full h-[480px] mb-[15px] relative"
+        className="w-full h-[430px] mb-[15px] relative"
       />
       <div className="absolute h-[35px] top-[50px] left-[16px] z-10 flex flex-row gap-[8px]">
         <button 

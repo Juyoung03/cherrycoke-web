@@ -41,7 +41,7 @@ const TransitStepCard = ({ data }) => {
       });
     }
     } else if (leg.mode === "BUS") {
-      const stations = leg.passStopList?.stationList || [];
+      const stations = leg.passStopList?.stations || [];
       RouteSteps.push({
         type: "bus",
         route: leg.route,
@@ -194,7 +194,7 @@ const TransitStepCard = ({ data }) => {
           {currentStationIndex === 0 && (
               <>
                 <div className="border border-black rounded-md h-[48px] flex items-center justify-center mb-[9px]">
-                  다음에 오는 지하철을 타세요.
+                  다음에 오는 {step.stations[1]?.stationName}방향으로 가는 지하철을 타세요.
                 </div>
               </>
             )}
