@@ -126,8 +126,9 @@ const TransitStepCard = ({ data }) => {
           <>
             {currentStationIndex === 0 && (
               <>
-                <div className="border border-black rounded-md h-[48px] flex items-center justify-center mb-[9px]">
-                  다음에 오는 <strong className="ml-[4px]">{step.route.match(/\d+/g)}</strong>번 버스를 타세요.
+                <div className="border border-black rounded-md flex flex-col items-center justify-center mb-[9px] py-[12px] px-[10px]">
+                  <p>다음에 오는 <strong className="ml-[4px]">{step.route.match(/\d+/g)}</strong>번 버스를 타세요.</p>
+                  <p>"{step.stations[1]?.stationName}"로 가는지 기사님께 물어보세요!</p>
                 </div>
               </>
             )}
@@ -146,11 +147,11 @@ const TransitStepCard = ({ data }) => {
               </>
             )}
               
-            
             <div
               className="h-[31px] bg-[#38416C] rounded-t-[5px] text-[15px] text-white flex items-center px-[19px] justify-between"
             >
               <div>{String(currentStep + 1).padStart(2, '0')}</div>
+              <div className="font-bold">"{step.stations[step.stations.length - 1]?.stationName.substr(0, 14)}"에서 하차</div>
             </div>
             <div className="border border-[#E1E1E1] border-t-0 rounded-b-[5px] p-[10px]">
                 <div className="w-[320px] flex mx-auto mb-1 flex-col">
@@ -217,6 +218,7 @@ const TransitStepCard = ({ data }) => {
               style={{backgroundColor : `#${step.subwayColor}`}}
             >
               <div>{String(currentStep + 1).padStart(2, '0')}</div>
+              <div className="font-bold">"{step.stations[step.stations.length - 1]?.stationName}"에서 하차</div>
             </div>
             <div className="border border-[#E1E1E1] border-t-0 rounded-b-[5px] p-[10px]">
                 <div className="w-[320px] flex mx-auto mb-1 flex-row text-[18px] gap-[5px]">
