@@ -119,7 +119,7 @@ const login = async (nickname, password) => {
                 </div> */}
             </div>
 
-                <div className="buttons_wrapper">
+                <div className="login_buttons_wrapper">
                     {/* <button>아이디 찾기</button> |
                     <button>비밀번호 찾기</button> | */}
                     <button onClick={() => nav("/signup")}>회원가입</button>
