@@ -5,6 +5,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import glassImg from "../icons/glass.svg";
 import { getEmergencyContact } from "../api/member";
 import pinImg from "../icons/pinsmall.svg";
+import { watchPosition, clearWatch } from "../utils/geolocation";
 
 const MapPage = () => {
   const mapRef = useRef(null);
@@ -201,11 +202,12 @@ const MapPage = () => {
   }, [map, route, transitRoute, mode]);
 
   useEffect(() => {
-    if (!map || !navigator.geolocation) return;
+    if (!map) return;
 
     let marker = null;
+    let watchId = null;
 
-    const watchId = navigator.geolocation.watchPosition(
+    watchPosition(
       (position) => {
         const {latitude, longitude} = position.coords;
         const latLng = new window.Tmapv2.LatLng(latitude, longitude);
@@ -224,10 +226,16 @@ const MapPage = () => {
       }, 
       (error) => {console.log(error)},
       {enableHighAccuracy: true, timeout: 5000, maximumAge: 0}
-    );
+    ).then((id) => {
+      watchId = id;
+    }).catch((error) => {
+      console.error('GPS 위치 추적 시작 실패:', error);
+    });
 
     return () => {
-      navigator.geolocation.clearWatch(watchId);
+      if (watchId) {
+        clearWatch(watchId);
+      }
       if (marker) marker.setMap(null);
     }
 
