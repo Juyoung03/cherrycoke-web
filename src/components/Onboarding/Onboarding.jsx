@@ -23,13 +23,14 @@ const Onboarding = () => {
         } else {
             // 두 번째 페이지: 시작하기 버튼
             localStorage.setItem("onboarding_completed", "true");
-            navigate("/login");
+            // 페이지 전체 리로드하여 App.jsx가 상태를 다시 확인하도록 함
+            window.location.href = "/";
         }
     };
 
     const handleSkip = () => {
         localStorage.setItem("onboarding_completed", "true");
-        navigate("/login");
+        window.location.href = "/";
     };
 
     return (
