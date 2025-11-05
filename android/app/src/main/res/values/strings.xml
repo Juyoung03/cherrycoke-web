@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">체리맵</string>
+    <string name="title_activity_main">체리맵</string>
+    <string name="package_name">com.cherrymap.app</string>
+    <string name="custom_url_scheme">com.cherrymap.app</string>
+</resources>
