@@ -36,7 +36,6 @@ const login = async (nickname, password) => {
         console.warn("비상연락망 저장 실패:", err);
       }
 
-      alert("로그인 성공!");
       nav("/");
     } else {
       const error = await res.json();
