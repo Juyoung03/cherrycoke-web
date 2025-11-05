@@ -6,6 +6,7 @@ import { useRef, useState, useEffect } from "react";
 import { sendChatMessage } from "../api/chatbot";
 import nextImg from "../icons/nextImg.svg";
 import prevImg from "../icons/prevImg.svg";
+import { getCurrentPosition } from "../utils/geolocation";
 
 const ChatbotPage = () => {
     const nav = useNavigate();
@@ -34,24 +35,17 @@ const ChatbotPage = () => {
     ];
 
     useEffect(() => {
-        if (!navigator.geolocation) {
-          setLoading(false);
-          return;
-        }
-    
-        navigator.geolocation.getCurrentPosition(
-          async (position) => {
+        getCurrentPosition({ enableHighAccuracy: true, timeout: 5000 })
+          .then((position) => {
             const { latitude, longitude } = position.coords;
             setLat(latitude);
             setLng(longitude);
             setLoading(false);
-          },
-          (error) => {
+          })
+          .catch((error) => {
             console.error(error);
             setLoading(false);
-          },
-          { enableHighAccuracy: true, timeout: 5000 }
-        );
+          });
       }, []);
       console.log(lat, lng);
 

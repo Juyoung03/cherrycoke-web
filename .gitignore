@@ -25,3 +25,16 @@ dist-ssr
 
 
 .env
+
+# Android / Capacitor
+android/.gradle
+android/app/build
+android/.idea
+android/local.properties
+android/app/release/*.apk
+android/app/release/*.aab
+*.apk
+*.aab
+*.ap_
+*.dex
+*.class

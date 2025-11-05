@@ -1,6 +1,7 @@
 // src/components/SearchBox/StartInput.jsx
 import { useState, useEffect } from "react";
 import StartIcon from "../../icons/start.svg";
+import { getCurrentPosition } from "../../utils/geolocation";
 
 export default function StartInput({ setStartLat, setStartLng }) {
   const [address, setAddress] = useState("주소를 불러오는 중...");
@@ -8,55 +9,20 @@ export default function StartInput({ setStartLat, setStartLng }) {
 
   // 1) 위치 가져와서 address 상태 설정
   useEffect(() => {
-    if (!navigator.geolocation) {
-      setAddress("위치 정보를 사용할 수 없습니다.");
-      setLoading(false);
-      return;
-    }
-
-    navigator.geolocation.getCurrentPosition(
-      async (position) => {
+    getCurrentPosition({ enableHighAccuracy: true, timeout: 5000 })
+      .then((position) => {
         const { latitude, longitude } = position.coords;
         setStartLat(latitude);
         setStartLng(longitude);
-        // console.log(latitude, longitude);
-        // try {
-        //   const res = await fetch(
-        //     `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`
-        //   );
-        //   const data = await res.json();
-
-        //   if (data.display_name) {
-        //     const parts = data.display_name.split(",");
-        //     const primary = parts[0].trim();
-        //     const reversed = parts
-        //       .slice(1, 4)
-        //       .map((s) => s.trim())
-        //       .reverse()
-        //       .join(" ");
-
-        //     setAddress(`${primary} (${reversed})`);
-        //   } else {
-        //     setAddress("주소를 가져올 수 없습니다.");
-        //   }
-        // } catch (err) {
-        //   console.error(err);
-        //   setAddress("주소 변환 중 오류가 발생했습니다.");
-        // } finally {
-        //   setLoading(false);
-        // }
-
-        // 위치 획득이 완료되면 ‘내 위치’ 로 표시
-       setAddress("내 위치");
-       setLoading(false);
-      },
-      (error) => {
+        // 위치 획득이 완료되면 '내 위치' 로 표시
+        setAddress("내 위치");
+        setLoading(false);
+      })
+      .catch((error) => {
         console.error(error);
         setAddress("위치 접근을 허용해 주세요.");
         setLoading(false);
-      },
-      { enableHighAccuracy: true, timeout: 5000 }
-    );
+      });
   }, []);
 
   // 2) address가 바뀌고 loading이 false가 되면 음성으로 안내
@@ -73,7 +39,7 @@ export default function StartInput({ setStartLat, setStartLng }) {
   //   window.speechSynthesis.speak(utter);
   // }, [address, loading]);
 
-    // 에러 메시지 목록
+  // 에러 메시지 목록
   const errorMessages = [
     "위치 정보를 사용할 수 없습니다.",
     "위치 접근을 허용해 주세요."

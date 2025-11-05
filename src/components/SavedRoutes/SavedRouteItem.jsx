@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import RouteHeader        from "./RouteHeader";
 import RouteReactions     from "./RouteReactions";
 import { sendSavedRoute } from "../../api/routes";
+import { getCurrentPosition } from "../../utils/geolocation";
 
 export default function SavedRouteItem({ route }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -40,16 +41,12 @@ const handleStart = async (e) => {
     });
   };
 
-  if (!navigator.geolocation) {
-    go();
-    return;
-  }
-
-  navigator.geolocation.getCurrentPosition(
-    ({ coords }) => go(coords.latitude, coords.longitude),
-    ()             => go(),
-    { enableHighAccuracy: true, timeout: 5000 }
-  );
+  getCurrentPosition({ enableHighAccuracy: true, timeout: 5000 })
+    .then((position) => {
+      const { latitude, longitude } = position.coords;
+      go(latitude, longitude);
+    })
+    .catch(() => go());
 };
 
 
