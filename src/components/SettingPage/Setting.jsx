@@ -1,6 +1,5 @@
 // src/components/SettingPage/Setting.jsx
 import React, { useEffect, useState } from "react";
-import nextImg from "../../icons/nextImg.svg";
 import { useNavigate, Navigate } from "react-router-dom";
 import { getMemberInfo } from "../../api/member";
 
@@ -42,52 +41,33 @@ export default function Setting({ onEditPhone }) {
 
   return (
     <main className="relative flex-1 w-full flex flex-col items-center pt-0 px-4">
-      {/* 프로필 */}
-      <div className="flex w-full h-[52px] justify-between items-center mt-[34px]">
-        <div>
-          {/* ③ 불러온 닉네임과 아이디를 화면에 출력 */}
-          <p className="text-[24px]">
-            {member.nickname ? `${member.username}님` : "로그인이 필요합니다."}
+      <section className="w-full mt-[36px] bg-[#FEF8F9] rounded-[16px] px-[20px] py-[24px] shadow-sm">
+        <p className="text-[14px] text-[#FF7593] font-medium mb-[12px]">프로필</p>
+        <div className="flex flex-col gap-[6px]">
+          <p className="text-[22px] font-semibold text-[#333]">
+            {member.username ? `${member.username}님` : "로그인이 필요합니다."}
           </p>
-          <p className="text-[#979797] text-[15px]">
-            {member.username ? `ID: ${member.nickname}` : ""}
+          <p className="text-[#757575] text-[15px]">
+            {member.nickname ? `아이디: ${member.nickname}` : ""}
           </p>
           {error && (
             <p className="text-red-500 text-sm mt-1">{error}</p>
           )}
         </div>
-        <img src={nextImg} alt="more info" className="w-[10px]" />
-      </div>
-
-      <section className="w-full mt-[43px]">
-        <p className="text-[#909090] mb-[15px]">내 정보</p>
-        <div className="flex w-full h-[21px] justify-between items-center mb-[13px]">
-          <p className="text-lg">비밀번호</p>
-          <img src={nextImg} alt="more info" className="w-[10px]" />
-        </div>
-        <hr className="border-[#ECECEC]" />
-        <div
-         className="flex w-full h-[21px] justify-between items-center mt-[13px] cursor-pointer"
-         onClick={onEditPhone}
-       >
-         <p className="text-lg">비상 연락처</p>
-         <img src={nextImg} alt="수정" className="w-[10px]" />
-       </div>
       </section>
 
-      <section className="w-full mt-[43px]">
-        <p className="text-[#909090] mb-[15px]">음성 지원</p>
-        <div className="flex w-full h-[21px] justify-between items-center mb-[13px]">
-          <p className="text-lg">안내 음성</p>
-          <img src={nextImg} alt="more info" className="w-[10px]" />
-        </div>
-        <hr className="border-[#ECECEC]" />
-        <div className="flex w-full h-[21px] justify-between items-center mt-[13px]">
-          <p className="text-lg">음성 크기 조절</p>
-          <div className="flex items-center">
-            <p className="text-[17px] text-[#909090] mr-[5px]">크게</p>
-            <img src={nextImg} alt="more info" className="w-[10px]" />
+      <section className="w-full mt-[28px] bg-white border border-[#F2F2F2] rounded-[16px] px-[20px] py-[20px]">
+        <div className="flex items-center justify-between">
+          <div>
+            <p className="text-[15px] text-[#909090]">내 정보</p>
+            <p className="text-[18px] font-medium text-[#333] mt-[4px]">비상 연락처</p>
           </div>
+          <button
+            onClick={onEditPhone}
+            className="px-[14px] py-[8px] border border-[#FFBCCA] rounded-full text-[13px] text-[#FF3D74]"
+          >
+            수정하기
+          </button>
         </div>
       </section>
     </main>
