@@ -135,47 +135,65 @@ const MapPage = () => {
   }, [map]);
 
   useEffect(() => {
-    if (!map) return;
+  if (!map) return;
 
-    let polyline = null;
+  // 기존 polyline 제거용 배열
+  const polylines = [];
 
-    if (mode === "walk" && route?.features) {
-      // 🚶‍♂️ 도보 경로 그리기
-      const linePath = [];
+  if (mode === "walk" && route?.features) {
+    // 도보 전용 모드
+    const linePath = [];
 
-      for (let i = 0; i < route.features.length; i++) {
-        const geometry = route.features[i].geometry;
-        if (geometry?.type === "LineString") {
-          geometry.coordinates.forEach(coord => {
-            const latLng = new window.Tmapv2.LatLng(coord[1], coord[0]);
-            linePath.push(latLng);
-          });
-        }
-      }
-
-      polyline = new window.Tmapv2.Polyline({
-        path: linePath,
-        strokeColor: "#3396F4",
-        strokeWeight: 6,
-        map,
-      });
-
-    } else if (mode === "transit" && transitRoute?.legs) {
-      const linePath = [];
-
-      transitRoute.legs.forEach((leg, idx) => {
-      const shape = leg.passShape;
-
-      if (Array.isArray(shape)) {
-        // 배열 형식인 경우 (거의 없음)
-        shape.forEach(coord => {
-          const latLng = new window.Tmapv2.LatLng(coord.latitude, coord.longitude);
+    for (let i = 0; i < route.features.length; i++) {
+      const geometry = route.features[i].geometry;
+      if (geometry?.type === "LineString") {
+        geometry.coordinates.forEach(coord => {
+          const latLng = new window.Tmapv2.LatLng(coord[1], coord[0]);
           linePath.push(latLng);
         });
+      }
+    }
 
-      } else if (shape?.linestring) {
-        // linestring 문자열 형태인 경우 (대중교통 경로)
-        const coords = shape.linestring.split(" ");
+    const polyline = new window.Tmapv2.Polyline({
+      path: linePath,
+      strokeColor: "#3396F4",
+      strokeWeight: 6,
+      map,
+    });
+    polylines.push(polyline);
+
+  } else if (mode === "transit" && transitRoute?.legs) {
+    // 대중교통 모드
+    transitRoute.legs.forEach((leg, idx) => {
+      const linePath = [];
+
+      if (leg.mode === "WALK" && Array.isArray(leg.steps)) {
+        // 도보 구간 (steps 안의 linestring 사용)
+        leg.steps.forEach(step => {
+          if (step.linestring) {
+            const coords = step.linestring.split(" ");
+            coords.forEach(coordStr => {
+              const [lng, lat] = coordStr.split(",").map(Number);
+              if (!isNaN(lat) && !isNaN(lng)) {
+                const latLng = new window.Tmapv2.LatLng(lat, lng);
+                linePath.push(latLng);
+              }
+            });
+          }
+        });
+
+        const walkLine = new window.Tmapv2.Polyline({
+          path: linePath,
+          strokeColor: "#3396F4", 
+          strokeWeight: 4,
+          strokeStyle: "dash", // 점선으로 표시
+          map,
+        });
+        polylines.push(walkLine);
+
+      } else if (leg.passShape?.linestring) {
+        // 버스/지하철 구간 (passShape 사용)
+        const coords = leg.passShape.linestring.split(" ");
         coords.forEach(coordStr => {
           const [lng, lat] = coordStr.split(",").map(Number);
           if (!isNaN(lat) && !isNaN(lng)) {
@@ -183,23 +201,27 @@ const MapPage = () => {
             linePath.push(latLng);
           }
         });
+
+        const transitLine = new window.Tmapv2.Polyline({
+          path: linePath,
+          strokeColor: "#3396F4",
+          strokeWeight: 6,
+          map,
+        });
+        polylines.push(transitLine);
       } else {
-        console.log(`leg[${idx}]에 경로 정보 없음 또는 도보 구간`);
+        console.log(`leg[${idx}]에 경로 정보 없음`);
       }
     });
+  }
 
-      polyline = new window.Tmapv2.Polyline({
-        path: linePath,
-        strokeColor: "#3396F4", // 같은 색으로 표시
-        strokeWeight: 6,
-        map,
-      });
-    }
+  // cleanup
+  return () => {
+    polylines.forEach(line => line.setMap(null));
+  };
+}, [map, route, transitRoute, mode]);
 
-    return () => {
-      if (polyline) polyline.setMap(null);
-    };
-  }, [map, route, transitRoute, mode]);
+
 
   useEffect(() => {
     if (!map) return;
