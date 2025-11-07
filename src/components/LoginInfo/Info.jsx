@@ -77,6 +77,12 @@ const login = async (nickname, password) => {
         await login(inputs.id, inputs.pw);
     };
 
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        if (!active) return;
+        await handleLogin();
+    };
+
     return (
         <>
         <div className="wrapper">
@@ -87,12 +93,18 @@ const login = async (nickname, password) => {
 
             <div className="main_wrapper">
                 <div>
-                    <form className="info_wrapper">
+                    <form id="loginForm" className="info_wrapper" onSubmit={handleSubmit}>
                     <input 
-                        type="id" 
+                        type="text" 
                         name="id"
                         value={id}
                         onChange={onChange}
+                        onKeyDown={(e) => {
+                            if (e.key === 'Enter') {
+                                e.preventDefault();
+                                if (active) handleLogin();
+                            }
+                        }}
                         placeholder="아이디를 입력해주세요"
                         
                     />
@@ -101,6 +113,12 @@ const login = async (nickname, password) => {
                         name="pw"
                         value={pw}
                         onChange={onChange}
+                        onKeyDown={(e) => {
+                            if (e.key === 'Enter') {
+                                e.preventDefault();
+                                if (active) handleLogin();
+                            }
+                        }}
                         autoComplete="off"
                         placeholder="비밀번호를 입력해주세요" 
                         
@@ -128,7 +146,8 @@ const login = async (nickname, password) => {
 
             <div className="footer_wrapper">
                 <button 
-                    onClick={handleLogin}
+                    type="submit"
+                    form="loginForm"
                     disabled={!active}
                     className={!active ? 'ach_login_button' : 'rej_login_button'}
                 >
