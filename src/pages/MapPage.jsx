@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import StepCard from "../components/RouteGuide/StepCard";
 import TransitStepCard from "../components/RouteGuide/TransitStepCard";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -14,7 +14,9 @@ const MapPage = () => {
   const [map, setMap] = useState(null);
   const [route, setRoute] = useState(null);
   const [transitRoute, setTransitRoute] = useState(null);
+  const [currentPosition, setCurrentPosition] = useState(null);
   const { mode, destination, endLat, endLng, startLat, startLng } = useLocation().state || {};
+  const hasInitialCentered = useRef(false);
 
 
   // 헤더와 동일한 비상연락 함수
@@ -55,6 +57,10 @@ const MapPage = () => {
   // 지도 생성 및 클릭 이벤트 등록
   useEffect(() => {
     if (isTmapReady && mapRef.current) {
+      if (window.Tmapv2 && window.Tmapv2.setHttpsMode) {
+        window.Tmapv2.setHttpsMode(true);
+      }
+
       const mapInstance = new window.Tmapv2.Map(mapRef.current, {
         center: new window.Tmapv2.LatLng(startLat, startLng),
         width: "100%",
@@ -63,7 +69,22 @@ const MapPage = () => {
         // scrollwheel: false, // 확대 축소 가능하게
         zoomControl: false,
         draggable: true,
+        httpsMode: true,
       });
+          // SDK가 지원하는 전체 허용 레벨 안에서 10~20으로 클램프
+    const minSdk = mapInstance.getMinZoomLevels();
+    const maxSdk = mapInstance.getMaxZoomLevels();
+    const min = Math.max(13, minSdk);
+    const max = Math.min(20, maxSdk);
+    mapInstance.setZoomLimit(min, max);
+
+    // 혹시 모를 과도 확대/축소를 즉시 되돌림(보조 안전장치)
+    mapInstance.addListener("zoom_changed", () => {
+      const z = mapInstance.getZoom();
+      if (z < min) mapInstance.setZoom(min);
+      if (z > max) mapInstance.setZoom(max);
+    });
+
       setMap(mapInstance);
 
     }
@@ -243,8 +264,12 @@ const MapPage = () => {
         } else {
           marker.setPosition(latLng);
         }
+        setCurrentPosition({ latitude, longitude });
 
-        map.setCenter(latLng);
+        if (!hasInitialCentered.current) {
+          map.setCenter(latLng);
+          hasInitialCentered.current = true;
+        }
       }, 
       (error) => {console.log(error)},
       {enableHighAccuracy: true, timeout: 5000, maximumAge: 0}
@@ -262,6 +287,12 @@ const MapPage = () => {
     }
 
   }, [map]);
+
+  const handleCenterOnUser = useCallback(() => {
+    if (!map || !currentPosition) return;
+    const latLng = new window.Tmapv2.LatLng(currentPosition.latitude, currentPosition.longitude);
+    map.setCenter(latLng);
+  }, [map, currentPosition]);
 
   
 
@@ -296,6 +327,14 @@ const MapPage = () => {
           비상 연락
           </button>
       </div>
+
+      <button
+        onClick={handleCenterOnUser}
+        disabled={!currentPosition}
+        className="absolute left-[16px] top-[380px] z-10 bg-white border border-[#FFBCCA] rounded-[5px] px-[12px] py-[8px] shadow-sm text-sm disabled:opacity-50"
+      >
+        내 위치
+      </button>
 
       <div className="max-h-[80vh] overflow-y-auto mt-[30px]">
         {mode === "walk" ? 
