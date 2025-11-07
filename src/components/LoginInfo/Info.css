@@ -1,10 +1,13 @@
 .wrapper {
     position: absolute;
     top: 150px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 358px;
-    /* border: 1px solid blue; */
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    width: 100%;
+    max-width: 390px;
+    padding: 0 16px;
+    box-sizing: border-box;
 }
 
 .header_wrapper {
@@ -55,13 +58,13 @@
 
 .info_wrapper > input {
     box-sizing: border-box;
-    width: 358px;
+    width: 100%;
     height: 51px;
     border-radius: 5px;
     
     padding: 15px 16px;
 
-    margin: 5px auto;
+    margin: 5px 0;
     border: 1px solid rgba(230, 230, 230, 1);
     
     background: rgba(253, 253, 253, 1);
@@ -141,16 +144,24 @@
 }
 
 .footer_wrapper {
-    position: absolute;
-    bottom: 34px;
+    position: fixed;
+    left: 0;
+    right: 0;
+    width: 100%;
+    max-width: 390px;
+    margin: 0 auto;
+    padding: 0 16px;
+    bottom: calc(env(keyboard-inset-height, 0px) + 34px);
+    box-sizing: border-box;
+    z-index: 100;
 }
 
 .footer_wrapper > button {
     box-sizing: border-box;
-    width: 358px;
+    width: 100%;
     height: 56px;
     border-radius: 6px;
-    padding: 17px 147px;
+    padding: 17px;
     gap: 10px;
 
     border: none;

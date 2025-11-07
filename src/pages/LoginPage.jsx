@@ -11,7 +11,7 @@ const LoginPage = () => {
     }, []);
 
     return (
-        <div className="relative flex flex-col items-center h-screen overflow-hidden">
+        <div className="relative flex flex-col items-center min-h-screen overflow-y-auto w-full">
             <Info />
         </div>
     )
