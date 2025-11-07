@@ -110,8 +110,8 @@ const TransitStepCard = ({ data }) => {
             </div>
 
             <div className="border border-[#E1E1E1] border-t-0 rounded-b-[5px] p-[10px]">
-                <div className="w-[320px] flex mx-auto mb-1 flex-col text-[22px]">
-                    {step.destination}까지 걷기
+                <div className="w-[320px] flex mx-auto mb-1 text-[22px]">
+                    <span className="font-bold">{step.destination}</span>까지 걷기
                 </div>
                 <hr className="w-[320px] flex mx-auto border-[#DDDDDD]" />
                 <div className="w-[320px] flex mx-auto mt-1 text-[18px]">
@@ -155,7 +155,7 @@ const TransitStepCard = ({ data }) => {
             </div>
             <div className="border border-[#E1E1E1] border-t-0 rounded-b-[5px] p-[10px]">
                 <div className="w-[320px] flex mx-auto mb-1 flex-col">
-                    <p className="text-[22px]">{step.stations[0]?.stationName}역에서 타기</p>
+                    <p className="text-[22px]"><span className="font-bold">{step.stations[0]?.stationName}역</span>에서 타기</p>
                     <div className="flex flex-row items-center gap-[3px]">
                         <div 
                             className="h-[19px] text-[12px] font-semibold text-white rounded-sm px-[5px]"
@@ -223,7 +223,7 @@ const TransitStepCard = ({ data }) => {
             <div className="border border-[#E1E1E1] border-t-0 rounded-b-[5px] p-[10px]">
                 <div className="w-[320px] flex mx-auto mb-1 flex-row text-[18px] gap-[5px]">
                     <p style={{color : `#${step.subwayColor}`}}>{step.route}</p>
-                    <p>{step.stations[0]?.stationName}역에서 타기</p>
+                    <p><span className="font-bold">{step.stations[0]?.stationName}역</span>에서 타기</p>
                     
                 </div>
                 <hr className="w-[320px] flex mx-auto border-[#DDDDDD]" />
