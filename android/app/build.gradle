@@ -23,6 +23,16 @@ android {
             signingConfig signingConfigs.debug  // 디버그 서명 사용 (테스트용)
         }
     }
+    packagingOptions {
+        resources {
+            excludes += [
+                "**/baseline-prof.txt",
+                "**/baseline.prof",
+                "**/baselineProfiles/**",
+                "**/*.dm"
+            ]
+        }
+    }
 }
 
 repositories {

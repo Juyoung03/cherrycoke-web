@@ -1,0 +1,21 @@
+{
+	"appId": "com.cherrymap.app",
+	"appName": "cherrymap",
+	"webDir": "dist",
+	"server": {
+		"url": "https://cherrymap.pages.dev/",
+		"cleartext": false
+	},
+	"plugins": {
+		"SplashScreen": {
+			"launchShowDuration": 2000,
+			"launchAutoHide": true,
+			"backgroundColor": "#FF2655",
+			"androidSplashResourceName": "splash",
+			"androidScaleType": "CENTER_CROP",
+			"showSpinner": false,
+			"splashFullScreen": true,
+			"splashImmersive": true
+		}
+	}
+}
