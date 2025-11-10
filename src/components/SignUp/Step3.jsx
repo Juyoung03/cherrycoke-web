@@ -1,14 +1,25 @@
 import {useForm} from "react-hook-form";
 import StepIndicator from "./StepIndicator";
+import { useState, useEffect } from "react";
 
 const Step3 = ({onNext}) => {
-    const {register, handleSubmit} = useForm();
+    const {register, handleSubmit, watch} = useForm();
+    const [isValid, setIsValid] = useState(false);
+
+    const phoneValue = watch("phoneNumber");
+
+    useEffect(() => {
+        setIsValid(!!phoneValue);
+    }, [phoneValue]);
+    
+        
     
     const onSubmit = (data) => {
         //console.log("전화번호", data);
         const rawNumber = data.phoneNumber?.replace(/\D/g, ""); // 숫자만 추출
         if (rawNumber?.length === 11) {
             data.phoneNumber = rawNumber.replace(/(\d{3})(\d{4})(\d{4})/, "$1-$2-$3");
+            
         }
         else if (rawNumber?.length != 0) {
             alert("전화번호를 다시 확인해주세요.");
@@ -41,8 +52,16 @@ const Step3 = ({onNext}) => {
                 </div>
 
                 <div className="absolute bottom-[42px] left-1/2 -translate-x-1/2">
-                    <button 
+                    {/* <button 
                         className={"border border-box border-none w-[358px] h-[56px] rounded-md gap-[10px] text-lg bg-[#FF2655] text-white"}
+                    >
+                        계속하기
+                    </button> */}
+                    <button 
+                        type="submit"
+                        disabled={!isValid}
+                        className={`border border-box border-none w-[358px] h-[56px] rounded-md gap-[10px] text-lg
+                        ${!isValid ? 'bg-[#F0F0F0] text-[#C7C7C7]' : 'bg-[#FF2655] text-white'}`}
                     >
                         계속하기
                     </button>
