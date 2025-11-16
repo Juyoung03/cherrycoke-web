@@ -35,17 +35,17 @@ const Step3 = ({onNext}) => {
             <form onSubmit={handleSubmit(onSubmit)} className="w-[358px] mx-auto">
                 <div className="w-[358px] mx-auto">
                     <div className="font-medium font-display text-[28px] py-[10px]">
-                        <p>비상 연락처(선택)</p>
+                        <p>비상 연락처</p>
                     </div>
                     <div className="font-regular text-[16px] text-gray-600">
                         <p>예기치 못한 상황 발생 시, 신속한 연락을 위해 사용돼요.</p>
-                        <p>입력하지 않으셔도 회원가입이 가능해요.</p>
+                        {/* <p>입력하지 않으셔도 회원가입이 가능해요.</p> */}
                     </div>
 
                     <div className="my-[37px]">
                         <input 
                             placeholder="비상연락처를 입력해주세요" 
-                            {...register("phoneNumber", {required:false})} 
+                            {...register("phoneNumber", {required:true})} 
                             className="w-[358px] h-[51px] py-[16px] px-[15px] border rounded-md border-[#E6E6E6]"
                         />
                     </div>
