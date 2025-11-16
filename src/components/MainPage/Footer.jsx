@@ -14,15 +14,19 @@ export default function Footer() {
   const isSettings = pathname === "/setting";
 
   return (
-    <footer
-      className="
-        fixed left-0 right-0
-        bottom-0
-        h-[57px] bg-white
-        flex justify-around items-center
-        z-50
-      "
-    >
+    <>
+      {/* 푸터 밑 마진 영역 (흰색 배경) */}
+      <div className="fixed bottom-0 left-0 right-0 h-[15px] bg-white z-40" />
+      
+      <footer
+        className="
+          fixed left-0 right-0
+          bottom-[15px]
+          h-[57px] bg-white
+          flex justify-around items-center
+          z-50
+        "
+      >
       {/* 홈 버튼 */}
       <button
         onClick={() => navigate("/")}
@@ -65,6 +69,7 @@ export default function Footer() {
           className={`w-[23px] h-[41px] ${isSettings ? "filter brightness-0" : ""}`}
         />
       </button>
-    </footer>
+      </footer>
+    </>
   );
 }

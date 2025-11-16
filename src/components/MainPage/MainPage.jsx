@@ -10,12 +10,12 @@ export default function MainPage() {
   const nav = useNavigate();
 
   return (
-    <div className="min-h-screen bg-white flex flex-col pt-[88px] pb-[57px]">
+    <div className="min-h-screen bg-white flex flex-col pt-[88px] pb-[72px]">
       {/* 상단 헤더 */}
       <Header />
 
       {/* 본문 영역 */}
-      <main className="flex-1 p-6 relative">
+      <main className="flex-1 px-6 pt-6 pb-[90px] relative overflow-y-auto">
         {/* 페이지 타이틀 */}
         <h1
           className="

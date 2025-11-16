@@ -83,7 +83,7 @@ export default function RecordForm({ destination, onSubmit, onCancel }) {
             onClick={handleNext}
             disabled={!selected}
             className={`
-              absolute bottom-[80px] left-0 right-0 mx-4
+              absolute bottom-[95px] left-0 right-0 mx-4
               w-auto min-w-[calc(100%-2*1rem)] py-3 rounded
               ${selected
                 ? "bg-[#FF2655] text-white"
@@ -105,7 +105,7 @@ export default function RecordForm({ destination, onSubmit, onCancel }) {
           <button
             onClick={handleFinish}
             className="
-              absolute bottom-[80px] left-0 right-0 mx-4
+              absolute bottom-[95px] left-0 right-0 mx-4
               w-auto min-w-[calc(100%-2*1rem)] py-3 rounded
               bg-[#FF2655] text-white
             "

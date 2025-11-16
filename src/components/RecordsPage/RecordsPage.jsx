@@ -17,7 +17,7 @@ export default function RecordsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-white px-4 pt-[33px] pb-[57px] relative">
+    <div className="min-h-screen bg-white px-4 pt-[33px] pb-[72px] relative">
       <RecordForm
         destination={destination}
         onSubmit={handleDone}
