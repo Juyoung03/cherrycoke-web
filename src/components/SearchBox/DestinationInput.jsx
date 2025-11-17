@@ -10,6 +10,7 @@ export default function DestinationInput({
   const [suggestions, setSuggestions] = useState([]);
   const [open, setOpen]               = useState(false);
   const timer                         = useRef(null);
+  const selectedItemRef               = useRef(null); // 선택된 항목 추적
 
   // — 공통으로 쓰일 POI fetch 함수
   const fetchSuggestions = async () => {
@@ -44,6 +45,12 @@ export default function DestinationInput({
     if (!value.trim()) {
       setSuggestions([]);
       setOpen(false);
+      selectedItemRef.current = null; // 값이 비면 선택 초기화
+      return;
+    }
+
+    // 선택된 항목과 동일한 값이면 리스트를 다시 열지 않음
+    if (selectedItemRef.current && selectedItemRef.current.name === value) {
       return;
     }
 
@@ -69,8 +76,11 @@ export default function DestinationInput({
 
   /* ---------- 항목 선택 시 ---------- */
   const handlePick = (item) => {
+    selectedItemRef.current = item; // 선택된 항목 저장
     onSelect(item);     // 부모(SearchBox)에 {name,lat,lng} 전달
     setOpen(false);     // 리스트만 닫기 (suggestions는 남겨둠)
+    // 타이머 클리어하여 useEffect가 리스트를 다시 열지 않도록 함
+    if (timer.current) clearTimeout(timer.current);
   };
 
   return (
